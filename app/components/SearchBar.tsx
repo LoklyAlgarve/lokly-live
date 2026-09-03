@@ -10,7 +10,7 @@ export default function SearchBar() {
   const [search, setSearch] = useState("");
   const [clickedFilter, setClickedFilter] = useState<string | null>(null);
 
-  const urlFilter = searchParams.get("filter") || "";
+  const urlFilter = searchParams?.get("filter") || "";
   const activeFilter = clickedFilter || urlFilter;
 
   function handleSearch() {
@@ -58,8 +58,11 @@ export default function SearchBar() {
 
   return (
     <div className="space-y-3 sm:space-y-5">
+
       <div className="relative">
+
         <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 sm:left-5">
+
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 sm:h-6 sm:w-6"
@@ -75,6 +78,7 @@ export default function SearchBar() {
               d="M20 20l-3.5-3.5"
             />
           </svg>
+
         </div>
 
         <input
@@ -98,6 +102,7 @@ export default function SearchBar() {
           aria-label="Search"
           className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl bg-[#149EAF] text-white sm:right-3 sm:h-10 sm:w-10 sm:rounded-2xl"
         >
+
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -113,10 +118,13 @@ export default function SearchBar() {
             />
             <circle cx="10" cy="10" r="6" />
           </svg>
+
         </button>
+
       </div>
 
       <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1 sm:pb-2">
+
         <button
           type="button"
           onClick={() => handleFilter("today")}
@@ -164,7 +172,9 @@ export default function SearchBar() {
         >
           Near Me
         </button>
+
       </div>
+
     </div>
   );
 }
