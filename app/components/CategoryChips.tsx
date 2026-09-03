@@ -11,6 +11,7 @@ const categories = [
   { name: "Culture", icon: "culture" },
   { name: "Nightlife", icon: "nightlife" },
   { name: "Festivals", icon: "festival" },
+  { name: "Exhibitions", icon: "exhibition" },
 ];
 
 function CategoryIcon({ type }: { type: string }) {
@@ -80,7 +81,7 @@ function CategoryIcon({ type }: { type: string }) {
       return (
         <svg viewBox="0 0 48 48" className="h-12 w-12" {...commonProps}>
           <path d="M8 14c4-4 9-4 14 0v20c-5-4-10-4-14 0V14Z" />
-          <path d="M40 14c-4-4 9-4-14 0v20c5-4 10-4 14 0V14Z" />
+          <path d="M40 14c-4-4-9-4-14 0v20c5-4 10-4 14 0V14Z" />
           <path d="M15 21c2 2 4 2 6 0" />
           <path d="M27 21c2 2 4 2 6 0" />
         </svg>
@@ -110,6 +111,15 @@ function CategoryIcon({ type }: { type: string }) {
         </svg>
       );
 
+    case "exhibition":
+      return (
+        <svg viewBox="0 0 48 48" className="h-12 w-12" {...commonProps}>
+          <rect x="8" y="10" width="32" height="28" rx="2" />
+          <path d="M14 32l7-8 5 5 4-5 4 8" />
+          <circle cx="29" cy="18" r="3" />
+        </svg>
+      );
+
     default:
       return null;
   }
@@ -131,7 +141,7 @@ export default function CategoryChips() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-9">
         {categories.map((category) => (
           <Link
             key={category.name}

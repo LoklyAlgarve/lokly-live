@@ -202,7 +202,7 @@ export default function MapPage() {
     : events;
 
   return (
-    <main className="min-h-screen bg-slate-50 pb-36">
+    <main className="relative min-h-screen bg-slate-50 pb-36">
 
       <Header />
 
@@ -302,7 +302,7 @@ export default function MapPage() {
           </div>
         )}
 
-        <div className="mt-6 overflow-hidden rounded-3xl bg-white shadow sm:mt-8">
+        <div className="relative z-0 isolate mt-6 overflow-hidden rounded-3xl bg-white shadow sm:mt-8">
 
           <EventMap
             events={visibleEvents}

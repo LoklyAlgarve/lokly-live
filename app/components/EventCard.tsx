@@ -21,6 +21,9 @@ type EventCardProps = {
     status: GoingStatus
   ) => void;
   onAddToCalendar?: () => void;
+
+  // Optional save callback
+  onSavedChange?: (eventId: number, saved: boolean) => void;
 };
 
 function formatEventDate(date: string) {
@@ -86,6 +89,7 @@ export default function EventCard({
   goingStatus = null,
   onGoingStatusChange,
   onAddToCalendar,
+  onSavedChange,
 }: EventCardProps) {
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
 
@@ -121,7 +125,12 @@ export default function EventCard({
         )}
 
         {/* Save */}
-        <SaveButton eventId={id} />
+        <SaveButton
+          eventId={id}
+          onSavedChange={(saved) =>
+            onSavedChange?.(id, saved)
+          }
+        />
 
       </div>
 

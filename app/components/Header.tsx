@@ -35,15 +35,21 @@ export default function Header() {
           </button>
 
           {/* Logo */}
-          <div className="text-center">
-            <h1 className="text-3xl font-black tracking-tight text-slate-900">
-              Lokly
-            </h1>
+          <Link
+            href="/"
+            aria-label="Lokly home"
+            className="flex flex-col items-center"
+          >
+            <img
+              src="/images/lokly-logo.png"
+              alt="Lokly"
+              className="h-10 w-auto object-contain"
+            />
 
             <p className="text-sm font-medium text-[#149EAF]">
               Discover • Explore • Enjoy
             </p>
-          </div>
+          </Link>
 
           {/* Profile */}
           <Link
@@ -91,9 +97,11 @@ export default function Header() {
             <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5">
 
               <div>
-                <h2 className="text-2xl font-black tracking-tight text-slate-900">
-                  Lokly
-                </h2>
+                <img
+                  src="/images/lokly-logo.png"
+                  alt="Lokly"
+                  className="h-9 w-auto object-contain"
+                />
 
                 <p className="mt-0.5 text-sm font-medium text-[#149EAF]">
                   Discover • Explore • Enjoy
@@ -231,8 +239,6 @@ export default function Header() {
                     strokeWidth={2}
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
                       d="M20.8 8.8c0 5.5-8.8 10.2-8.8 10.2S3.2 14.3 3.2 8.8A4.7 4.7 0 017.9 4c1.6 0 3.1.8 4.1 2 1-1.2 2.5-2 4.1-2a4.7 4.7 0 014.7 4.8z"
                     />
                   </svg>

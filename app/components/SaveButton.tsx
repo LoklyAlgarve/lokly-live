@@ -7,11 +7,13 @@ import { createClient } from "../../utils/supabase/client";
 type SaveButtonProps = {
   eventId: number;
   large?: boolean;
+  onSavedChange?: (saved: boolean) => void;
 };
 
 export default function SaveButton({
   eventId,
   large = false,
+  onSavedChange,
 }: SaveButtonProps) {
   const router = useRouter();
   const [saved, setSaved] = useState(false);
@@ -68,6 +70,7 @@ export default function SaveButton({
 
       if (!error) {
         setSaved(false);
+        onSavedChange?.(false);
       }
     } else {
       const { error } = await supabase
@@ -79,6 +82,7 @@ export default function SaveButton({
 
       if (!error) {
         setSaved(true);
+        onSavedChange?.(true);
       }
     }
 
@@ -108,7 +112,11 @@ export default function SaveButton({
       onClick={toggleSave}
       disabled={loading}
       className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl shadow-lg transition hover:scale-105 disabled:opacity-60"
-      aria-label={saved ? "Remove from saved events" : "Save event"}
+      aria-label={
+        saved
+          ? "Remove from saved events"
+          : "Save event"
+      }
     >
       {saved ? "♥" : "♡"}
     </button>

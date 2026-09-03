@@ -1,152 +1,112 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getEvents } from "../../data/events";
-import SaveButton from "../../components/SaveButton";
-
-type Props = {
-  params: Promise<{
-    id: string;
-  }>;
+export type Event = {
+  id: number;
+  title: string;
+  location: string;
+  date: string;
+  time: string;
+  category: string;
+  price: string;
+  image: string;
+  featured: boolean;
+  description: string;
+  website?: string;
+  latitude: number;
+  longitude: number;
 };
 
-export default async function EventDetails({ params }: Props) {
-  const { id } = await params;
+const EVENTS_URL =
+  "https://script.google.com/macros/s/AKfycbwCOnagvtUqWWTKjs56w6ZlrjRkceh0bnxRPN4Bn7VTukL55iLrNzObL44ZtcbLdH2o/exec";
 
-  const events = await getEvents();
+type SheetEvent = {
+  "Event Name"?: string;
+  "Category"?: string;
+  "Description"?: string;
+  "Venue"?: string;
+  "Town"?: string;
+  "Latitude"?: string;
+  "Longitude"?: string;
+  "Start Date"?: string;
+  "Start Time"?: string;
+  "End Date"?: string;
+  "End Time"?: string;
+  "Image"?: string;
+  "Ticket Link"?: string;
+  "Website"?: string;
+  "Price"?: string;
+  "Featured"?: string;
+};
 
-  const event = events.find((e) => e.id === Number(id));
+async function fetchEventsWithRetry(): Promise<SheetEvent[]> {
+  let lastError: unknown = null;
 
-  if (!event) {
-    notFound();
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const response = await fetch(EVENTS_URL, {
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        const responseText = await response.text();
+
+        console.error("Lokly event feed failed:", {
+          attempt,
+          status: response.status,
+          statusText: response.statusText,
+          response: responseText.slice(0, 1000),
+        });
+
+        throw new Error(
+          `Failed to load events: ${response.status} ${response.statusText}`
+        );
+      }
+
+      return await response.json();
+    } catch (error) {
+      lastError = error;
+
+      if (attempt < 2) {
+        console.warn(
+          "Lokly event feed failed. Retrying..."
+        );
+
+        await new Promise((resolve) =>
+          setTimeout(resolve, 500)
+        );
+      }
+    }
   }
 
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${event.latitude},${event.longitude}`;
+  throw lastError instanceof Error
+    ? lastError
+    : new Error("Failed to load events");
+}
 
-  return (
-    <main className="min-h-screen bg-slate-50 pb-10">
+export async function getEvents(): Promise<Event[]> {
+  try {
+    const data = await fetchEventsWithRetry();
 
-      {/* Hero image */}
-      <div className="relative">
-
-        <img
-          src={event.image}
-          alt={event.title}
-          className="h-[45vh] min-h-[300px] w-full object-cover"
-        />
-
-        {/* Back button */}
-        <Link
-          href="/"
-          className="absolute left-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-2xl shadow-lg"
-          aria-label="Back"
-        >
-          ←
-        </Link>
-
-        {/* Save button on image */}
-        <SaveButton eventId={event.id} />
-
-      </div>
-
-      {/* Content */}
-      <div className="mx-auto max-w-3xl px-5 py-7 sm:px-6">
-
-        {/* Category + price */}
-        <div className="flex items-center justify-between gap-3">
-
-          <span className="rounded-full bg-[#149EAF]/10 px-3 py-1 text-sm font-semibold text-[#149EAF]">
-            {event.category}
-          </span>
-
-          <span className="rounded-full bg-[#149EAF]/10 px-3 py-1 text-sm font-semibold text-[#149EAF]">
-            {event.price || "Free"}
-          </span>
-
-        </div>
-
-        {/* Title */}
-        <h1 className="mt-5 text-3xl font-black leading-tight text-slate-900 sm:text-4xl">
-          {event.title}
-        </h1>
-
-        {/* Event information */}
-        <div className="mt-6 space-y-4">
-
-          <div className="flex items-start gap-3 text-slate-700">
-            <span className="text-xl">📍</span>
-            <div>
-              <p className="font-semibold">
-                {event.location}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3 text-slate-700">
-            <span className="text-xl">📅</span>
-            <div>
-              <p className="font-semibold">
-                {event.date}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3 text-slate-700">
-            <span className="text-xl">🕒</span>
-            <div>
-              <p className="font-semibold">
-                {event.time}
-              </p>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Description */}
-        <div className="mt-8 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
-
-          <h2 className="text-xl font-bold text-slate-900">
-            About this event
-          </h2>
-
-          <div className="mt-4 whitespace-pre-line leading-7 text-slate-600">
-            {event.description ||
-              "More information about this event will be available soon."}
-          </div>
-
-        </div>
-
-        {/* Actions */}
-        <div className="mt-7 space-y-3">
-
-          {/* Directions */}
-          <a
-            href={directionsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex min-h-14 w-full items-center justify-center rounded-2xl bg-[#149EAF] px-5 text-base font-bold text-white shadow-sm transition hover:bg-[#117F8E]"
-          >
-            📍 Get Directions
-          </a>
-
-          {/* Website */}
-          {event.website && (
-            <a
-              href={event.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex min-h-14 w-full items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 text-base font-bold text-slate-700 transition hover:bg-slate-50"
-            >
-              🌐 Visit Website
-            </a>
-          )}
-
-          {/* Save Event */}
-          <SaveButton eventId={event.id} large />
-
-        </div>
-
-      </div>
-
-    </main>
-  );
+    return data.map((item, index) => ({
+      id: index + 1,
+      title: item["Event Name"] || "Untitled Event",
+      location:
+        item["Town"] || item["Venue"] || "Algarve",
+      date: item["Start Date"] || "",
+      time: item["Start Time"] || "",
+      category: item["Category"] || "",
+      price: item["Price"] || "Free",
+      image:
+        item["Image"] ||
+        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200",
+      featured:
+        String(item["Featured"]).toLowerCase() === "true",
+      description: item["Description"] || "",
+      website:
+        item["Website"] || item["Ticket Link"] || "",
+      latitude: Number(item["Latitude"]) || 0,
+      longitude: Number(item["Longitude"]) || 0,
+    }));
+  } catch (error) {
+    console.error("Could not load Lokly events:", error);
+    return [];
+  }
 }

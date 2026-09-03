@@ -8,7 +8,7 @@ import {
   useMap,
 } from "react-leaflet";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -102,30 +102,8 @@ export default function EventMap({
 }: Props) {
   const router = useRouter();
 
-  /*
-   * Leaflet can hold onto an old DOM element during
-   * Next.js Fast Refresh. Giving the map a fresh key
-   * forces Leaflet to create a clean map instance.
-   */
-  const [mapKey, setMapKey] = useState(0);
-
-  useEffect(() => {
-    setMapKey((current) => current + 1);
-  }, []);
-
-  if (mapKey === 0) {
-    return (
-      <div className="flex h-[65vh] min-h-[500px] items-center justify-center bg-slate-100">
-        <p className="font-semibold text-slate-500">
-          Loading map...
-        </p>
-      </div>
-    );
-  }
-
   return (
     <MapContainer
-      key={mapKey}
       center={
         userLocation
           ? [userLocation.latitude, userLocation.longitude]
@@ -133,7 +111,7 @@ export default function EventMap({
       }
       zoom={userLocation ? 11 : 9}
       scrollWheelZoom={true}
-      className="h-[65vh] min-h-[500px] w-full"
+      className="relative z-0 h-[65vh] min-h-[500px] w-full"
     >
       <TileLayer
         attribution="&copy; OpenStreetMap contributors"

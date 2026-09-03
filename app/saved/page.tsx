@@ -27,6 +27,7 @@ export default function SavedPage() {
 
       if (!user) {
         setSavedIds([]);
+        setEvents([]);
         setLoading(false);
         return;
       }
@@ -39,19 +40,32 @@ export default function SavedPage() {
       if (error) {
         console.error("Error loading saved events:", error);
         setSavedIds([]);
+        setEvents([]);
         setLoading(false);
         return;
       }
 
-      const ids = (data || []).map((item) =>
-        Number(item.event_id)
-      );
+      const ids = (data || []).map((item) => Number(item.event_id));
 
       setSavedIds(ids);
 
-      const allEvents = await getEvents();
-      setEvents(allEvents);
+      if (ids.length === 0) {
+        loadGoingStatuses();
+        setEvents([]);
+        setLoading(false);
+        return;
+      }
 
+      const [allEvents] = await Promise.all([
+        getEvents(),
+        Promise.resolve(loadGoingStatuses()),
+      ]);
+
+      setEvents(allEvents);
+      setLoading(false);
+    }
+
+    function loadGoingStatuses() {
       const storedStatuses = localStorage.getItem(
         "lokly_going_statuses"
       );
@@ -63,8 +77,6 @@ export default function SavedPage() {
           setGoingStatuses({});
         }
       }
-
-      setLoading(false);
     }
 
     loadSavedEvents();
@@ -85,6 +97,17 @@ export default function SavedPage() {
       "lokly_going_statuses",
       JSON.stringify(updatedStatuses)
     );
+  }
+
+  function handleSavedChange(
+    eventId: number,
+    saved: boolean
+  ) {
+    if (!saved) {
+      setSavedIds((currentIds) =>
+        currentIds.filter((id) => id !== eventId)
+      );
+    }
   }
 
   function addToCalendar(event: any) {
@@ -162,11 +185,9 @@ export default function SavedPage() {
     });
 
     const url = URL.createObjectURL(blob);
-
     const link = document.createElement("a");
 
     link.href = url;
-
     link.download = `${event.title
       .replace(/[^a-z0-9]/gi, "-")
       .toLowerCase()}.ics`;
@@ -184,11 +205,9 @@ export default function SavedPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 pb-36">
-
       <Header />
 
       <section className="mx-auto max-w-7xl px-6 py-8">
-
         <h1 className="text-4xl font-black text-slate-900">
           Saved Events
         </h1>
@@ -205,10 +224,7 @@ export default function SavedPage() {
           </div>
         ) : savedEvents.length === 0 ? (
           <div className="mt-10 rounded-3xl bg-white p-10 text-center shadow-sm">
-
-            <div className="text-5xl">
-              ♡
-            </div>
+            <div className="text-5xl">♡</div>
 
             <h2 className="mt-4 text-xl font-bold text-slate-900">
               No saved events yet
@@ -217,13 +233,10 @@ export default function SavedPage() {
             <p className="mt-2 text-slate-500">
               Tap the heart on an event to save it here.
             </p>
-
           </div>
         ) : (
           <div className="mt-10 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
-
             {savedEvents.map((event) => {
-
               const status =
                 goingStatuses[Number(event.id)] || null;
 
@@ -242,17 +255,15 @@ export default function SavedPage() {
                   onAddToCalendar={() =>
                     addToCalendar(event)
                   }
+                  onSavedChange={handleSavedChange}
                 />
               );
             })}
-
           </div>
         )}
-
       </section>
 
       <BottomNavigation />
-
     </main>
   );
 }
