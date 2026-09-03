@@ -1,113 +1,134 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 const items = [
   {
     name: "Home",
-    active: true,
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M3 10.5L12 3l9 7.5V21H3z"
-        />
-      </svg>
-    ),
+    href: "/",
+    icon: "home",
+  },
+  {
+    name: "Search",
+    href: "/search",
+    icon: "search",
   },
   {
     name: "Map",
-    active: false,
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 21s7-4.5 7-11a7 7 0 10-14 0c0 6.5 7 11 7 11z"
-        />
-        <circle cx="12" cy="10" r="2.5" />
-      </svg>
-    ),
+    href: "/map",
+    icon: "map",
   },
   {
     name: "Saved",
-    active: false,
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12.1 21.35l-1.1-1C5.14 15.24 2 12.39 2 8.99A4.99 4.99 0 017 4a5.42 5.42 0 015 2.09A5.42 5.42 0 0117 4a4.99 4.99 0 015 4.99c0 3.4-3.14 6.25-8.99 11.36l-.91 1z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Profile",
-    active: false,
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <circle cx="12" cy="8" r="3.5" />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M5 20c2-3 5-4.5 7-4.5s5 1.5 7 4.5"
-        />
-      </svg>
-    ),
+    href: "/saved",
+    icon: "heart",
   },
 ];
 
-export default function BottomNavigation() {
+function Icon({ type }: { type: string }) {
+  if (type === "home") {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-7 w-7"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.8}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M3 10.5 12 3l9 7.5" />
+        <path d="M5.5 9.5V21h13V9.5" />
+        <path d="M9.5 21v-6h5v6" />
+      </svg>
+    );
+  }
+
+  if (type === "search") {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-7 w-7"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.8}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="10.8" cy="10.8" r="6.8" />
+        <path d="m16 16 5 5" />
+      </svg>
+    );
+  }
+
+  if (type === "map") {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-7 w-7"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.8}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z" />
+        <path d="M9 3v15" />
+        <path d="M15 6v15" />
+      </svg>
+    );
+  }
+
   return (
-    <nav className="fixed bottom-5 left-1/2 z-50 w-[92%] max-w-md -translate-x-1/2">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-7 w-7"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M20.8 8.8c0 5.4-8.8 10.2-8.8 10.2S3.2 14.2 3.2 8.8A5.2 5.2 0 0 1 12 5.5a5.2 5.2 0 0 1 8.8 3.3Z" />
+    </svg>
+  );
+}
 
-      <div className="flex items-center justify-around rounded-3xl border border-slate-200 bg-white/95 p-3 shadow-2xl backdrop-blur">
+export default function BottomNavigation() {
+  const pathname = usePathname();
 
-        {items.map((item) => (
-          <button
-            key={item.name}
-            className={`flex flex-col items-center gap-1 rounded-2xl px-4 py-2 transition-all ${
-              item.active
-                ? "bg-[#149EAF] text-white shadow-lg"
-                : "text-slate-500 hover:bg-slate-100"
-            }`}
-          >
-            {item.icon}
+  return (
+    <nav className="fixed bottom-6 left-1/2 z-50 w-[95%] max-w-lg -translate-x-1/2">
+      <div className="flex items-center justify-around rounded-3xl bg-white/95 p-3 shadow-2xl backdrop-blur-xl">
 
-            <span className="text-xs font-semibold">
-              {item.name}
-            </span>
-          </button>
-        ))}
+        {items.map((item) => {
+          const active = pathname === item.href;
+
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={`flex min-w-[72px] flex-col items-center rounded-2xl px-4 py-3 transition ${
+                active
+                  ? "bg-[#149EAF] text-white shadow-sm"
+                  : "text-slate-500 hover:bg-slate-100"
+              }`}
+            >
+              <Icon type={item.icon} />
+
+              <span className="mt-1.5 text-xs font-semibold">
+                {item.name}
+              </span>
+            </Link>
+          );
+        })}
 
       </div>
-
     </nav>
   );
 }

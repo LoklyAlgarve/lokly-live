@@ -1,19 +1,110 @@
+"use client";
+
+import Link from "next/link";
+import SaveButton from "./SaveButton";
+
+type GoingStatus = "yes" | "maybe" | null;
+
 type EventCardProps = {
+  id: number;
   title: string;
   location: string;
   date: string;
   image: string;
+  latitude: number;
+  longitude: number;
+
+  // Optional Saved Events controls
+  goingStatus?: GoingStatus;
+  onGoingStatusChange?: (
+    eventId: number,
+    status: GoingStatus
+  ) => void;
+  onAddToCalendar?: () => void;
 };
 
+function formatEventDate(date: string) {
+  const [datePart, timePart] = date.split(" • ");
+  const parts = datePart.split("-");
+
+  if (parts.length !== 3) {
+    return date;
+  }
+
+  const [year, month, day] = parts.map(Number);
+
+  if (!year || !month || !day) {
+    return date;
+  }
+
+  const formattedDate = new Date(
+    year,
+    month - 1,
+    day
+  ).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  return timePart
+    ? `${formattedDate} • ${timePart}`
+    : formattedDate;
+}
+
+function isToday(date: string) {
+  const datePart = date.split(" • ")[0];
+  const parts = datePart.split("-");
+
+  if (parts.length !== 3) {
+    return false;
+  }
+
+  const [year, month, day] = parts.map(Number);
+
+  if (!year || !month || !day) {
+    return false;
+  }
+
+  const today = new Date();
+
+  return (
+    year === today.getFullYear() &&
+    month === today.getMonth() + 1 &&
+    day === today.getDate()
+  );
+}
+
 export default function EventCard({
+  id,
   title,
   location,
   date,
   image,
+  latitude,
+  longitude,
+  goingStatus = null,
+  onGoingStatusChange,
+  onAddToCalendar,
 }: EventCardProps) {
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+
+  const showPlanning =
+    !!onGoingStatusChange && !!onAddToCalendar;
+
+  function handleStatus(status: GoingStatus) {
+    if (!onGoingStatusChange) return;
+
+    onGoingStatusChange(
+      id,
+      goingStatus === status ? null : status
+    );
+  }
+
   return (
     <article className="group overflow-hidden rounded-3xl bg-white shadow-md ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
 
+      {/* Image */}
       <div className="relative">
 
         <img
@@ -22,56 +113,40 @@ export default function EventCard({
           className="h-60 w-full object-cover transition duration-500 group-hover:scale-105"
         />
 
-        <div className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#149EAF] shadow">
-          TODAY
-        </div>
+        {/* Today */}
+        {isToday(date) && (
+          <div className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#149EAF] shadow">
+            TODAY
+          </div>
+        )}
 
-        <button className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white shadow transition hover:scale-110">
-
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-slate-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12.1 21.35l-1.1-1C5.14 15.24 2 12.39 2 8.99A4.99 4.99 0 017 4a5.42 5.42 0 015 2.09A5.42 5.42 0 0117 4a4.99 4.99 0 015 4.99c0 3.4-3.14 6.25-8.99 11.36l-.91 1z"
-            />
-          </svg>
-
-        </button>
+        {/* Save */}
+        <SaveButton eventId={id} />
 
       </div>
 
+      {/* Content */}
       <div className="space-y-4 p-6">
 
-        <div className="flex items-center justify-between">
-
+        {/* Price */}
+        <div className="flex items-center">
           <span className="rounded-full bg-[#149EAF]/10 px-3 py-1 text-xs font-semibold text-[#149EAF]">
             Free
           </span>
-
-          <span className="text-sm font-medium text-slate-500">
-            ⭐ 4.8
-          </span>
-
         </div>
 
+        {/* Title */}
         <h3 className="text-2xl font-bold leading-tight text-slate-900">
           {title}
         </h3>
 
+        {/* Location + date */}
         <div className="space-y-2">
 
           <div className="flex items-center gap-2 text-slate-600">
-
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-[#149EAF]"
+              className="h-5 w-5 shrink-0 text-[#149EAF]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -85,19 +160,17 @@ export default function EventCard({
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                d="M15 11a3 3 0 11-6 0"
               />
             </svg>
 
             {location}
-
           </div>
 
           <div className="flex items-center gap-2 text-slate-600">
-
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-[#149EAF]"
+              className="h-5 w-5 shrink-0 text-[#149EAF]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -106,27 +179,112 @@ export default function EventCard({
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                d="M8 7V3m8 4v4m-9 0h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5v12a2 2 0 002 2z"
               />
             </svg>
 
-            {date}
-
+            {formatEventDate(date)}
           </div>
 
         </div>
 
+        {/* Directions + Details */}
         <div className="grid grid-cols-2 gap-3 pt-2">
 
-          <button className="rounded-xl border border-[#149EAF] py-3 font-semibold text-[#149EAF] transition hover:bg-[#149EAF]/10">
+          <a
+            href={directionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center rounded-xl border border-[#149EAF] py-3 font-semibold text-[#149EAF] transition hover:bg-[#149EAF]/10"
+          >
             Directions
-          </button>
+          </a>
 
-          <button className="rounded-xl bg-[#149EAF] py-3 font-semibold text-white transition hover:bg-[#117F8E]">
+          <Link
+            href={`/events/${id}`}
+            className="flex items-center justify-center rounded-xl bg-[#149EAF] py-3 font-semibold text-white transition hover:bg-[#117F8E]"
+          >
             Details
-          </button>
+          </Link>
 
         </div>
+
+        {/* Saved Events planning section */}
+        {showPlanning && (
+          <div className="border-t border-slate-200 pt-4">
+
+            <p className="text-sm font-bold text-slate-900">
+              Planning to go?
+            </p>
+
+            <div className="mt-3 grid grid-cols-2 gap-2">
+
+              {/* Yes */}
+              <button
+                type="button"
+                onClick={() => handleStatus("yes")}
+                className={
+                  goingStatus === "yes"
+                    ? "flex items-center justify-center gap-2 rounded-xl bg-[#149EAF] px-4 py-2.5 text-sm font-semibold text-white"
+                    : "rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-[#149EAF] hover:text-[#149EAF]"
+                }
+              >
+                Yes
+
+                {goingStatus === "yes" && (
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-[#149EAF]">
+                    ✓
+                  </span>
+                )}
+              </button>
+
+              {/* Maybe */}
+              <button
+                type="button"
+                onClick={() => handleStatus("maybe")}
+                className={
+                  goingStatus === "maybe"
+                    ? "flex items-center justify-center gap-2 rounded-xl bg-[#149EAF] px-4 py-2.5 text-sm font-semibold text-white"
+                    : "rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-[#149EAF] hover:text-[#149EAF]"
+                }
+              >
+                Maybe
+
+                {goingStatus === "maybe" && (
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-[#149EAF]">
+                    ✓
+                  </span>
+                )}
+              </button>
+
+            </div>
+
+            {/* Calendar */}
+            <button
+              type="button"
+              onClick={onAddToCalendar}
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-[#149EAF] bg-white px-4 py-2.5 text-sm font-semibold text-[#149EAF] transition hover:bg-[#149EAF]/10"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8 3v4m8-4v4M4 9h16M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+
+              Add to Calendar
+            </button>
+
+          </div>
+        )}
 
       </div>
 
