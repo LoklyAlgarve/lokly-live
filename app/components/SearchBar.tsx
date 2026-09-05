@@ -31,23 +31,6 @@ export default function SearchBar() {
     );
   }
 
-  function handleNearMe() {
-    setClickedFilter("near");
-
-    const savedLocation =
-      localStorage.getItem("lokly_location");
-
-    if (savedLocation && savedLocation !== "Algarve") {
-      router.push(
-        "/search?location=" +
-          encodeURIComponent(savedLocation)
-      );
-      return;
-    }
-
-    router.push("/search");
-  }
-
   function filterClass(filter: string) {
     const active = activeFilter === filter;
 
@@ -163,14 +146,6 @@ export default function SearchBar() {
           className={filterClass("music")}
         >
           Music
-        </button>
-
-        <button
-          type="button"
-          onClick={handleNearMe}
-          className={filterClass("near")}
-        >
-          Near Me
         </button>
 
       </div>

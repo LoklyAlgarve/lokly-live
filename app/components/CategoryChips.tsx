@@ -192,38 +192,39 @@ function CategoryIcon({ type }: { type: string }) {
 export default function CategoryChips() {
   return (
     <section className="min-w-0 space-y-5">
-      <div className="flex items-center justify-between">
+      <div>
         <h3 className="text-2xl font-black text-slate-900">
           Browse Categories
         </h3>
-
-        <Link
-          href="/search"
-          className="text-sm font-semibold text-[#149EAF] hover:underline"
-        >
-          View All
-        </Link>
       </div>
 
-      <div className="min-w-0 overflow-x-auto pb-2 sm:overflow-visible">
-        <div className="flex w-max gap-2.5 sm:grid sm:w-full sm:grid-cols-3 sm:gap-3 lg:grid-cols-5">
-          {categories.map((category) => (
-            <Link
-              key={category.name}
-              href={`/search?category=${encodeURIComponent(
-                category.name
-              )}`}
-              className="flex h-12 shrink-0 items-center gap-2 rounded-full bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:h-14 sm:px-4"
-            >
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#149EAF]/10 text-[#149EAF]">
-                <CategoryIcon type={category.icon} />
-              </span>
+      <div className="relative min-w-0">
+        <div className="min-w-0 overflow-x-auto pb-2 pr-10 scrollbar-hide sm:overflow-visible sm:pr-0">
+          <div className="flex w-max gap-2.5 sm:grid sm:w-full sm:grid-cols-3 sm:gap-3 lg:grid-cols-5">
+            {categories.map((category) => (
+              <Link
+                key={category.name}
+                href={`/search?category=${encodeURIComponent(
+                  category.name
+                )}`}
+                className="flex h-12 shrink-0 items-center gap-2 rounded-full bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:h-14 sm:px-4"
+              >
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#149EAF]/10 text-[#149EAF]">
+                  <CategoryIcon type={category.icon} />
+                </span>
 
-              <span className="whitespace-nowrap">
-                {category.name}
-              </span>
-            </Link>
-          ))}
+                <span className="whitespace-nowrap">
+                  {category.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 sm:hidden">
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-3xl font-light text-[#149EAF] shadow-lg">
+            ›
+          </div>
         </div>
       </div>
     </section>
