@@ -32,7 +32,7 @@ function CategoryIcon({ type }: { type: string }) {
   switch (type) {
     case "music":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <path d="M19 34V11l19-4v23" />
           <path d="M19 18l19-4" />
           <circle cx="12" cy="35" r="7" />
@@ -42,7 +42,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "festival":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <path d="M12 39 25 9" />
           <path d="M25 9c5 1 9 4 12 8-6 2-11 1-15-2" />
           <path d="M13 17H8" />
@@ -59,7 +59,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "market":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <path d="M8 18h32l-3-9H11l-3 9Z" />
           <path d="M10 18v22h28V18" />
           <path d="M16 18v4a5 5 0 0 0 10 0v-4" />
@@ -70,7 +70,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "food":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <path d="M10 7v15" />
           <path d="M6 7v8a4 4 0 0 0 8 0V7" />
           <path d="M10 22v19" />
@@ -81,7 +81,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "sport":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <circle cx="24" cy="24" r="17" />
           <path d="m24 13 5 4-2 6h-6l-2-6 5-4Z" />
           <path d="m19 23-5 4 2 6" />
@@ -92,7 +92,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "family":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <circle cx="17" cy="15" r="5" />
           <circle cx="32" cy="15" r="5" />
           <path d="M7 36v-3a8 8 0 0 1 16 0v3" />
@@ -102,7 +102,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "culture":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <path d="M8 14c4-4 9-4 14 0v20c-5-4-10-4-14 0V14Z" />
           <path d="M40 14c-4-4-9-4-14 0v20c5-4 10-4 14 0V14Z" />
           <path d="M15 21c2 2 4 2 6 0" />
@@ -112,14 +112,14 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "nightlife":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <path d="M34 8a16 16 0 1 0 6 28A16 16 0 0 1 34 8Z" />
         </svg>
       );
 
     case "comedy":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <circle cx="24" cy="24" r="17" />
           <circle cx="18" cy="20" r="1.5" fill="currentColor" />
           <circle cx="30" cy="20" r="1.5" fill="currentColor" />
@@ -129,7 +129,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "theatre":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <path d="M10 10h28v28H10z" />
           <path d="M16 19c2-3 5-3 7 0" />
           <path d="M25 19c2-3 5-3 7 0" />
@@ -140,7 +140,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "exhibition":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <rect x="8" y="10" width="32" height="28" rx="2" />
           <path d="M14 32l7-8 5 5 4-5 4 8" />
           <circle cx="29" cy="18" r="3" />
@@ -149,7 +149,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "workshop":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <path d="m29 8 11 11-20 20H9V28L29 8Z" />
           <path d="m25 12 11 11" />
           <path d="M14 34h8" />
@@ -158,14 +158,14 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "charity":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <path d="M24 39S9 30 9 18a8 8 0 0 1 15-4 8 8 0 0 1 15 4c0 12-15 21-15 21Z" />
         </svg>
       );
 
     case "community":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <circle cx="24" cy="15" r="5" />
           <circle cx="12" cy="21" r="4" />
           <circle cx="36" cy="21" r="4" />
@@ -177,7 +177,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "retreat":
       return (
-        <svg viewBox="0 0 48 48" className="h-7 w-7" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-6 w-6" {...commonProps}>
           <path d="M8 36 24 10l16 26H8Z" />
           <path d="M17 36v-9h14v9" />
           <path d="M20 22h8" />
@@ -191,38 +191,32 @@ function CategoryIcon({ type }: { type: string }) {
 
 export default function CategoryChips() {
   return (
-    <section className="min-w-0 space-y-5">
-      <div>
-        <h3 className="text-2xl font-black text-slate-900">
-          Browse Categories
-        </h3>
-      </div>
+    <section className="min-w-0 space-y-4">
+      <h3 className="text-2xl font-black text-slate-900">
+        Browse Categories
+      </h3>
 
-      <div className="relative min-w-0">
-        <div className="min-w-0 overflow-x-auto pb-2 pr-10 scrollbar-hide sm:overflow-visible sm:pr-0">
-          <div className="flex w-max gap-2.5 sm:grid sm:w-full sm:grid-cols-3 sm:gap-3 lg:grid-cols-5">
-            {categories.map((category) => (
-              <Link
-                key={category.name}
-                href={`/search?category=${encodeURIComponent(
-                  category.name
-                )}`}
-                className="flex h-12 shrink-0 items-center gap-2 rounded-full bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:h-14 sm:px-4"
-              >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#149EAF]/10 text-[#149EAF]">
-                  <CategoryIcon type={category.icon} />
-                </span>
+      <div className="min-w-0 overflow-x-auto pb-2 scrollbar-hide">
+        <div className="flex w-max items-center gap-2">
+          {categories.map((category) => (
+            <Link
+              key={category.name}
+              href={`/search?category=${encodeURIComponent(
+                category.name
+              )}`}
+              className="flex h-10 shrink-0 items-center gap-1.5 rounded-full bg-white px-3 text-[13px] font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            >
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#149EAF]/10 text-[#149EAF]">
+                <CategoryIcon type={category.icon} />
+              </span>
 
-                <span className="whitespace-nowrap">
-                  {category.name}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
+              <span className="whitespace-nowrap">
+                {category.name}
+              </span>
+            </Link>
+          ))}
 
-        <div className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 sm:hidden">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-3xl font-light text-[#149EAF] shadow-lg">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-2xl font-light text-[#149EAF] shadow-sm">
             ›
           </div>
         </div>
