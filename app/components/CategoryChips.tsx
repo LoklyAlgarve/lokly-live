@@ -191,12 +191,21 @@ function CategoryIcon({ type }: { type: string }) {
 
 export default function CategoryChips() {
   return (
-    <section className="min-w-0 space-y-4">
-      <h3 className="text-2xl font-black text-slate-900">
-        Browse Categories
-      </h3>
+    <section className="min-w-0 space-y-3">
+      <div className="flex items-center gap-2">
+        <h3 className="text-xl font-black text-slate-900">
+          Browse Categories
+        </h3>
 
-      <div className="min-w-0 overflow-x-auto pb-2 scrollbar-hide">
+        <span
+          aria-hidden="true"
+          className="text-2xl font-light leading-none text-[#149EAF]"
+        >
+          ›
+        </span>
+      </div>
+
+      <div className="min-w-0 overflow-x-auto pb-1 scrollbar-hide">
         <div className="flex w-max items-center gap-2">
           {categories.map((category) => (
             <Link
@@ -215,10 +224,6 @@ export default function CategoryChips() {
               </span>
             </Link>
           ))}
-
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-2xl font-light text-[#149EAF] shadow-sm">
-            ›
-          </div>
         </div>
       </div>
     </section>
