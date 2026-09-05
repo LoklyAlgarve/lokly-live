@@ -367,6 +367,10 @@ export default function Header() {
 
                 <button
                   type="button"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    window.location.href = "/contact";
+                  }}
                   className="flex w-full items-center gap-4 rounded-2xl px-3 py-3.5 text-left text-slate-700 transition hover:bg-slate-50"
                 >
                   <svg
