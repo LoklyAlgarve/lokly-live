@@ -28,17 +28,13 @@ export default async function Home() {
 
         <div className="rounded-[26px] bg-gradient-to-r from-[#149EAF] to-cyan-500 px-5 py-5 text-white shadow-xl sm:rounded-[32px] sm:p-8">
 
-          <p className="text-[13px] font-bold uppercase tracking-[0.2em] opacity-95 sm:text-sm sm:tracking-[0.3em]">
+          <p className="text-[12px] font-bold uppercase tracking-[0.2em] opacity-95 sm:text-sm sm:tracking-[0.3em]">
             DISCOVER THE ALGARVE
           </p>
 
-          <h1 className="mt-2 max-w-3xl text-[27px] font-black leading-[1.08] sm:mt-3 sm:text-5xl sm:leading-tight">
+          <h1 className="mt-2 whitespace-nowrap text-[25px] font-black leading-tight sm:mt-3 sm:text-5xl">
             Discover events near you
           </h1>
-
-          <p className="mt-3 max-w-2xl text-[14px] leading-snug text-white/90 sm:mt-4 sm:text-lg sm:leading-relaxed">
-            Markets, music, food festivals, family days, sporting events and much more.
-          </p>
 
           <div className="mt-4 sm:mt-8">
             <Suspense fallback={null}>

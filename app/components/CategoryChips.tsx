@@ -26,7 +26,7 @@ function CategoryIcon({ type }: { type: string }) {
   switch (type) {
     case "music":
       return (
-        <svg viewBox="0 0 48 48" className="h-10 w-10" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-9 w-9" {...commonProps}>
           <path d="M19 34V11l19-4v23" />
           <path d="M19 18l19-4" />
           <circle cx="12" cy="35" r="7" />
@@ -36,7 +36,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "food":
       return (
-        <svg viewBox="0 0 48 48" className="h-10 w-10" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-9 w-9" {...commonProps}>
           <path d="M10 7v15" />
           <path d="M6 7v8a4 4 0 0 0 8 0V7" />
           <path d="M10 22v19" />
@@ -47,7 +47,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "market":
       return (
-        <svg viewBox="0 0 48 48" className="h-10 w-10" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-9 w-9" {...commonProps}>
           <path d="M8 18h32l-3-9H11l-3 9Z" />
           <path d="M10 18v22h28V18" />
           <path d="M16 18v4a5 5 0 0 0 10 0v-4" />
@@ -58,7 +58,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "family":
       return (
-        <svg viewBox="0 0 48 48" className="h-10 w-10" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-9 w-9" {...commonProps}>
           <circle cx="17" cy="15" r="5" />
           <circle cx="32" cy="15" r="5" />
           <path d="M7 36v-3a8 8 0 0 1 16 0v3" />
@@ -68,7 +68,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "sport":
       return (
-        <svg viewBox="0 0 48 48" className="h-10 w-10" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-9 w-9" {...commonProps}>
           <circle cx="24" cy="24" r="17" />
           <path d="m24 13 5 4-2 6h-6l-2-6 5-4Z" />
           <path d="m19 23-5 4 2 6" />
@@ -79,9 +79,9 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "culture":
       return (
-        <svg viewBox="0 0 48 48" className="h-10 w-10" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-9 w-9" {...commonProps}>
           <path d="M8 14c4-4 9-4 14 0v20c-5-4-10-4-14 0V14Z" />
-          <path d="M40 14c-4-4-9-4-14 0v20c5-4 10-4 14 0V14Z" />
+          <path d="M40 14c-4-4 9-4 14 0v20c5-4 10-4 14 0V14Z" />
           <path d="M15 21c2 2 4 2 6 0" />
           <path d="M27 21c2 2 4 2 6 0" />
         </svg>
@@ -89,14 +89,14 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "nightlife":
       return (
-        <svg viewBox="0 0 48 48" className="h-10 w-10" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-9 w-9" {...commonProps}>
           <path d="M34 8a16 16 0 1 0 6 28A16 16 0 0 1 34 8Z" />
         </svg>
       );
 
     case "festival":
       return (
-        <svg viewBox="0 0 48 48" className="h-10 w-10" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-9 w-9" {...commonProps}>
           <path d="M12 39 25 9" />
           <path d="M25 9c5 1 9 4 12 8-6 2-11 1-15-2" />
           <path d="M13 17H8" />
@@ -113,7 +113,7 @@ function CategoryIcon({ type }: { type: string }) {
 
     case "exhibition":
       return (
-        <svg viewBox="0 0 48 48" className="h-10 w-10" {...commonProps}>
+        <svg viewBox="0 0 48 48" className="h-9 w-9" {...commonProps}>
           <rect x="8" y="10" width="32" height="28" rx="2" />
           <path d="M14 32l7-8 5 5 4-5 4 8" />
           <circle cx="29" cy="18" r="3" />
@@ -149,13 +149,13 @@ export default function CategoryChips() {
               href={`/search?category=${encodeURIComponent(
                 category.name
               )}`}
-              className="w-[130px] shrink-0 rounded-3xl bg-white p-4 text-center shadow transition hover:-translate-y-1 hover:shadow-xl sm:w-auto sm:min-w-0"
+              className="w-[115px] shrink-0 rounded-3xl bg-white p-3 text-center shadow transition hover:-translate-y-1 hover:shadow-xl sm:w-auto sm:min-w-0 sm:p-4"
             >
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#149EAF]/10 text-[#149EAF] transition group-hover:bg-[#149EAF] group-hover:text-white">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#149EAF]/10 text-[#149EAF] transition group-hover:bg-[#149EAF] group-hover:text-white">
                 <CategoryIcon type={category.icon} />
               </div>
 
-              <p className="mt-3 text-sm font-semibold leading-tight text-slate-700">
+              <p className="mt-2 text-sm font-semibold leading-tight text-slate-700 sm:mt-3">
                 {category.name}
               </p>
             </Link>
