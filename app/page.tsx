@@ -32,8 +32,8 @@ export default async function Home() {
             DISCOVER THE ALGARVE
           </p>
 
-          <h1 className="mt-2 max-w-3xl text-[30px] font-black leading-[1.08] sm:mt-3 sm:text-5xl sm:leading-tight">
-            Find amazing events near you
+          <h1 className="mt-2 max-w-3xl text-[27px] font-black leading-[1.08] sm:mt-3 sm:text-5xl sm:leading-tight">
+            Discover events near you
           </h1>
 
           <p className="mt-3 max-w-2xl text-[14px] leading-snug text-white/90 sm:mt-4 sm:text-lg sm:leading-relaxed">

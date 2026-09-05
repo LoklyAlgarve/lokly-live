@@ -35,21 +35,17 @@ export default function Header() {
           </button>
 
           {/* Logo */}
-          <Link
-            href="/"
-            aria-label="Lokly home"
-            className="flex flex-col items-center"
-          >
+          <div className="flex flex-col items-center text-center">
             <img
               src="/images/lokly-logo.png"
               alt="Lokly"
-              className="h-10 w-auto object-contain"
+              style={{ width: "150px", height: "auto" }}
             />
 
             <p className="text-sm font-medium text-[#149EAF]">
               Discover • Explore • Enjoy
             </p>
-          </Link>
+          </div>
 
           {/* Profile */}
           <Link
@@ -74,7 +70,6 @@ export default function Header() {
               />
             </svg>
           </Link>
-
         </div>
       </header>
 
@@ -95,12 +90,11 @@ export default function Header() {
 
             {/* Menu Header */}
             <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5">
-
               <div>
                 <img
                   src="/images/lokly-logo.png"
                   alt="Lokly"
-                  className="h-9 w-auto object-contain"
+                  style={{ width: "125px", height: "auto" }}
                 />
 
                 <p className="mt-0.5 text-sm font-medium text-[#149EAF]">
@@ -129,7 +123,6 @@ export default function Header() {
                   />
                 </svg>
               </button>
-
             </div>
 
             {/* MENU CONTENT */}
@@ -177,7 +170,6 @@ export default function Header() {
                   strokeWidth={2}
                 >
                   <circle cx="11" cy="11" r="6.5" />
-
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -206,7 +198,6 @@ export default function Header() {
                     strokeLinejoin="round"
                     d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"
                   />
-
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -219,12 +210,10 @@ export default function Header() {
 
               {/* YOUR LOKLY */}
               <div className="mt-8">
-
                 <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
                   Your Lokly
                 </p>
 
-                {/* Saved Events */}
                 <Link
                   href="/saved"
                   onClick={() => setMenuOpen(false)}
@@ -243,40 +232,9 @@ export default function Header() {
                     />
                   </svg>
 
-                  <span className="font-semibold">
-                    Saved Events
-                  </span>
+                  <span className="font-semibold">Saved Events</span>
                 </Link>
 
-                {/* Past Events */}
-                <Link
-                  href="/past"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-[#149EAF]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <circle cx="12" cy="12" r="9" />
-
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 7v5l3 2"
-                    />
-                  </svg>
-
-                  <span className="font-semibold">
-                    Past Events
-                  </span>
-                </Link>
-
-                {/* My Profile */}
                 <Link
                   href="/profile"
                   onClick={() => setMenuOpen(false)}
@@ -299,12 +257,9 @@ export default function Header() {
                     />
                   </svg>
 
-                  <span className="font-semibold">
-                    My Profile
-                  </span>
+                  <span className="font-semibold">My Profile</span>
                 </Link>
 
-                {/* My Location */}
                 <Link
                   href="/profile/location"
                   onClick={() => setMenuOpen(false)}
@@ -327,16 +282,12 @@ export default function Header() {
                     <circle cx="12" cy="10" r="2.5" />
                   </svg>
 
-                  <span className="font-semibold">
-                    My Location
-                  </span>
+                  <span className="font-semibold">My Location</span>
                 </Link>
-
               </div>
 
               {/* MORE */}
               <div className="mt-8">
-
                 <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
                   More
                 </p>
@@ -361,16 +312,13 @@ export default function Header() {
                     />
                   </svg>
 
-                  <span className="font-semibold">
-                    Notifications
-                  </span>
+                  <span className="font-semibold">Notifications</span>
                 </Link>
 
-                {/* About Lokly */}
                 <Link
                   href="/about"
                   onClick={() => setMenuOpen(false)}
-                  className="flex w-full items-center gap-4 rounded-2xl px-3 py-3.5 text-left text-slate-700 transition hover:bg-slate-50"
+                  className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -389,12 +337,34 @@ export default function Header() {
                     />
                   </svg>
 
-                  <span className="font-semibold">
-                    About Lokly
-                  </span>
+                  <span className="font-semibold">About Lokly</span>
                 </Link>
 
-                {/* Contact Us */}
+                <Link
+                  href="/tell-a-friend"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-[#149EAF]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <circle cx="8" cy="9" r="3" />
+                    <circle cx="16" cy="9" r="3" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 20c0-3 2-5 5-5 2 0 3 1 4 2 1-1 2-2 4-2 3 0 5 2 5 5"
+                    />
+                  </svg>
+
+                  <span className="font-semibold">Tell a Friend</span>
+                </Link>
+
                 <button
                   type="button"
                   className="flex w-full items-center gap-4 rounded-2xl px-3 py-3.5 text-left text-slate-700 transition hover:bg-slate-50"
@@ -414,18 +384,13 @@ export default function Header() {
                     />
                   </svg>
 
-                  <span className="font-semibold">
-                    Contact Us
-                  </span>
+                  <span className="font-semibold">Contact Us</span>
                 </button>
-
               </div>
-
             </nav>
 
             {/* FOOTER */}
             <div className="border-t border-slate-100 px-6 py-5">
-
               <p className="text-xs text-slate-400">
                 Lokly
               </p>
@@ -433,11 +398,9 @@ export default function Header() {
               <p className="mt-1 text-xs text-slate-400">
                 Discover • Explore • Enjoy
               </p>
-
             </div>
 
           </aside>
-
         </div>
       )}
     </>

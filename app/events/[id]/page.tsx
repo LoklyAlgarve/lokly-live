@@ -189,20 +189,9 @@ export default async function EventPage({ params }: PageProps) {
                 </div>
 
                 <div className="flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="mt-0.5 h-5 w-5 shrink-0 text-[#149EAF]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 3v18M17 7.5c0-1.7-2.2-3-5-3s-5 1.3-5 3 2.2 3 5 3 5 1.3 5 3-2.2 3-5 3-5 1.3-5-3"
-                    />
-                  </svg>
+                  <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[22px] font-medium leading-none text-[#149EAF]">
+                    €
+                  </div>
 
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wide text-slate-400">

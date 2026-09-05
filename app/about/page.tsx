@@ -1,229 +1,350 @@
-import Image from "next/image";
 import Header from "../components/Header";
 import BottomNavigation from "../components/BottomNavigation";
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-slate-50 pb-36">
+    <main className="min-h-screen bg-slate-50 pb-40">
       <Header />
 
-      <section className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-14">
+      <section className="mx-auto max-w-6xl px-5 py-8 sm:px-6 sm:py-12">
 
-        {/* Title */}
-        <div className="text-center">
-          <h1 className="text-5xl font-black tracking-tight text-slate-900 sm:text-6xl">
-            About <span className="text-[#149EAF]">Lokly</span>
+        {/* INTRO */}
+        <div className="max-w-3xl">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#149EAF]">
+            ABOUT LOKLY
+          </p>
+
+          <h1 className="mt-3 text-4xl font-black leading-tight text-slate-900 sm:text-5xl">
+            Discover more of the Algarve
           </h1>
 
-          <div className="mt-4 flex items-center justify-center gap-3">
-            <div className="h-px w-16 bg-[#149EAF]" />
-            <span className="text-2xl text-[#149EAF]">♥</span>
-            <div className="h-px w-16 bg-[#149EAF]" />
-          </div>
+          <p className="mt-6 text-lg leading-relaxed text-slate-600">
+            Lokly makes it easier to discover what's happening around the
+            Algarve - from local markets and live music to festivals, family
+            days, exhibitions and sporting events.
+          </p>
         </div>
 
-        {/* Why Lokly exists */}
-        <div className="mx-auto mt-12 max-w-4xl">
-
-          <h2 className="text-3xl font-bold text-[#149EAF]">
+        {/* WHY LOKLY */}
+        <div className="mt-12 rounded-3xl bg-white p-6 shadow-sm sm:p-10">
+          <h2 className="text-2xl font-black text-slate-900">
             Why Lokly exists
           </h2>
 
-          <div className="mt-5 space-y-5 text-base leading-7 text-slate-700 sm:text-lg sm:leading-8">
-
-            <p>
+          <div className="mt-6 space-y-5 text-base leading-relaxed text-slate-600">
+            <p className="font-semibold text-slate-800">
               It started with a simple problem.
             </p>
 
             <p>
-              There is always something happening in the Algarve. Finding
-              out{" "}
-              <strong>
-                what&apos;s happening, where it is and when it&apos;s on
-              </strong>{" "}
-              isn&apos;t always easy.
+              There is always something happening in the Algarve. Finding out
+              what's happening, where it is and when it's on isn't always easy.
             </p>
 
             <p>
-              Information is scattered across Facebook, websites, posters
-              and word of mouth. People miss events, while local businesses
-              and organisers can struggle to get their events in front of
-              the right people.
+              Information is scattered across Facebook, websites, posters and
+              word of mouth. People miss events - and local businesses and
+              organisers can struggle to get their events in front of the
+              right people.
             </p>
 
-            <p className="text-xl font-bold text-[#149EAF]">
-              That&apos;s the problem Lokly is designed to solve.
+            <p className="font-semibold text-slate-800">
+              That's the problem Lokly is designed to solve.
             </p>
 
             <p>
-              We bring events together in one simple place, making it
-              easier for people to discover what&apos;s happening around
-              them — while helping the businesses, venues and organisers
-              behind those events get discovered too.
+              Lokly brings events together in one simple place, making it
+              easier for people to discover what's going on around them and
+              easier for local businesses and organisers to be discovered.
             </p>
-
           </div>
         </div>
 
-        {/* Two sides of Lokly */}
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
+        {/* TWO SIDES */}
+        <div className="mt-8 grid gap-6 md:grid-cols-2">
 
-          {/* People */}
-          <div className="rounded-3xl bg-[#F2F9FA] p-7 ring-1 ring-[#149EAF]/10 sm:p-8">
+          {/* FOR PEOPLE */}
+          <div className="rounded-3xl bg-[#e5f3f5] p-7 sm:p-10">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-12 w-12"
+                fill="none"
+                viewBox="0 0 64 64"
+                stroke="#149EAF"
+                strokeWidth="2.5"
+              >
+                <circle cx="20" cy="23" r="7" />
+                <circle cx="32" cy="20" r="8" />
+                <circle cx="44" cy="23" r="7" />
 
-            <p className="text-sm font-bold tracking-[0.18em] text-[#149EAF]">
-              FOR PEOPLE
-            </p>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8 48c0-7 5-12 12-12 5 0 9 3 11 7"
+                />
 
-            <h3 className="mt-3 text-3xl font-bold text-slate-900">
-              Discover more of the Algarve
-            </h3>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 48c0-8 5-14 11-14s11 6 11 14"
+                />
 
-            <div className="mt-3 h-px w-40 bg-[#149EAF]" />
-
-            <p className="mt-6 leading-7 text-slate-700">
-              Find events, markets, music, food, family days and things
-              happening near you — all in one place.
-            </p>
-
-            <div className="mt-6 space-y-4">
-
-              {[
-                "Save your favourites",
-                "Plan your visit",
-                "Discover somewhere new",
-                "Never miss out on what’s on",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="flex items-center gap-3 text-slate-700"
-                >
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#149EAF] text-xs font-bold text-white">
-                    ✓
-                  </span>
-
-                  <span>{item}</span>
-                </div>
-              ))}
-
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M33 43c2-4 6-7 11-7 7 0 12 5 12 12"
+                />
+              </svg>
             </div>
 
-            <p className="mt-8 text-center text-lg font-medium italic text-[#149EAF]">
-              More to see. More to do. More local.
-            </p>
-
-            <div className="mt-3 text-center text-3xl text-[#149EAF]">
-              ♡
-            </div>
-
-          </div>
-
-          {/* Businesses */}
-          <div className="rounded-3xl bg-[#FFF8ED] p-7 ring-1 ring-orange-200/60 sm:p-8">
-
-            <p className="text-sm font-bold tracking-[0.18em] text-orange-600">
-              FOR LOCAL BUSINESSES
-              <br />
-              &amp; ORGANISERS
-            </p>
-
-            <h3 className="mt-3 text-3xl font-bold text-slate-900">
-              Get discovered
-            </h3>
-
-            <div className="mt-3 h-px w-40 bg-orange-500" />
-
-            <p className="mt-6 leading-7 text-slate-700">
-              Put your events in front of people who are looking for
-              things to do in the Algarve.
-            </p>
-
-            <div className="mt-6 space-y-4">
-
-              {[
-                "Reach more people",
-                "Promote your events",
-                "Fill more seats",
-                "Help your business get noticed",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="flex items-center gap-3 text-slate-700"
-                >
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-orange-500 text-xs font-bold text-white">
-                    ✓
-                  </span>
-
-                  <span>{item}</span>
-                </div>
-              ))}
-
-            </div>
-
-            <p className="mt-8 text-center text-lg font-medium italic text-orange-600">
-              More exposure. More customers.
-              <br />
-              More success.
-            </p>
-
-            <div className="mt-3 text-center text-3xl text-orange-500">
-              ☆
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* Founder */}
-        <div className="mt-10 grid items-center gap-8 md:grid-cols-2">
-
-          <div className="overflow-hidden rounded-3xl">
-            <Image
-              src="/images/ailsa-lokly.jpg"
-              alt="Ailsa, founder of Lokly"
-              width={900}
-              height={700}
-              className="h-auto w-full object-cover"
-            />
-          </div>
-
-          <div>
-
-            <div className="h-px w-full bg-slate-200" />
-
-            <h2 className="mt-6 text-3xl font-bold text-[#149EAF]">
-              Ailsa
+            <h2 className="mt-8 text-3xl font-black text-slate-900">
+              For people
             </h2>
 
-            <p className="mt-1 text-xl font-medium italic text-[#149EAF]">
-              Founder of Lokly
+            <p className="mt-4 text-lg leading-relaxed text-slate-600">
+              Discover more of the Algarve and find things to do without having
+              to search in lots of different places.
             </p>
 
-            <div className="mt-2 h-px w-48 bg-[#149EAF]" />
+            <ul className="mt-8 space-y-4">
+              <li className="flex items-center gap-4 text-base text-slate-700">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#149EAF] text-white">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m5 12 4 4L19 6"
+                    />
+                  </svg>
+                </span>
+                Find events near you
+              </li>
 
-            <p className="mt-6 leading-7 text-slate-700">
-              Lokly is my passion project and I&apos;m proud to build
-              something that helps our community and supports the
-              amazing people and businesses that make the Algarve such
-              a special place.
-            </p>
+              <li className="flex items-center gap-4 text-base text-slate-700">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#149EAF] text-white">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m5 12 4 4L19 6"
+                    />
+                  </svg>
+                </span>
+                Explore different categories
+              </li>
 
-            <p className="mt-6 text-lg font-medium italic text-[#149EAF]">
-              Thank you for being part of it.
-            </p>
+              <li className="flex items-center gap-4 text-base text-slate-700">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#149EAF] text-white">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m5 12 4 4L19 6"
+                    />
+                  </svg>
+                </span>
+                Save events you don't want to miss
+              </li>
 
+              <li className="flex items-center gap-4 text-base text-slate-700">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#149EAF] text-white">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m5 12 4 4L19 6"
+                    />
+                  </svg>
+                </span>
+                Discover new places and experiences
+              </li>
+            </ul>
           </div>
 
+          {/* FOR BUSINESSES */}
+          <div className="rounded-3xl bg-[#fff7eb] p-7 sm:p-10">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-12 w-12"
+                fill="none"
+                viewBox="0 0 64 64"
+                stroke="#f97316"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M10 27h44" />
+                <path d="M13 27l3-13h32l3 13" />
+                <path d="M13 27v25h38V27" />
+                <path d="M13 27c0 5 4 8 8 8s8-3 8-8" />
+                <path d="M29 27c0 5 4 8 8 8s8-3 8-8" />
+                <path d="M45 27c0 5 3 8 6 8 1 0 2-.2 3-.7" />
+                <path d="M25 52V39h14v13" />
+                <path d="M18 20h28" />
+              </svg>
+            </div>
+
+            <h2 className="mt-8 text-3xl font-black text-slate-900">
+              For local businesses & organisers
+            </h2>
+
+            <p className="mt-4 text-lg leading-relaxed text-slate-600">
+              Get your events in front of people who are looking for things to
+              do in the Algarve.
+            </p>
+
+            <ul className="mt-8 space-y-4">
+              <li className="flex items-center gap-4 text-base text-slate-700">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m5 12 4 4L19 6"
+                    />
+                  </svg>
+                </span>
+                Reach people looking for local events
+              </li>
+
+              <li className="flex items-center gap-4 text-base text-slate-700">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m5 12 4 4L19 6"
+                    />
+                  </svg>
+                </span>
+                Give your events more visibility
+              </li>
+
+              <li className="flex items-center gap-4 text-base text-slate-700">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m5 12 4 4L19 6"
+                    />
+                  </svg>
+                </span>
+                Help people discover your business
+              </li>
+
+              <li className="flex items-center gap-4 text-base text-slate-700">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m5 12 4 4L19 6"
+                    />
+                  </svg>
+                </span>
+                Support the local community
+              </li>
+            </ul>
+          </div>
         </div>
 
-        {/* Closing */}
-        <div className="mt-10 border-t border-slate-200 pt-7 text-center">
+        {/* FOUNDER */}
+        <div className="mt-12 overflow-hidden rounded-3xl bg-white shadow-sm">
+          <div className="grid items-center md:grid-cols-[280px_1fr]">
 
-          <p className="text-2xl font-medium italic text-[#149EAF] sm:text-3xl">
-            Discover. Support. Enjoy the Algarve.
-            <span className="ml-2">♡</span>
-          </p>
+            <div className="h-72 md:h-full">
+              <img
+                src="/images/ailsa-lokly.jpg"
+                alt="Ailsa, founder of Lokly"
+                className="h-full w-full object-cover"
+              />
+            </div>
 
+            <div className="p-7 sm:p-10">
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#149EAF]">
+                THE IDEA BEHIND LOKLY
+              </p>
+
+              <h2 className="mt-3 text-2xl font-black text-slate-900 sm:text-3xl">
+                Built for the Algarve
+              </h2>
+
+              <p className="mt-5 text-base leading-relaxed text-slate-600">
+                Lokly was created with a simple aim - to make it easier for
+                people to discover the events, activities and experiences that
+                make the Algarve such a great place to live, visit and enjoy.
+              </p>
+
+              <p className="mt-4 text-base leading-relaxed text-slate-600">
+                At the same time, Lokly aims to give local businesses and
+                organisers another way to get their events noticed.
+              </p>
+
+              <p className="mt-6 text-lg font-bold text-slate-900">
+                Discover. Support. Enjoy the Algarve.
+              </p>
+            </div>
+
+          </div>
         </div>
 
       </section>
