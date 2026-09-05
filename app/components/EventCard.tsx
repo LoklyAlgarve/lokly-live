@@ -10,6 +10,7 @@ type EventCardProps = {
   title: string;
   location: string;
   date: string;
+  category: string;
   image: string;
   latitude: number;
   longitude: number;
@@ -83,6 +84,7 @@ export default function EventCard({
   title,
   location,
   date,
+  category,
   image,
   latitude,
   longitude,
@@ -137,11 +139,19 @@ export default function EventCard({
       {/* Content */}
       <div className="space-y-4 p-6">
 
-        {/* Price */}
-        <div className="flex items-center">
+        {/* Category + Price */}
+        <div className="flex items-center gap-2">
+
+          {category && (
+            <span className="rounded-full bg-[#149EAF]/10 px-3 py-1 text-xs font-semibold uppercase text-[#149EAF]">
+              {category}
+            </span>
+          )}
+
           <span className="rounded-full bg-[#149EAF]/10 px-3 py-1 text-xs font-semibold text-[#149EAF]">
             Free
           </span>
+
         </div>
 
         {/* Title */}
