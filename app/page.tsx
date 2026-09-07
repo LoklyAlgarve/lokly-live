@@ -5,6 +5,7 @@ import SearchBar from "./components/SearchBar";
 import CategoryChips from "./components/CategoryChips";
 import EventCard from "./components/EventCard";
 import BottomNavigation from "./components/BottomNavigation";
+import T from "./components/T";
 
 import { getEvents } from "./data/events";
 
@@ -29,11 +30,11 @@ export default async function Home() {
         <div className="rounded-[26px] bg-gradient-to-r from-[#149EAF] to-cyan-500 px-5 py-5 text-white shadow-xl sm:rounded-[32px] sm:p-8">
 
           <p className="text-[12px] font-bold uppercase tracking-[0.2em] opacity-95 sm:text-sm sm:tracking-[0.3em]">
-            DISCOVER THE ALGARVE
+            <T k="discover" />
           </p>
 
           <h1 className="mt-2 whitespace-nowrap text-[25px] font-black leading-tight sm:mt-3 sm:text-5xl">
-            Discover events near you
+            <T k="hero" />
           </h1>
 
           <div className="mt-4 sm:mt-8">
@@ -68,7 +69,9 @@ export default async function Home() {
 
               </svg>
 
-              <span>Find events near me</span>
+              <span>
+                <T k="nearMe" />
+              </span>
 
             </button>
 
@@ -90,11 +93,11 @@ export default async function Home() {
             <div className="mt-9 sm:mt-12">
 
               <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
-                Featured Events
+                <T k="featured" />
               </h2>
 
               <p className="mt-1 text-sm text-slate-500 sm:mt-2 sm:text-base">
-                Hand-picked events happening across the Algarve.
+                <T k="featuredSub" />
               </p>
 
             </div>
@@ -109,6 +112,7 @@ export default async function Home() {
                   title={event.title}
                   location={event.location}
                   date={`${event.date} • ${event.time}`}
+                  category={event.category}
                   image={event.image}
                   latitude={event.latitude}
                   longitude={event.longitude}
@@ -126,11 +130,11 @@ export default async function Home() {
         <div className="mt-10 sm:mt-16">
 
           <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
-            All Events
+            <T k="allEvents" />
           </h2>
 
           <p className="mt-1 text-sm text-slate-500 sm:mt-2 sm:text-base">
-            Browse everything happening in the Algarve.
+            <T k="allEventsSub" />
           </p>
 
         </div>
@@ -140,11 +144,11 @@ export default async function Home() {
           <div className="mt-6 rounded-3xl bg-white p-8 text-center shadow sm:mt-8 sm:p-10">
 
             <h2 className="text-xl font-bold text-slate-900">
-              No events found
+              <T k="noEvents" />
             </h2>
 
             <p className="mt-2 text-slate-500">
-              We couldn't load the events from Lokly yet.
+              <T k="noEventsSub" />
             </p>
 
           </div>
@@ -161,6 +165,7 @@ export default async function Home() {
                 title={event.title}
                 location={event.location}
                 date={`${event.date} • ${event.time}`}
+                category={event.category}
                 image={event.image}
                 latitude={event.latitude}
                 longitude={event.longitude}

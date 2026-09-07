@@ -2,9 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useLanguage } from "../LanguageContext";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { language, setLanguage } = useLanguage();
+
+  const pt = language === "pt";
 
   return (
     <>
@@ -15,7 +19,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
-            aria-label="Open menu"
+            aria-label={pt ? "Abrir menu" : "Open menu"}
             className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 transition hover:bg-slate-200 active:scale-95"
           >
             <svg
@@ -43,14 +47,14 @@ export default function Header() {
             />
 
             <p className="text-sm font-medium text-[#149EAF]">
-              Discover • Explore • Enjoy
+              Descobrir • Explorar • Desfrutar
             </p>
           </div>
 
           {/* Profile */}
           <Link
             href="/profile"
-            aria-label="Profile"
+            aria-label={pt ? "Perfil" : "Profile"}
             className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#149EAF] to-cyan-500 text-white shadow-lg transition hover:scale-105"
           >
             <svg
@@ -62,7 +66,6 @@ export default function Header() {
               strokeWidth={2}
             >
               <circle cx="12" cy="8" r="3.5" />
-
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -80,7 +83,7 @@ export default function Header() {
           {/* Dark background */}
           <button
             type="button"
-            aria-label="Close menu"
+            aria-label={pt ? "Fechar menu" : "Close menu"}
             onClick={() => setMenuOpen(false)}
             className="absolute inset-0 h-full w-full bg-slate-900/30 backdrop-blur-[2px]"
           />
@@ -98,14 +101,16 @@ export default function Header() {
                 />
 
                 <p className="mt-0.5 text-sm font-medium text-[#149EAF]">
-                  Discover • Explore • Enjoy
+                  {pt
+                    ? "Descobrir • Explorar • Desfrutar"
+                    : "Discover • Explore • Enjoy"}
                 </p>
               </div>
 
               <button
                 type="button"
                 onClick={() => setMenuOpen(false)}
-                aria-label="Close menu"
+                aria-label={pt ? "Fechar menu" : "Close menu"}
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition hover:bg-slate-200 active:scale-95"
               >
                 <svg
@@ -130,7 +135,7 @@ export default function Header() {
 
               {/* DISCOVER */}
               <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
-                Discover
+                {pt ? "Descobrir" : "Discover"}
               </p>
 
               <Link
@@ -138,22 +143,10 @@ export default function Header() {
                 onClick={() => setMenuOpen(false)}
                 className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-[#149EAF]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 10.5L12 3l9 7.5M5 9v11h14V9M9 20v-6h6v6"
-                  />
-                </svg>
-
-                <span className="font-semibold">Home</span>
+                <span className="text-[#149EAF]">⌂</span>
+                <span className="font-semibold">
+                  {pt ? "Início" : "Home"}
+                </span>
               </Link>
 
               <Link
@@ -161,23 +154,10 @@ export default function Header() {
                 onClick={() => setMenuOpen(false)}
                 className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-[#149EAF]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <circle cx="11" cy="11" r="6.5" />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16 16l5 5"
-                  />
-                </svg>
-
-                <span className="font-semibold">Search</span>
+                <span className="text-[#149EAF]">⌕</span>
+                <span className="font-semibold">
+                  {pt ? "Pesquisar" : "Search"}
+                </span>
               </Link>
 
               <Link
@@ -185,33 +165,16 @@ export default function Header() {
                 onClick={() => setMenuOpen(false)}
                 className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-[#149EAF]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 3v15M15 6v15"
-                  />
-                </svg>
-
-                <span className="font-semibold">Map</span>
+                <span className="text-[#149EAF]">▱</span>
+                <span className="font-semibold">
+                  {pt ? "Mapa" : "Map"}
+                </span>
               </Link>
 
               {/* YOUR LOKLY */}
               <div className="mt-8">
                 <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
-                  Your Lokly
+                  {pt ? "O seu Lokly" : "Your Lokly"}
                 </p>
 
                 <Link
@@ -219,20 +182,10 @@ export default function Header() {
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-[#149EAF]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      d="M20.8 8.8c0 5.5-8.8 10.2-8.8 10.2S3.2 14.3 3.2 8.8A4.7 4.7 0 017.9 4c1.6 0 3.1.8 4.1 2 1-1.2 2.5-2 4.1-2a4.7 4.7 0 014.7 4.8z"
-                    />
-                  </svg>
-
-                  <span className="font-semibold">Saved Events</span>
+                  <span className="text-[#149EAF]">♡</span>
+                  <span className="font-semibold">
+                    {pt ? "Eventos guardados" : "Saved Events"}
+                  </span>
                 </Link>
 
                 <Link
@@ -240,24 +193,10 @@ export default function Header() {
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-[#149EAF]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <circle cx="12" cy="8" r="3.5" />
-
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 20c2-3 5-4.5 7-4.5s5 1.5 7 4.5"
-                    />
-                  </svg>
-
-                  <span className="font-semibold">My Profile</span>
+                  <span className="text-[#149EAF]">♙</span>
+                  <span className="font-semibold">
+                    {pt ? "O meu perfil" : "My Profile"}
+                  </span>
                 </Link>
 
                 <Link
@@ -265,31 +204,17 @@ export default function Header() {
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-[#149EAF]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1116 0z"
-                    />
-
-                    <circle cx="12" cy="10" r="2.5" />
-                  </svg>
-
-                  <span className="font-semibold">My Location</span>
+                  <span className="text-[#149EAF]">⌖</span>
+                  <span className="font-semibold">
+                    {pt ? "A minha localização" : "My Location"}
+                  </span>
                 </Link>
               </div>
 
               {/* MORE */}
               <div className="mt-8">
                 <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
-                  More
+                  {pt ? "Mais" : "More"}
                 </p>
 
                 <Link
@@ -297,22 +222,10 @@ export default function Header() {
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-[#149EAF]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"
-                    />
-                  </svg>
-
-                  <span className="font-semibold">Notifications</span>
+                  <span className="text-[#149EAF]">♧</span>
+                  <span className="font-semibold">
+                    {pt ? "Notificações" : "Notifications"}
+                  </span>
                 </Link>
 
                 <Link
@@ -320,24 +233,10 @@ export default function Header() {
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-[#149EAF]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <circle cx="12" cy="12" r="9" />
-
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 11v5M12 8h.01"
-                    />
-                  </svg>
-
-                  <span className="font-semibold">About Lokly</span>
+                  <span className="text-[#149EAF]">ⓘ</span>
+                  <span className="font-semibold">
+                    {pt ? "Sobre o Lokly" : "About Lokly"}
+                  </span>
                 </Link>
 
                 <Link
@@ -345,24 +244,10 @@ export default function Header() {
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-[#149EAF]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <circle cx="8" cy="9" r="3" />
-                    <circle cx="16" cy="9" r="3" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3 20c0-3 2-5 5-5 2 0 3 1 4 2 1-1 2-2 4-2 3 0 5 2 5 5"
-                    />
-                  </svg>
-
-                  <span className="font-semibold">Tell a Friend</span>
+                  <span className="text-[#149EAF]">♧</span>
+                  <span className="font-semibold">
+                    {pt ? "Diga a um amigo" : "Tell a Friend"}
+                  </span>
                 </Link>
 
                 <button
@@ -373,24 +258,46 @@ export default function Header() {
                   }}
                   className="flex w-full items-center gap-4 rounded-2xl px-3 py-3.5 text-left text-slate-700 transition hover:bg-slate-50"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-[#149EAF]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4 5h16v11H8l-4 4V5z"
-                    />
-                  </svg>
-
-                  <span className="font-semibold">Contact Us</span>
+                  <span className="text-[#149EAF]">□</span>
+                  <span className="font-semibold">
+                    {pt ? "Contacte-nos" : "Contact Us"}
+                  </span>
                 </button>
               </div>
+
+              {/* LANGUAGE */}
+              <div className="mt-8 border-t border-slate-100 pt-6">
+                <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
+                  {pt ? "Idioma" : "Language"}
+                </p>
+
+                <div className="grid grid-cols-2 gap-2 px-3">
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("en")}
+                    className={`rounded-xl px-3 py-3 text-sm font-bold transition ${
+                      language === "en"
+                        ? "bg-[#149EAF] text-white"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    }`}
+                  >
+                    🇬🇧 English
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("pt")}
+                    className={`rounded-xl px-3 py-3 text-sm font-bold transition ${
+                      language === "pt"
+                        ? "bg-[#149EAF] text-white"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    }`}
+                  >
+                    🇵🇹 Português
+                  </button>
+                </div>
+              </div>
+
             </nav>
 
             {/* FOOTER */}
@@ -400,7 +307,9 @@ export default function Header() {
               </p>
 
               <p className="mt-1 text-xs text-slate-400">
-                Discover • Explore • Enjoy
+                {pt
+                  ? "Descobrir • Explorar • Desfrutar"
+                  : "Discover • Explore • Enjoy"}
               </p>
             </div>
 
