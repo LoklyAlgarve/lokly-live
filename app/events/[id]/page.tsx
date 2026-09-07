@@ -45,6 +45,10 @@ export default async function EventPage({ params }: PageProps) {
     );
   }
 
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+    event.location
+  )}`;
+
   return (
     <main className="min-h-screen bg-slate-50 pb-32">
       <Header />
@@ -224,12 +228,46 @@ export default async function EventPage({ params }: PageProps) {
                     large
                   />
 
+                  <a
+                    href={directionsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#149EAF] px-5 text-base font-bold text-white transition hover:bg-[#117F8E]"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 3v12"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M7 10l5 5 5-5"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 21h14"
+                      />
+                    </svg>
+
+                    Directions
+                  </a>
+
                   {event.website && (
                     <a
                       href={event.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex min-h-14 w-full items-center justify-center rounded-2xl bg-[#149EAF] px-5 text-base font-bold text-white transition hover:bg-[#117F8E]"
+                      className="flex min-h-14 w-full items-center justify-center rounded-2xl border-2 border-[#149EAF] px-5 text-base font-bold text-[#149EAF] transition hover:bg-[#149EAF] hover:text-white"
                     >
                       Event Website
                     </a>
