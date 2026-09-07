@@ -12,9 +12,11 @@ type GoingStatus = "yes" | "maybe" | null;
 export default function SavedPage() {
   const [savedIds, setSavedIds] = useState<number[]>([]);
   const [events, setEvents] = useState<any[]>([]);
+
   const [goingStatuses, setGoingStatuses] = useState<
     Record<number, GoingStatus>
   >({});
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +47,9 @@ export default function SavedPage() {
         return;
       }
 
-      const ids = (data || []).map((item) => Number(item.event_id));
+      const ids = (data || []).map((item) =>
+        Number(item.event_id)
+      );
 
       setSavedIds(ids);
 
@@ -185,15 +189,19 @@ export default function SavedPage() {
     });
 
     const url = URL.createObjectURL(blob);
+
     const link = document.createElement("a");
 
     link.href = url;
+
     link.download = `${event.title
       .replace(/[^a-z0-9]/gi, "-")
       .toLowerCase()}.ics`;
 
     document.body.appendChild(link);
+
     link.click();
+
     document.body.removeChild(link);
 
     URL.revokeObjectURL(url);
@@ -205,9 +213,11 @@ export default function SavedPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 pb-36">
+
       <Header />
 
       <section className="mx-auto max-w-7xl px-6 py-8">
+
         <h1 className="text-4xl font-black text-slate-900">
           Saved Events
         </h1>
@@ -217,13 +227,19 @@ export default function SavedPage() {
         </p>
 
         {loading ? (
+
           <div className="mt-10 rounded-3xl bg-white p-10 text-center shadow-sm">
+
             <p className="text-slate-500">
               Loading your saved events...
             </p>
+
           </div>
+
         ) : savedEvents.length === 0 ? (
+
           <div className="mt-10 rounded-3xl bg-white p-10 text-center shadow-sm">
+
             <div className="text-5xl">♡</div>
 
             <h2 className="mt-4 text-xl font-bold text-slate-900">
@@ -233,20 +249,27 @@ export default function SavedPage() {
             <p className="mt-2 text-slate-500">
               Tap the heart on an event to save it here.
             </p>
+
           </div>
+
         ) : (
+
           <div className="mt-10 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
+
             {savedEvents.map((event) => {
+
               const status =
                 goingStatuses[Number(event.id)] || null;
 
               return (
+
                 <EventCard
                   key={event.id}
                   id={event.id}
                   title={event.title}
                   location={event.location}
                   date={`${event.date} • ${event.time}`}
+                  category={event.category}
                   image={event.image}
                   latitude={event.latitude}
                   longitude={event.longitude}
@@ -257,13 +280,19 @@ export default function SavedPage() {
                   }
                   onSavedChange={handleSavedChange}
                 />
+
               );
+
             })}
+
           </div>
+
         )}
+
       </section>
 
       <BottomNavigation />
+
     </main>
   );
 }
