@@ -185,6 +185,7 @@ export default function PastEventsPage() {
                     title={event.title}
                     location={event.location}
                     date={`${event.date} • ${event.time}`}
+                    category={event.category}
                     image={event.image}
                     latitude={event.latitude}
                     longitude={event.longitude}
