@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Lokly",
   description: "Discover events across the Algarve",
+  icons: {
+    icon: "/icons/lokly-512.png",
+    apple: "/icons/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({

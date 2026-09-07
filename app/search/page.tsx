@@ -2,6 +2,8 @@ import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import EventCard from "../components/EventCard";
 import BottomNavigation from "../components/BottomNavigation";
+import T from "../components/T";
+
 import { getEvents } from "../data/events";
 
 type SearchPageProps = {
@@ -205,30 +207,40 @@ export default async function SearchPage({
 
   return (
     <main className="min-h-screen bg-slate-50 pb-36">
+
       <Header />
 
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
 
         {/* SEARCH */}
+
         <div className="mb-7 sm:mb-8">
           <SearchBar />
         </div>
 
         {/* RESULTS HEADER */}
+
         <div className="mb-7 sm:mb-8">
+
           <h1 className="text-2xl font-black text-slate-900 sm:text-3xl">
             {heading}
           </h1>
 
           <p className="mt-2 text-sm text-slate-500 sm:text-base">
-            {filteredEvents.length} event
-            {filteredEvents.length === 1 ? "" : "s"} found
+            {filteredEvents.length}{" "}
+            {filteredEvents.length === 1
+              ? "event"
+              : "events"}{" "}
+            found
           </p>
+
         </div>
 
         {/* LOCAL RESULTS */}
+
         {filteredEvents.length > 0 && (
           <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+
             {filteredEvents.map((event) => (
               <EventCard
                 key={event.id}
@@ -236,74 +248,97 @@ export default async function SearchPage({
                 title={event.title}
                 location={event.location}
                 date={`${event.date} • ${event.time}`}
+                category={event.category}
                 image={event.image}
                 latitude={event.latitude}
                 longitude={event.longitude}
               />
             ))}
+
           </section>
         )}
 
         {/* NO LOCAL RESULTS */}
-        {isLocationSearch && filteredEvents.length === 0 && (
-          <>
+
+        {isLocationSearch &&
+          filteredEvents.length === 0 && (
+            <>
+
+              <div className="rounded-3xl bg-white p-8 text-center shadow sm:p-10">
+
+                <h2 className="text-xl font-bold text-slate-900">
+                  Nothing happening in {params.location} right now
+                </h2>
+
+                <p className="mt-2 text-slate-500">
+                  We couldn't find any events in{" "}
+                  {params.location}, but there may be
+                  something elsewhere in the Algarve.
+                </p>
+
+              </div>
+
+              {otherAlgarveEvents.length > 0 && (
+                <>
+
+                  <div className="mb-6 mt-10 sm:mt-12">
+
+                    <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
+                      Other Algarve Events
+                    </h2>
+
+                    <p className="mt-1 text-sm text-slate-500 sm:text-base">
+                      More events happening across the Algarve.
+                    </p>
+
+                  </div>
+
+                  <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+
+                    {otherAlgarveEvents.map((event) => (
+                      <EventCard
+                        key={event.id}
+                        id={event.id}
+                        title={event.title}
+                        location={event.location}
+                        date={`${event.date} • ${event.time}`}
+                        category={event.category}
+                        image={event.image}
+                        latitude={event.latitude}
+                        longitude={event.longitude}
+                      />
+                    ))}
+
+                  </section>
+
+                </>
+              )}
+
+            </>
+          )}
+
+        {/* NO RESULTS FOR NORMAL SEARCH */}
+
+        {!isLocationSearch &&
+          filteredEvents.length === 0 && (
+
             <div className="rounded-3xl bg-white p-8 text-center shadow sm:p-10">
+
               <h2 className="text-xl font-bold text-slate-900">
-                Nothing happening in {params.location} right now
+                <T k="noEvents" />
               </h2>
 
               <p className="mt-2 text-slate-500">
-                We couldn't find any events in {params.location}, but there
-                may be something elsewhere in the Algarve.
+                Try another category, town or event.
               </p>
+
             </div>
+          )}
 
-            {otherAlgarveEvents.length > 0 && (
-              <>
-                <div className="mb-6 mt-10 sm:mt-12">
-                  <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
-                    Other Algarve Events
-                  </h2>
-
-                  <p className="mt-1 text-sm text-slate-500 sm:text-base">
-                    More events happening across the Algarve.
-                  </p>
-                </div>
-
-                <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                  {otherAlgarveEvents.map((event) => (
-                    <EventCard
-                      key={event.id}
-                      id={event.id}
-                      title={event.title}
-                      location={event.location}
-                      date={`${event.date} • ${event.time}`}
-                      image={event.image}
-                      latitude={event.latitude}
-                      longitude={event.longitude}
-                    />
-                  ))}
-                </section>
-              </>
-            )}
-          </>
-        )}
-
-        {/* NO RESULTS FOR NORMAL SEARCH */}
-        {!isLocationSearch && filteredEvents.length === 0 && (
-          <div className="rounded-3xl bg-white p-8 text-center shadow sm:p-10">
-            <h2 className="text-xl font-bold text-slate-900">
-              No events found
-            </h2>
-
-            <p className="mt-2 text-slate-500">
-              Try another category, town or event.
-            </p>
-          </div>
-        )}
       </div>
 
       <BottomNavigation />
+
     </main>
   );
 }
