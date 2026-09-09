@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import EventCard from "./components/EventCard";
@@ -369,15 +368,13 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-white pb-28">
-
       <Header />
 
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* HERO */}
         <section className="mt-4 overflow-hidden rounded-3xl bg-[#149EAF]">
-
-          <div className="relative min-h-[250px] overflow-hidden">
+          <div className="relative min-h-[190px] overflow-hidden sm:min-h-[250px]">
 
             <img
               src="/hero-algarve.jpg"
@@ -387,21 +384,21 @@ export default function HomePage() {
 
             <div className="absolute inset-0 bg-[#149EAF]/70" />
 
-            <div className="relative z-10 flex min-h-[250px] items-center px-6 py-8 sm:px-10">
+            <div className="relative z-10 flex min-h-[190px] items-center px-5 py-6 sm:min-h-[250px] sm:px-10 sm:py-8">
 
               <div className="max-w-xl text-white">
 
-                <p className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-white/80">
+                <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-white/80 sm:mb-2 sm:text-sm">
                   Discover the Algarve
                 </p>
 
-                <h1 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl">
+                <h1 className="text-3xl font-black leading-[1.05] tracking-tight sm:text-5xl">
                   What's happening
                   <br />
                   near you?
                 </h1>
 
-                <p className="mt-4 max-w-md text-base leading-relaxed text-white/90 sm:text-lg">
+                <p className="mt-3 max-w-md text-sm leading-relaxed text-white/90 sm:mt-4 sm:text-lg">
                   Events, experiences and local gems
                   all in one place.
                 </p>
@@ -409,13 +406,11 @@ export default function HomePage() {
               </div>
 
             </div>
-
           </div>
-
         </section>
 
         {/* QUICK FILTERS */}
-        <div className="mt-4 flex gap-3 overflow-x-auto pb-1 scrollbar-hide">
+        <div className="mt-3 flex gap-2.5 overflow-x-auto pb-1 scrollbar-hide sm:mt-4 sm:gap-3">
 
           {[
             ["near", "Near Me"],
@@ -436,7 +431,7 @@ export default function HomePage() {
                     value as QuickFilter
                   )
                 }
-                className={`shrink-0 rounded-full border px-6 py-3 text-sm font-bold shadow-sm transition ${
+                className={`shrink-0 rounded-full border px-5 py-2.5 text-sm font-bold shadow-sm transition sm:px-6 sm:py-3 ${
                   active
                     ? "border-[#149EAF] bg-[#149EAF] text-white"
                     : "border-slate-200 bg-white text-slate-800 hover:border-slate-300"
@@ -450,14 +445,14 @@ export default function HomePage() {
         </div>
 
         {/* SEARCH */}
-        <div className="mt-4">
+        <div className="mt-3 sm:mt-4">
           <SearchBar />
         </div>
 
         {/* FILTER PANEL */}
-        <section className="mt-5 rounded-2xl bg-[#E6FAFC] p-4 sm:p-5">
+        <section className="mt-4 rounded-2xl bg-[#E6FAFC] p-3.5 sm:mt-5 sm:p-5">
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
 
             {/* EVENT FILTER */}
             <div>
@@ -479,9 +474,8 @@ export default function HomePage() {
                       e.target.value
                     )
                   }
-                  className="h-12 w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 pr-11 text-sm font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
+                  className="h-11 w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 pr-11 text-sm font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
                 >
-
                   <option value="">
                     All event types
                   </option>
@@ -496,7 +490,6 @@ export default function HomePage() {
                       </option>
                     )
                   )}
-
                 </select>
 
                 <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
@@ -542,9 +535,8 @@ export default function HomePage() {
                       e.target.value
                     )
                   }
-                  className="h-12 w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 pr-11 text-sm font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
+                  className="h-11 w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 pr-11 text-sm font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
                 >
-
                   <option value="">
                     All locations
                   </option>
@@ -559,7 +551,6 @@ export default function HomePage() {
                       </option>
                     )
                   )}
-
                 </select>
 
                 <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
@@ -590,9 +581,9 @@ export default function HomePage() {
         </section>
 
         {/* EVENTS */}
-        <section className="mt-7">
+        <section className="mt-6 sm:mt-7">
 
-          <div className="mb-4">
+          <div className="mb-3 sm:mb-4">
 
             <h2
               className="text-2xl font-black tracking-tight"
@@ -631,10 +622,11 @@ export default function HomePage() {
 
           ) : (
 
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
 
               {filteredEvents.map(
                 (event) => (
+
                   <EventCard
                     key={event.id}
                     id={event.id}
@@ -655,6 +647,7 @@ export default function HomePage() {
                         0
                     )}
                   />
+
                 )
               )}
 
@@ -667,7 +660,6 @@ export default function HomePage() {
       </div>
 
       <BottomNavigation />
-
     </main>
   );
 }

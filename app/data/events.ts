@@ -42,12 +42,10 @@ type SheetEvent = {
 
 export async function getEvents(): Promise<Event[]> {
   try {
-    const response = await fetch(EVENTS_URL, {
-      cache: "no-store",
-    });
+    const response = await fetch(EVENTS_URL);
 
     if (!response.ok) {
-      throw new Error("Failed to load events");
+      throw new Error(`Events request failed: ${response.status}`);
     }
 
     const data: SheetEvent[] = await response.json();
@@ -55,8 +53,7 @@ export async function getEvents(): Promise<Event[]> {
     return data.map((item, index) => ({
       id: index + 1,
       title: item["Event Name"] || "Untitled Event",
-      location:
-        item["Town"] || item["Venue"] || "Algarve",
+      location: item["Town"] || item["Venue"] || "Algarve",
       date: item["Start Date"] || "",
       time: item["Start Time"] || "",
       category: item["Category"] || "",
@@ -64,26 +61,16 @@ export async function getEvents(): Promise<Event[]> {
       image:
         item["Image"] ||
         "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200",
-      featured:
-        String(item["Featured"]).toLowerCase() === "true",
+      featured: String(item["Featured"]).toLowerCase() === "true",
       description: item["Description"] || "",
-      website:
-        item["Website"] || item["Ticket Link"] || "",
+      website: item["Website"] || item["Ticket Link"] || "",
       latitude: Number(item["Latitude"]) || 0,
       longitude: Number(item["Longitude"]) || 0,
-
-      wheelchairFriendly:
-        item["Wheelchair Friendly"] || "Unknown",
-
-      petFriendly:
-        item["Pet Friendly"] || "Unknown",
+      wheelchairFriendly: item["Wheelchair Friendly"] || "Unknown",
+      petFriendly: item["Pet Friendly"] || "Unknown",
     }));
   } catch (error) {
-    console.error(
-      "Could not load Lokly events:",
-      error
-    );
-
+    console.error("Could not load Lokly events:", error);
     return [];
   }
 }
