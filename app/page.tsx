@@ -25,34 +25,23 @@ function parseEventDate(value?: string) {
   const trimmed = String(value).trim();
 
   if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
-    const [year, month, day] = trimmed
-      .split("-")
-      .map(Number);
-
+    const [year, month, day] = trimmed.split("-").map(Number);
     return new Date(year, month - 1, day);
   }
 
   if (/^\d{2}\/\d{2}\/\d{4}$/.test(trimmed)) {
-    const [day, month, year] = trimmed
-      .split("/")
-      .map(Number);
-
+    const [day, month, year] = trimmed.split("/").map(Number);
     return new Date(year, month - 1, day);
   }
 
   if (/^\d{2}-\d{2}-\d{4}$/.test(trimmed)) {
-    const [day, month, year] = trimmed
-      .split("-")
-      .map(Number);
-
+    const [day, month, year] = trimmed.split("-").map(Number);
     return new Date(year, month - 1, day);
   }
 
   const parsed = new Date(trimmed);
 
-  return Number.isNaN(parsed.getTime())
-    ? null
-    : parsed;
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
 function startOfDay(date: Date) {
@@ -75,27 +64,17 @@ function isThisWeekend(date: Date) {
   const today = startOfDay(new Date());
   const day = today.getDay();
 
-  const daysUntilSaturday =
-    (6 - day + 7) % 7;
+  const daysUntilSaturday = (6 - day + 7) % 7;
 
   const saturday = new Date(today);
-
-  saturday.setDate(
-    today.getDate() + daysUntilSaturday
-  );
+  saturday.setDate(today.getDate() + daysUntilSaturday);
 
   const sunday = new Date(saturday);
-
-  sunday.setDate(
-    saturday.getDate() + 1
-  );
+  sunday.setDate(saturday.getDate() + 1);
 
   const eventDay = startOfDay(date);
 
-  return (
-    eventDay >= saturday &&
-    eventDay <= sunday
-  );
+  return eventDay >= saturday && eventDay <= sunday;
 }
 
 function getEventLocation(event: any) {
@@ -109,20 +88,15 @@ function getEventLocation(event: any) {
 }
 
 function getEventCategory(event: any) {
-  return String(
-    event.category ?? ""
-  ).trim();
+  return String(event.category ?? "").trim();
 }
 
 function getEventPrice(event: any) {
-  return String(
-    event.price ?? ""
-  ).trim();
+  return String(event.price ?? "").trim();
 }
 
 function isFreeEvent(event: any) {
-  const price =
-    getEventPrice(event).toLowerCase();
+  const price = getEventPrice(event).toLowerCase();
 
   return (
     price === "" ||
@@ -134,9 +108,7 @@ function isFreeEvent(event: any) {
 }
 
 function getCoordinates(event: any) {
-  const lat = Number(
-    event.latitude ?? event.lat
-  );
+  const lat = Number(event.latitude ?? event.lat);
 
   const lng = Number(
     event.longitude ??
@@ -189,8 +161,7 @@ function distanceKm(
 
 export default function HomePage() {
   const [events, setEvents] = useState<any[]>([]);
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
   const [quickFilter, setQuickFilter] =
     useState<QuickFilter>("");
@@ -211,7 +182,6 @@ export default function HomePage() {
     async function loadEvents() {
       try {
         const data = await getEvents();
-
         setEvents(data || []);
       } catch (error) {
         console.error(
@@ -233,9 +203,7 @@ export default function HomePage() {
           .map(getEventCategory)
           .filter(Boolean)
       )
-    ).sort((a, b) =>
-      a.localeCompare(b)
-    );
+    ).sort((a, b) => a.localeCompare(b));
   }, [events]);
 
   const eventLocations = useMemo(() => {
@@ -245,9 +213,7 @@ export default function HomePage() {
           .map(getEventLocation)
           .filter(Boolean)
       )
-    ).sort((a, b) =>
-      a.localeCompare(b)
-    );
+    ).sort((a, b) => a.localeCompare(b));
   }, [events]);
 
   function handleQuickFilter(
@@ -262,7 +228,6 @@ export default function HomePage() {
         alert(
           "Location is not available on this device."
         );
-
         return;
       }
 
@@ -310,8 +275,7 @@ export default function HomePage() {
 
     if (quickFilter === "today") {
       result = result.filter((event) => {
-        const date =
-          parseEventDate(event.date);
+        const date = parseEventDate(event.date);
 
         return date
           ? isSameDay(date, today)
@@ -321,8 +285,7 @@ export default function HomePage() {
 
     if (quickFilter === "weekend") {
       result = result.filter((event) => {
-        const date =
-          parseEventDate(event.date);
+        const date = parseEventDate(event.date);
 
         return date
           ? isThisWeekend(date)
@@ -367,14 +330,14 @@ export default function HomePage() {
   ]);
 
   return (
-    <main className="min-h-screen bg-white pb-28">
+    <main className="min-h-screen bg-white pb-24">
       <Header />
 
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* HERO */}
-        <section className="mt-4 overflow-hidden rounded-3xl bg-[#149EAF]">
-          <div className="relative min-h-[190px] overflow-hidden sm:min-h-[250px]">
+        <section className="mt-3 overflow-hidden rounded-2xl bg-[#149EAF] sm:mt-4 sm:rounded-3xl">
+          <div className="relative min-h-[150px] overflow-hidden sm:min-h-[250px]">
 
             <img
               src="/hero-algarve.jpg"
@@ -384,21 +347,21 @@ export default function HomePage() {
 
             <div className="absolute inset-0 bg-[#149EAF]/70" />
 
-            <div className="relative z-10 flex min-h-[190px] items-center px-5 py-6 sm:min-h-[250px] sm:px-10 sm:py-8">
+            <div className="relative z-10 flex min-h-[150px] items-center px-5 py-5 sm:min-h-[250px] sm:px-10 sm:py-8">
 
               <div className="max-w-xl text-white">
 
-                <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-white/80 sm:mb-2 sm:text-sm">
+                <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/80 sm:mb-2 sm:text-sm">
                   Discover the Algarve
                 </p>
 
-                <h1 className="text-3xl font-black leading-[1.05] tracking-tight sm:text-5xl">
+                <h1 className="text-[30px] font-black leading-[1.05] tracking-tight sm:text-5xl">
                   What's happening
                   <br />
                   near you?
                 </h1>
 
-                <p className="mt-3 max-w-md text-sm leading-relaxed text-white/90 sm:mt-4 sm:text-lg">
+                <p className="mt-2 max-w-md text-xs leading-relaxed text-white/90 sm:mt-4 sm:text-lg">
                   Events, experiences and local gems
                   all in one place.
                 </p>
@@ -410,7 +373,7 @@ export default function HomePage() {
         </section>
 
         {/* QUICK FILTERS */}
-        <div className="mt-3 flex gap-2.5 overflow-x-auto pb-1 scrollbar-hide sm:mt-4 sm:gap-3">
+        <div className="mt-2.5 flex gap-2 overflow-x-auto pb-1 scrollbar-hide sm:mt-4 sm:gap-3">
 
           {[
             ["near", "Near Me"],
@@ -431,7 +394,7 @@ export default function HomePage() {
                     value as QuickFilter
                   )
                 }
-                className={`shrink-0 rounded-full border px-5 py-2.5 text-sm font-bold shadow-sm transition sm:px-6 sm:py-3 ${
+                className={`shrink-0 rounded-full border px-4 py-2 text-xs font-bold shadow-sm transition sm:px-6 sm:py-3 sm:text-sm ${
                   active
                     ? "border-[#149EAF] bg-[#149EAF] text-white"
                     : "border-slate-200 bg-white text-slate-800 hover:border-slate-300"
@@ -445,21 +408,21 @@ export default function HomePage() {
         </div>
 
         {/* SEARCH */}
-        <div className="mt-3 sm:mt-4">
+        <div className="mt-2.5 sm:mt-4">
           <SearchBar />
         </div>
 
         {/* FILTER PANEL */}
-        <section className="mt-4 rounded-2xl bg-[#E6FAFC] p-3.5 sm:mt-5 sm:p-5">
+        <section className="mt-3 rounded-2xl bg-[#E6FAFC] p-3 sm:mt-5 sm:p-5">
 
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+          <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2 md:gap-4">
 
             {/* EVENT FILTER */}
             <div>
 
               <label
                 htmlFor="event-filter"
-                className="mb-1.5 block text-sm font-semibold text-slate-600"
+                className="mb-1 block text-xs font-semibold text-slate-600 sm:mb-1.5 sm:text-sm"
               >
                 Filter by event
               </label>
@@ -474,7 +437,7 @@ export default function HomePage() {
                       e.target.value
                     )
                   }
-                  className="h-11 w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 pr-11 text-sm font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
+                  className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-10 text-xs font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20 sm:h-11 sm:px-4 sm:text-sm"
                 >
                   <option value="">
                     All event types
@@ -492,11 +455,11 @@ export default function HomePage() {
                   )}
                 </select>
 
-                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
+                <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 sm:right-4">
 
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-slate-500"
+                    className="h-4 w-4 text-slate-500 sm:h-5 sm:w-5"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -520,7 +483,7 @@ export default function HomePage() {
 
               <label
                 htmlFor="location-filter"
-                className="mb-1.5 block text-sm font-semibold text-slate-600"
+                className="mb-1 block text-xs font-semibold text-slate-600 sm:mb-1.5 sm:text-sm"
               >
                 Filter by location
               </label>
@@ -535,7 +498,7 @@ export default function HomePage() {
                       e.target.value
                     )
                   }
-                  className="h-11 w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 pr-11 text-sm font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
+                  className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-10 text-xs font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20 sm:h-11 sm:px-4 sm:text-sm"
                 >
                   <option value="">
                     All locations
@@ -553,11 +516,11 @@ export default function HomePage() {
                   )}
                 </select>
 
-                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
+                <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 sm:right-4">
 
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-slate-500"
+                    className="h-4 w-4 text-slate-500 sm:h-5 sm:w-5"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -581,12 +544,12 @@ export default function HomePage() {
         </section>
 
         {/* EVENTS */}
-        <section className="mt-6 sm:mt-7">
+        <section className="mt-5 sm:mt-7">
 
-          <div className="mb-3 sm:mb-4">
+          <div className="mb-2.5 sm:mb-4">
 
             <h2
-              className="text-2xl font-black tracking-tight"
+              className="text-xl font-black tracking-tight sm:text-2xl"
               style={{
                 color: T.navy,
               }}
@@ -594,7 +557,7 @@ export default function HomePage() {
               Events
             </h2>
 
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-0.5 text-xs text-slate-500 sm:mt-1 sm:text-sm">
               Discover what's happening across the Algarve
             </p>
 
@@ -602,13 +565,13 @@ export default function HomePage() {
 
           {loading ? (
 
-            <div className="py-12 text-center text-sm text-slate-500">
+            <div className="py-10 text-center text-sm text-slate-500">
               Loading events...
             </div>
 
           ) : filteredEvents.length === 0 ? (
 
-            <div className="rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm">
+            <div className="rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center shadow-sm">
 
               <p className="font-semibold text-slate-700">
                 No events found
