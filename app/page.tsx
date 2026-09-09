@@ -41,7 +41,9 @@ function parseEventDate(value?: string) {
 
   const parsed = new Date(trimmed);
 
-  return Number.isNaN(parsed.getTime()) ? null : parsed;
+  return Number.isNaN(parsed.getTime())
+    ? null
+    : parsed;
 }
 
 function startOfDay(date: Date) {
@@ -64,17 +66,27 @@ function isThisWeekend(date: Date) {
   const today = startOfDay(new Date());
   const day = today.getDay();
 
-  const daysUntilSaturday = (6 - day + 7) % 7;
+  const daysUntilSaturday =
+    (6 - day + 7) % 7;
 
   const saturday = new Date(today);
-  saturday.setDate(today.getDate() + daysUntilSaturday);
+
+  saturday.setDate(
+    today.getDate() + daysUntilSaturday
+  );
 
   const sunday = new Date(saturday);
-  sunday.setDate(saturday.getDate() + 1);
+
+  sunday.setDate(
+    saturday.getDate() + 1
+  );
 
   const eventDay = startOfDay(date);
 
-  return eventDay >= saturday && eventDay <= sunday;
+  return (
+    eventDay >= saturday &&
+    eventDay <= sunday
+  );
 }
 
 function getEventLocation(event: any) {
@@ -88,15 +100,20 @@ function getEventLocation(event: any) {
 }
 
 function getEventCategory(event: any) {
-  return String(event.category ?? "").trim();
+  return String(
+    event.category ?? ""
+  ).trim();
 }
 
 function getEventPrice(event: any) {
-  return String(event.price ?? "").trim();
+  return String(
+    event.price ?? ""
+  ).trim();
 }
 
 function isFreeEvent(event: any) {
-  const price = getEventPrice(event).toLowerCase();
+  const price =
+    getEventPrice(event).toLowerCase();
 
   return (
     price === "" ||
@@ -108,7 +125,9 @@ function isFreeEvent(event: any) {
 }
 
 function getCoordinates(event: any) {
-  const lat = Number(event.latitude ?? event.lat);
+  const lat = Number(
+    event.latitude ?? event.lat
+  );
 
   const lng = Number(
     event.longitude ??
@@ -161,7 +180,8 @@ function distanceKm(
 
 export default function HomePage() {
   const [events, setEvents] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] =
+    useState(true);
 
   const [quickFilter, setQuickFilter] =
     useState<QuickFilter>("");
@@ -182,6 +202,7 @@ export default function HomePage() {
     async function loadEvents() {
       try {
         const data = await getEvents();
+
         setEvents(data || []);
       } catch (error) {
         console.error(
@@ -203,7 +224,9 @@ export default function HomePage() {
           .map(getEventCategory)
           .filter(Boolean)
       )
-    ).sort((a, b) => a.localeCompare(b));
+    ).sort((a, b) =>
+      a.localeCompare(b)
+    );
   }, [events]);
 
   const eventLocations = useMemo(() => {
@@ -213,7 +236,9 @@ export default function HomePage() {
           .map(getEventLocation)
           .filter(Boolean)
       )
-    ).sort((a, b) => a.localeCompare(b));
+    ).sort((a, b) =>
+      a.localeCompare(b)
+    );
   }, [events]);
 
   function handleQuickFilter(
@@ -228,6 +253,7 @@ export default function HomePage() {
         alert(
           "Location is not available on this device."
         );
+
         return;
       }
 
@@ -275,7 +301,8 @@ export default function HomePage() {
 
     if (quickFilter === "today") {
       result = result.filter((event) => {
-        const date = parseEventDate(event.date);
+        const date =
+          parseEventDate(event.date);
 
         return date
           ? isSameDay(date, today)
@@ -285,7 +312,8 @@ export default function HomePage() {
 
     if (quickFilter === "weekend") {
       result = result.filter((event) => {
-        const date = parseEventDate(event.date);
+        const date =
+          parseEventDate(event.date);
 
         return date
           ? isThisWeekend(date)
@@ -414,6 +442,27 @@ export default function HomePage() {
 
         {/* FILTER PANEL */}
         <section className="mt-3 rounded-2xl bg-[#E6FAFC] p-3 sm:mt-5 sm:p-5">
+
+          <div className="mb-2 flex items-center justify-between sm:mb-3">
+
+            <p className="text-sm font-bold text-slate-600">
+              Filters
+            </p>
+
+            <button
+              type="button"
+              onClick={() => {
+                setEventFilter("");
+                setLocationFilter("");
+                setQuickFilter("");
+                setUserLocation(null);
+              }}
+              className="text-xs font-bold text-[#149EAF] hover:underline"
+            >
+              Clear filters
+            </button>
+
+          </div>
 
           <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2 md:gap-4">
 
