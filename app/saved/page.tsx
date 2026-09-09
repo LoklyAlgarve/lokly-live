@@ -11,18 +11,13 @@ import { useLanguage } from "../LanguageContext";
 type GoingStatus = "yes" | "maybe" | null;
 
 export default function SavedPage() {
-  const { language } = useLanguage();
-
-  const pt = language === "pt";
+  const { t } = useLanguage();
 
   const [savedIds, setSavedIds] = useState<number[]>([]);
-
   const [events, setEvents] = useState<any[]>([]);
-
   const [goingStatuses, setGoingStatuses] = useState<
     Record<number, GoingStatus>
   >({});
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -47,16 +42,13 @@ export default function SavedPage() {
 
       if (error) {
         console.error("Error loading saved events:", error);
-
         setSavedIds([]);
         setEvents([]);
         setLoading(false);
         return;
       }
 
-      const ids = (data || []).map((item) =>
-        Number(item.event_id)
-      );
+      const ids = (data || []).map((item) => Number(item.event_id));
 
       setSavedIds(ids);
 
@@ -246,61 +238,42 @@ export default function SavedPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 pb-36">
-
       <Header />
 
       <section className="mx-auto max-w-7xl px-6 py-8">
-
         <h1 className="text-2xl font-black text-slate-900 sm:text-3xl">
-          {pt ? "Eventos guardados" : "Saved Events"}
+          {t("Saved Events")}
         </h1>
 
         <p className="mt-2 text-slate-500">
-          {pt
-            ? "Os seus eventos favoritos, todos num só lugar."
-            : "Your favourite events all in one place."}
+          {t("Your favourite events all in one place.")}
         </p>
 
         {loading ? (
-
           <div className="mt-10 rounded-3xl bg-white p-10 text-center shadow-sm">
-
             <p className="text-slate-500">
-              {pt
-                ? "A carregar os seus eventos guardados..."
-                : "Loading your saved events..."}
+              {t("Loading your saved events...")}
             </p>
-
           </div>
-
         ) : savedEvents.length === 0 ? (
-
           <div className="mt-10 rounded-3xl bg-white p-10 text-center shadow-sm">
-
             <div className="text-5xl">
               ♡
             </div>
 
             <h2 className="mt-4 text-xl font-bold text-slate-900">
-              {pt
-                ? "Ainda não tem eventos guardados"
-                : "No saved events yet"}
+              {t("No saved events yet")}
             </h2>
 
             <p className="mt-2 text-slate-500">
-              {pt
-                ? "Toque no coração de um evento para o guardar aqui."
-                : "Tap the heart on an event to save it here."}
+              {t(
+                "Tap the heart on an event to save it here."
+              )}
             </p>
-
           </div>
-
         ) : (
-
           <div className="mt-10 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
-
             {savedEvents.map((event) => {
-
               const status =
                 goingStatuses[
                   Number(event.id)
@@ -329,17 +302,12 @@ export default function SavedPage() {
                   }
                 />
               );
-
             })}
-
           </div>
-
         )}
-
       </section>
 
       <BottomNavigation />
-
     </main>
   );
 }

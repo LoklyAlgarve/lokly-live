@@ -5,8 +5,7 @@ import BottomNavigation from "../components/BottomNavigation";
 import { useLanguage } from "../LanguageContext";
 
 export default function AboutPage() {
-  const { language } = useLanguage();
-  const pt = language === "pt";
+  const { t } = useLanguage();
 
   return (
     <main className="min-h-screen bg-slate-50 pb-40">
@@ -17,57 +16,53 @@ export default function AboutPage() {
         {/* INTRO */}
         <div className="max-w-3xl">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#149EAF]">
-            {pt ? "SOBRE O LOKLY" : "ABOUT LOKLY"}
+            {t("ABOUT LOKLY")}
           </p>
 
           <h1 className="mt-3 text-4xl font-black leading-tight text-slate-900 sm:text-5xl">
-            {pt
-              ? "Descubra mais do Algarve"
-              : "Discover more of the Algarve"}
+            {t("Discover more of the Algarve")}
           </h1>
 
           <p className="mt-6 text-lg leading-relaxed text-slate-600">
-            {pt
-              ? "O Lokly torna mais fácil descobrir o que está a acontecer no Algarve - desde mercados locais e música ao vivo a festivais, dias em família, exposições e eventos desportivos."
-              : "Lokly makes it easier to discover what's happening around the Algarve - from local markets and live music to festivals, family days, exhibitions and sporting events."}
+            {t(
+              "Lokly makes it easier to discover what's happening around the Algarve - from local markets and live music to festivals, family days, exhibitions and sporting events."
+            )}
           </p>
         </div>
 
         {/* WHY LOKLY */}
         <div className="mt-12 rounded-3xl bg-white p-6 shadow-sm sm:p-10">
           <h2 className="text-2xl font-black text-slate-900">
-            {pt ? "Porque existe o Lokly" : "Why Lokly exists"}
+            {t("Why Lokly exists")}
           </h2>
 
           <div className="mt-6 space-y-5 text-base leading-relaxed text-slate-600">
             <p className="font-semibold text-slate-800">
-              {pt
-                ? "Tudo começou com um problema simples."
-                : "It started with a simple problem."}
+              {t("It started with a simple problem.")}
             </p>
 
             <p>
-              {pt
-                ? "Há sempre alguma coisa a acontecer no Algarve. Descobrir o que está a acontecer, onde e quando nem sempre é fácil."
-                : "There is always something happening in the Algarve. Finding out what's happening, where it is and when it's on isn't always easy."}
+              {t(
+                "There is always something happening in the Algarve. Finding out what's happening, where it is and when it's on isn't always easy."
+              )}
             </p>
 
             <p>
-              {pt
-                ? "A informação está espalhada pelo Facebook, websites, cartazes e pelo passa-palavra. As pessoas perdem eventos - e as empresas locais e organizadores podem ter dificuldade em fazer chegar os seus eventos às pessoas certas."
-                : "Information is scattered across Facebook, websites, posters and word of mouth. People miss events - and local businesses and organisers can struggle to get their events in front of the right people."}
+              {t(
+                "Information is scattered across Facebook, websites, posters and word of mouth. People miss events - and local businesses and organisers can struggle to get their events in front of the right people."
+              )}
             </p>
 
             <p className="font-semibold text-slate-800">
-              {pt
-                ? "É esse o problema que o Lokly foi criado para resolver."
-                : "That's the problem Lokly is designed to solve."}
+              {t(
+                "That's the problem Lokly is designed to solve."
+              )}
             </p>
 
             <p>
-              {pt
-                ? "O Lokly reúne os eventos num único lugar simples, tornando mais fácil para as pessoas descobrirem o que acontece à sua volta e para as empresas e organizadores locais serem descobertos."
-                : "Lokly brings events together in one simple place, making it easier for people to discover what's going on around them and easier for local businesses and organisers to be discovered."}
+              {t(
+                "Lokly brings events together in one simple place, making it easier for people to discover what's going on around them and easier for local businesses and organisers to be discovered."
+              )}
             </p>
           </div>
         </div>
@@ -111,13 +106,13 @@ export default function AboutPage() {
             </div>
 
             <h2 className="mt-8 text-3xl font-black text-slate-900">
-              {pt ? "Para pessoas" : "For people"}
+              {t("For people")}
             </h2>
 
             <p className="mt-4 text-lg leading-relaxed text-slate-600">
-              {pt
-                ? "Descubra mais do Algarve e encontre coisas para fazer sem ter de procurar em vários lugares diferentes."
-                : "Discover more of the Algarve and find things to do without having to search in lots of different places."}
+              {t(
+                "Discover more of the Algarve and find things to do without having to search in lots of different places."
+              )}
             </p>
 
             <ul className="mt-8 space-y-4">
@@ -140,9 +135,7 @@ export default function AboutPage() {
                   </svg>
                 </span>
 
-                {pt
-                  ? "Encontre eventos perto de si"
-                  : "Find events near you"}
+                {t("Find events near you")}
               </li>
 
               <li className="flex items-center gap-4 text-base text-slate-700">
@@ -163,9 +156,7 @@ export default function AboutPage() {
                   </svg>
                 </span>
 
-                {pt
-                  ? "Explore diferentes categorias"
-                  : "Explore different categories"}
+                {t("Explore different categories")}
               </li>
 
               <li className="flex items-center gap-4 text-base text-slate-700">
@@ -186,9 +177,7 @@ export default function AboutPage() {
                   </svg>
                 </span>
 
-                {pt
-                  ? "Guarde eventos que não quer perder"
-                  : "Save events you don't want to miss"}
+                {t("Save events you don't want to miss")}
               </li>
 
               <li className="flex items-center gap-4 text-base text-slate-700">
@@ -209,9 +198,7 @@ export default function AboutPage() {
                   </svg>
                 </span>
 
-                {pt
-                  ? "Descubra novos lugares e experiências"
-                  : "Discover new places and experiences"}
+                {t("Discover new places and experiences")}
               </li>
 
             </ul>
@@ -242,15 +229,13 @@ export default function AboutPage() {
             </div>
 
             <h2 className="mt-8 text-3xl font-black text-slate-900">
-              {pt
-                ? "Para empresas locais e organizadores"
-                : "For local businesses & organisers"}
+              {t("For local businesses & organisers")}
             </h2>
 
             <p className="mt-4 text-lg leading-relaxed text-slate-600">
-              {pt
-                ? "Divulgue os seus eventos junto de pessoas que procuram coisas para fazer no Algarve."
-                : "Get your events in front of people who are looking for things to do in the Algarve."}
+              {t(
+                "Get your events in front of people who are looking for things to do in the Algarve."
+              )}
             </p>
 
             <ul className="mt-8 space-y-4">
@@ -273,9 +258,7 @@ export default function AboutPage() {
                   </svg>
                 </span>
 
-                {pt
-                  ? "Chegue a pessoas que procuram eventos locais"
-                  : "Reach people looking for local events"}
+                {t("Reach people looking for local events")}
               </li>
 
               <li className="flex items-center gap-4 text-base text-slate-700">
@@ -296,9 +279,7 @@ export default function AboutPage() {
                   </svg>
                 </span>
 
-                {pt
-                  ? "Dê mais visibilidade aos seus eventos"
-                  : "Give your events more visibility"}
+                {t("Give your events more visibility")}
               </li>
 
               <li className="flex items-center gap-4 text-base text-slate-700">
@@ -319,9 +300,7 @@ export default function AboutPage() {
                   </svg>
                 </span>
 
-                {pt
-                  ? "Ajude as pessoas a descobrir o seu negócio"
-                  : "Help people discover your business"}
+                {t("Help people discover your business")}
               </li>
 
               <li className="flex items-center gap-4 text-base text-slate-700">
@@ -342,9 +321,7 @@ export default function AboutPage() {
                   </svg>
                 </span>
 
-                {pt
-                  ? "Apoie a comunidade local"
-                  : "Support the local community"}
+                {t("Support the local community")}
               </li>
 
             </ul>
@@ -359,40 +336,34 @@ export default function AboutPage() {
             <div className="h-72 md:h-full">
               <img
                 src="/images/ailsa-lokly.jpg"
-                alt={pt ? "Ailsa, fundadora do Lokly" : "Ailsa, founder of Lokly"}
+                alt={t("Ailsa, founder of Lokly")}
                 className="h-full w-full object-cover"
               />
             </div>
 
             <div className="p-7 sm:p-10">
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#149EAF]">
-                {pt
-                  ? "A IDEIA POR TRÁS DO LOKLY"
-                  : "THE IDEA BEHIND LOKLY"}
+                {t("THE IDEA BEHIND LOKLY")}
               </p>
 
               <h2 className="mt-3 text-2xl font-black text-slate-900 sm:text-3xl">
-                {pt
-                  ? "Criado para o Algarve"
-                  : "Built for the Algarve"}
+                {t("Built for the Algarve")}
               </h2>
 
               <p className="mt-5 text-base leading-relaxed text-slate-600">
-                {pt
-                  ? "O Lokly foi criado com um objetivo simples - tornar mais fácil para as pessoas descobrirem os eventos, atividades e experiências que fazem do Algarve um lugar tão especial para viver, visitar e desfrutar."
-                  : "Lokly was created with a simple aim - to make it easier for people to discover the events, activities and experiences that make the Algarve such a great place to live, visit and enjoy."}
+                {t(
+                  "Lokly was created with a simple aim - to make it easier for people to discover the events, activities and experiences that make the Algarve such a great place to live, visit and enjoy."
+                )}
               </p>
 
               <p className="mt-4 text-base leading-relaxed text-slate-600">
-                {pt
-                  ? "Ao mesmo tempo, o Lokly pretende dar às empresas locais e aos organizadores outra forma de dar a conhecer os seus eventos."
-                  : "At the same time, Lokly aims to give local businesses and organisers another way to get their events noticed."}
+                {t(
+                  "At the same time, Lokly aims to give local businesses and organisers another way to get their events noticed."
+                )}
               </p>
 
               <p className="mt-6 text-lg font-bold text-slate-900">
-                {pt
-                  ? "Descubra. Apoie. Desfrute do Algarve."
-                  : "Discover. Support. Enjoy the Algarve."}
+                {t("Discover. Support. Enjoy the Algarve.")}
               </p>
             </div>
 

@@ -17,7 +17,7 @@ export type Event = {
 };
 
 const EVENTS_URL =
-  "https://script.google.com/macros/s/AKfycbwCOnagvtUqWWTKjs56w6ZlrjRkceh0bnxRPN4Bn7VTukL55iLrNzObL44ZtcbLdH2o/exec";
+  "https://script.google.com/macros/s/AKfycbwCOnagvtUQWWTKjs56w6ZlrjRkceh0bnxRPN4Bn7VTukl55iLrNzObL44ZtcbLdH2o/exec";
 
 const CACHE_KEY = "lokly-events";
 const CACHE_TIME = 5 * 60 * 1000;

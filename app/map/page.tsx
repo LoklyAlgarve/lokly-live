@@ -49,25 +49,6 @@ const categories = [
   "Retreat",
 ];
 
-const categoryTranslations: Record<string, string> = {
-  "All Categories": "Todas as categorias",
-  Music: "Música",
-  Festival: "Festival",
-  Market: "Mercado",
-  "Food & Drink": "Comida e bebida",
-  Sport: "Desporto",
-  Family: "Família",
-  "Arts & Culture": "Artes e cultura",
-  Nightlife: "Vida noturna",
-  Comedy: "Comédia",
-  Theatre: "Teatro",
-  Exhibitions: "Exposições",
-  Workshop: "Workshop",
-  Charity: "Caridade",
-  Community: "Comunidade",
-  Retreat: "Retiro",
-};
-
 const areas = [
   "All Areas",
   "Albufeira",
@@ -83,23 +64,6 @@ const areas = [
   "Tavira",
   "Vila Real de Santo António",
 ];
-
-const areaTranslations: Record<string, string> = {
-  "All Areas": "Todas as áreas",
-  Albufeira: "Albufeira",
-  Aljezur: "Aljezur",
-  Carvoeiro: "Carvoeiro",
-  Faro: "Faro",
-  Lagos: "Lagos",
-  Lagoa: "Lagoa",
-  Loulé: "Loulé",
-  Olhão: "Olhão",
-  Portimão: "Portimão",
-  Silves: "Silves",
-  Tavira: "Tavira",
-  "Vila Real de Santo António":
-    "Vila Real de Santo António",
-};
 
 function distanceInKm(
   lat1: number,
@@ -119,14 +83,14 @@ function distanceInKm(
       Math.sin(dLon / 2) ** 2;
 
   const c =
-    2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    2 *
+    Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   return R * c;
 }
 
 export default function MapPage() {
-  const { language } = useLanguage();
-  const pt = language === "pt";
+  const { t } = useLanguage();
 
   const [events, setEvents] = useState<Event[]>([]);
 
@@ -160,19 +124,18 @@ export default function MapPage() {
   function findNearMe() {
     if (!navigator.geolocation) {
       setLocationMessage(
-        pt
-          ? "Os serviços de localização não estão disponíveis neste navegador."
-          : "Location services are not available in this browser."
+        t(
+          "Location services are not available in this browser."
+        )
       );
+
       return;
     }
 
     setLocating(true);
 
     setLocationMessage(
-      pt
-        ? "A encontrar a sua localização..."
-        : "Finding your location..."
+      t("Finding your location...")
     );
 
     navigator.geolocation.getCurrentPosition(
@@ -200,9 +163,9 @@ export default function MapPage() {
           setLocating(false);
 
           setLocationMessage(
-            pt
-              ? "A permissão de localização foi recusada. Permita o acesso à localização do Lokly nas definições do seu navegador."
-              : "Location permission was denied. Please allow location access for Lokly in your browser settings."
+            t(
+              "Location permission was denied. Please allow location access for Lokly in your browser settings."
+            )
           );
 
           return;
@@ -210,9 +173,9 @@ export default function MapPage() {
 
         if (error.code === 2) {
           setLocationMessage(
-            pt
-              ? "A tentar outra forma de encontrar a sua localização..."
-              : "Trying another way to find your location..."
+            t(
+              "Trying another way to find your location..."
+            )
           );
 
           navigator.geolocation.getCurrentPosition(
@@ -242,23 +205,23 @@ export default function MapPage() {
 
               if (fallbackError.code === 1) {
                 setLocationMessage(
-                  pt
-                    ? "A permissão de localização foi recusada. Permita o acesso à localização do Lokly nas definições do seu navegador."
-                    : "Location permission was denied. Please allow location access for Lokly in your browser settings."
+                  t(
+                    "Location permission was denied. Please allow location access for Lokly in your browser settings."
+                  )
                 );
               } else if (
                 fallbackError.code === 3
               ) {
                 setLocationMessage(
-                  pt
-                    ? "O pedido de localização demorou demasiado tempo. Tente novamente."
-                    : "The location request took too long. Please try again."
+                  t(
+                    "The location request took too long. Please try again."
+                  )
                 );
               } else {
                 setLocationMessage(
-                  pt
-                    ? "Não foi possível determinar a sua localização. Verifique se os serviços de localização estão ativados no seu computador e tente novamente."
-                    : "We couldn't determine your location. Please check that location services are enabled on your computer and try again."
+                  t(
+                    "We couldn't determine your location. Please check that location services are enabled on your computer and try again."
+                  )
                 );
               }
             },
@@ -276,9 +239,9 @@ export default function MapPage() {
           setLocating(false);
 
           setLocationMessage(
-            pt
-              ? "O pedido de localização demorou demasiado tempo. Tente novamente."
-              : "The location request took too long. Please try again."
+            t(
+              "The location request took too long. Please try again."
+            )
           );
 
           return;
@@ -287,9 +250,9 @@ export default function MapPage() {
         setLocating(false);
 
         setLocationMessage(
-          pt
-            ? "Não foi possível encontrar a sua localização. Tente novamente."
-            : "We couldn't find your location. Please try again."
+          t(
+            "We couldn't find your location. Please try again."
+          )
         );
       },
       {
@@ -344,13 +307,13 @@ export default function MapPage() {
           <div>
 
             <h1 className="text-[24px] font-black text-[#102b52] sm:text-4xl">
-              {pt ? "Mapa de eventos" : "Event Map"}
+              {t("Event Map")}
             </h1>
 
             <p className="mt-1 text-[12px] text-slate-500 sm:mt-2 sm:text-base">
-              {pt
-                ? "Descubra os eventos que acontecem por todo o Algarve."
-                : "Discover events happening across the Algarve."}
+              {t(
+                "Discover events happening across the Algarve."
+              )}
             </p>
 
           </div>
@@ -361,6 +324,7 @@ export default function MapPage() {
             disabled={locating}
             className="flex h-10 w-fit items-center justify-center gap-2 rounded-full bg-[#149EAF] px-5 text-[13px] font-bold text-white shadow-sm transition hover:bg-[#117F8E] active:scale-[0.98] disabled:cursor-wait disabled:opacity-70 sm:h-12 sm:rounded-2xl sm:px-6 sm:text-base"
           >
+
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4 sm:h-5 sm:w-5"
@@ -384,12 +348,8 @@ export default function MapPage() {
 
             <span>
               {locating
-                ? pt
-                  ? "A encontrar..."
-                  : "Finding you..."
-                : pt
-                ? "Perto de mim"
-                : "Near Me"}
+                ? t("Finding you...")
+                : t("Near Me")}
             </span>
 
           </button>
@@ -408,9 +368,7 @@ export default function MapPage() {
               htmlFor="category-filter"
               className="sr-only"
             >
-              {pt
-                ? "Filtrar por categoria"
-                : "Filter by category"}
+              {t("Filter by category")}
             </label>
 
             <div className="relative">
@@ -440,16 +398,16 @@ export default function MapPage() {
                 }
                 className="h-12 w-full appearance-none rounded-2xl border border-slate-200 bg-white pl-12 pr-10 text-sm font-bold text-[#102b52] shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
               >
+
                 {categories.map((category) => (
                   <option
                     key={category}
                     value={category}
                   >
-                    {pt
-                      ? categoryTranslations[category]
-                      : category}
+                    {t(category)}
                   </option>
                 ))}
+
               </select>
 
               <svg
@@ -479,9 +437,7 @@ export default function MapPage() {
               htmlFor="area-filter"
               className="sr-only"
             >
-              {pt
-                ? "Filtrar por área"
-                : "Filter by area"}
+              {t("Filter by area")}
             </label>
 
             <div className="relative">
@@ -517,16 +473,16 @@ export default function MapPage() {
                 }
                 className="h-12 w-full appearance-none rounded-2xl border border-slate-200 bg-white pl-12 pr-10 text-sm font-bold text-[#102b52] shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
               >
+
                 {areas.map((area) => (
                   <option
                     key={area}
                     value={area}
                   >
-                    {pt
-                      ? areaTranslations[area]
-                      : area}
+                    {t(area)}
                   </option>
                 ))}
+
               </select>
 
               <svg
@@ -558,19 +514,13 @@ export default function MapPage() {
 
             {visibleEvents.length}{" "}
 
-            {pt
-              ? visibleEvents.length === 1
-                ? "evento"
-                : "eventos"
-              : `event${
-                  visibleEvents.length === 1
-                    ? ""
-                    : "s"
-                }`}
+            {visibleEvents.length === 1
+              ? t("event")
+              : t("events")}
 
-            {pt
-              ? " a mostrar"
-              : " showing"}
+            {" "}
+
+            {t("showing")}
 
           </p>
 
@@ -589,9 +539,7 @@ export default function MapPage() {
               }}
               className="text-[12px] font-bold text-[#149EAF] sm:text-sm"
             >
-              {pt
-                ? "Limpar filtros"
-                : "Clear filters"}
+              {t("Clear filters")}
             </button>
 
           )}
@@ -622,15 +570,12 @@ export default function MapPage() {
               <div>
 
                 <p className="text-sm font-bold text-slate-900">
-                  {pt
-                    ? "Eventos perto de si"
-                    : "Events near you"}
+                  {t("Events near you")}
                 </p>
 
                 <p className="text-[12px] text-slate-500 sm:text-sm">
-                  {pt
-                    ? `A mostrar eventos num raio de ${radius} km`
-                    : `Showing events within ${radius} km`}
+                  {t("Showing events within")}{" "}
+                  {radius} km
                 </p>
 
               </div>

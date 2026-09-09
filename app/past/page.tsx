@@ -14,8 +14,7 @@ type FeedbackState = {
 } | null;
 
 export default function PastEventsPage() {
-  const { language } = useLanguage();
-  const pt = language === "pt";
+  const { t } = useLanguage();
 
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -96,9 +95,7 @@ export default function PastEventsPage() {
 
     if (!user) {
       alert(
-        pt
-          ? "Inicie sessão para deixar feedback."
-          : "Please sign in to leave feedback."
+        t("Please sign in to leave feedback.")
       );
 
       setSubmitting(false);
@@ -122,9 +119,7 @@ export default function PastEventsPage() {
       );
 
       alert(
-        pt
-          ? "Pedimos desculpa, não foi possível enviar o seu feedback."
-          : "Sorry, we couldn't submit your feedback."
+        t("Sorry, we couldn't submit your feedback.")
       );
 
       setSubmitting(false);
@@ -141,56 +136,42 @@ export default function PastEventsPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 pb-36">
-
       <Header />
 
       <section className="mx-auto max-w-7xl px-6 py-8">
-
         <h1 className="text-4xl font-black text-slate-900">
-          {pt ? "Eventos passados" : "Past Events"}
+          {t("Past Events")}
         </h1>
 
         <p className="mt-2 text-slate-500">
-          {pt
-            ? "Eventos que pode ter perdido."
-            : "Events you may have missed."}
+          {t("Events you may have missed.")}
         </p>
 
         {loading ? (
           <div className="mt-10 rounded-3xl bg-white p-10 text-center shadow-sm">
-
             <p className="text-slate-500">
-              {pt
-                ? "A carregar eventos passados..."
-                : "Loading past events..."}
+              {t("Loading past events...")}
             </p>
-
           </div>
         ) : pastEvents.length === 0 ? (
           <div className="mt-10 rounded-3xl bg-white p-10 text-center shadow-sm">
-
             <div className="text-4xl text-slate-300">
               ◷
             </div>
 
             <h2 className="mt-4 text-xl font-bold text-slate-900">
-              {pt
-                ? "Sem eventos passados"
-                : "No past events"}
+              {t("No past events")}
             </h2>
 
             <p className="mt-2 text-slate-500">
-              {pt
-                ? "Os eventos passados aparecerão aqui automaticamente."
-                : "Past events will appear here automatically."}
+              {t(
+                "Past events will appear here automatically."
+              )}
             </p>
-
           </div>
         ) : (
           <div className="mt-10 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
-
             {pastEvents.map((event) => {
-
               const alreadySubmitted =
                 submitted.includes(Number(event.id));
 
@@ -199,9 +180,8 @@ export default function PastEventsPage() {
                   key={event.id}
                   className="relative"
                 >
-
                   <div className="absolute left-4 top-4 z-10 rounded-full bg-slate-900/80 px-3 py-1 text-xs font-semibold text-white">
-                    {pt ? "Evento passado" : "Past Event"}
+                    {t("Past Event")}
                   </div>
 
                   <EventCard
@@ -217,9 +197,7 @@ export default function PastEventsPage() {
 
                   {alreadySubmitted ? (
                     <div className="mt-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-sm font-semibold text-slate-500">
-                      {pt
-                        ? "Obrigado pelo seu feedback"
-                        : "Thank you for your feedback"}
+                      {t("Thank you for your feedback")}
                     </div>
                   ) : (
                     <button
@@ -232,31 +210,25 @@ export default function PastEventsPage() {
                       }
                       className="mt-3 flex w-full items-center justify-center rounded-xl border border-[#149EAF] bg-white px-4 py-3 font-semibold text-[#149EAF] transition hover:bg-[#149EAF]/10"
                     >
-                      {pt
-                        ? "Deixar feedback"
-                        : "Give Feedback"}
+                      {t("Give Feedback")}
                     </button>
                   )}
 
                   {feedback?.eventId ===
                     Number(event.id) && (
                     <div className="mt-3 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-
                       {submitted.includes(
                         Number(event.id)
                       ) ? (
                         <div className="text-center">
-
                           <h3 className="font-bold text-slate-900">
-                            {pt
-                              ? "Obrigado!"
-                              : "Thank you!"}
+                            {t("Thank you!")}
                           </h3>
 
                           <p className="mt-1 text-sm text-slate-500">
-                            {pt
-                              ? "O seu feedback foi enviado."
-                              : "Your feedback has been submitted."}
+                            {t(
+                              "Your feedback has been submitted."
+                            )}
                           </p>
 
                           <button
@@ -264,37 +236,29 @@ export default function PastEventsPage() {
                             onClick={closeFeedback}
                             className="mt-4 text-sm font-semibold text-[#149EAF]"
                           >
-                            {pt ? "Fechar" : "Close"}
+                            {t("Close")}
                           </button>
-
                         </div>
                       ) : (
                         <>
                           <div className="flex items-center justify-between">
-
                             <h3 className="font-bold text-slate-900">
-                              {pt
-                                ? "Como foi este evento?"
-                                : "How was this event?"}
+                              {t("How was this event?")}
                             </h3>
 
                             <button
                               type="button"
                               onClick={closeFeedback}
                               className="text-xl text-slate-400"
-                              aria-label={
-                                pt
-                                  ? "Fechar feedback"
-                                  : "Close feedback"
-                              }
+                              aria-label={t(
+                                "Close feedback"
+                              )}
                             >
                               ×
                             </button>
-
                           </div>
 
                           <div className="mt-4 flex justify-center gap-2">
-
                             {[1, 2, 3, 4, 5].map(
                               (star) => (
                                 <button
@@ -303,19 +267,7 @@ export default function PastEventsPage() {
                                   onClick={() =>
                                     setRating(star)
                                   }
-                                  aria-label={
-                                    pt
-                                      ? `${star} estrela${
-                                          star === 1
-                                            ? ""
-                                            : "s"
-                                        }`
-                                      : `${star} star${
-                                          star === 1
-                                            ? ""
-                                            : "s"
-                                        }`
-                                  }
+                                  aria-label={`${star} ${star === 1 ? t("star") : t("stars")}`}
                                   className={`text-3xl transition ${
                                     star <= rating
                                       ? "text-[#149EAF]"
@@ -326,7 +278,6 @@ export default function PastEventsPage() {
                                 </button>
                               )
                             )}
-
                           </div>
 
                           <textarea
@@ -334,11 +285,9 @@ export default function PastEventsPage() {
                             onChange={(e) =>
                               setComment(e.target.value)
                             }
-                            placeholder={
-                              pt
-                                ? "Há algo que gostaria de nos dizer? (opcional)"
-                                : "Anything you'd like to tell us? (optional)"
-                            }
+                            placeholder={t(
+                              "Anything you'd like to tell us? (optional)"
+                            )}
                             rows={3}
                             className="mt-4 w-full resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-900 outline-none focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
                           />
@@ -353,30 +302,21 @@ export default function PastEventsPage() {
                             className="mt-3 flex w-full items-center justify-center rounded-xl bg-[#149EAF] px-4 py-3 font-semibold text-white transition hover:bg-[#117F8E] disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             {submitting
-                              ? pt
-                                ? "A enviar..."
-                                : "Submitting..."
-                              : pt
-                              ? "Enviar feedback"
-                              : "Submit Feedback"}
+                              ? t("Submitting...")
+                              : t("Submit Feedback")}
                           </button>
                         </>
                       )}
-
                     </div>
                   )}
-
                 </div>
               );
             })}
-
           </div>
         )}
-
       </section>
 
       <BottomNavigation />
-
     </main>
   );
 }

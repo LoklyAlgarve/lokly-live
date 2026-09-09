@@ -25,8 +25,7 @@ const locations = [
 ];
 
 export default function LocationPage() {
-  const { language } = useLanguage();
-  const pt = language === "pt";
+  const { t } = useLanguage();
 
   const [location, setLocation] = useState("Algarve");
   const [saved, setSaved] = useState(false);
@@ -60,17 +59,17 @@ export default function LocationPage() {
           href="/profile"
           className="inline-flex items-center text-sm font-semibold text-[#149EAF] hover:text-[#117F8E]"
         >
-          ← {pt ? "Voltar ao perfil" : "Back to Profile"}
+          ← {t("Back to Profile")}
         </a>
 
         <h1 className="mt-6 text-3xl font-black text-slate-900 sm:text-4xl">
-          {pt ? "A sua localização" : "Your Location"}
+          {t("Your Location")}
         </h1>
 
         <p className="mt-2 text-slate-500">
-          {pt
-            ? "Escolha a localidade do Algarve que gostaria que o Lokly utilizasse para encontrar eventos próximos."
-            : "Choose the Algarve town you would like Lokly to use for nearby events."}
+          {t(
+            "Choose the Algarve town you would like Lokly to use for nearby events."
+          )}
         </p>
 
         <div className="mt-8 overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100">
@@ -79,7 +78,7 @@ export default function LocationPage() {
               htmlFor="location"
               className="block text-sm font-bold text-slate-700"
             >
-              {pt ? "Onde vive?" : "Where are you based?"}
+              {t("Where are you based?")}
             </label>
 
             <select
@@ -91,11 +90,13 @@ export default function LocationPage() {
               }}
               className="mt-3 min-h-14 w-full rounded-2xl border border-slate-300 bg-white px-4 text-base font-semibold text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
             >
-              <option value="Algarve">Algarve</option>
+              <option value="Algarve">
+                {t("Algarve")}
+              </option>
 
               {locations.map((town) => (
                 <option key={town} value={town}>
-                  {town}
+                  {t(town)}
                 </option>
               ))}
             </select>
@@ -105,13 +106,13 @@ export default function LocationPage() {
               onClick={handleSave}
               className="mt-5 min-h-14 w-full rounded-2xl bg-[#149EAF] px-5 font-bold text-white shadow-sm transition hover:bg-[#117F8E] active:scale-[0.99]"
             >
-              {pt ? "Guardar localização" : "Save Location"}
+              {t("Save Location")}
             </button>
 
             {saved && (
               <div className="mt-4 rounded-2xl bg-emerald-50 p-4 text-center">
                 <p className="text-sm font-bold text-emerald-700">
-                  {pt ? "Localização guardada" : "Location saved"}
+                  {t("Location saved")}
                 </p>
               </div>
             )}

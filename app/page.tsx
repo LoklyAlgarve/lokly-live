@@ -179,27 +179,8 @@ function distanceKm(
   return earthRadius * c;
 }
 
-const categoryTranslations: Record<string, string> = {
-  Music: "Música",
-  Festival: "Festival",
-  Market: "Mercado",
-  "Food & Drink": "Comida e bebida",
-  Sport: "Desporto",
-  Family: "Família",
-  "Arts & Culture": "Artes e cultura",
-  Nightlife: "Vida noturna",
-  Comedy: "Comédia",
-  Theatre: "Teatro",
-  Exhibitions: "Exposições",
-  Workshop: "Workshop",
-  Charity: "Caridade",
-  Community: "Comunidade",
-  Retreat: "Retiro",
-};
-
 export default function HomePage() {
-  const { language } = useLanguage();
-  const pt = language === "pt";
+  const { t } = useLanguage();
 
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] =
@@ -273,9 +254,9 @@ export default function HomePage() {
     if (filter === "near") {
       if (!navigator.geolocation) {
         alert(
-          pt
-            ? "A localização não está disponível neste dispositivo."
-            : "Location is not available on this device."
+          t(
+            "Location is not available on this device."
+          )
         );
 
         return;
@@ -290,9 +271,9 @@ export default function HomePage() {
         },
         () => {
           alert(
-            pt
-              ? "Não foi possível aceder à sua localização. Verifique as permissões de localização."
-              : "We couldn't access your location. Please check your location permissions."
+            t(
+              "We couldn't access your location. Please check your location permissions."
+            )
           );
         },
         {
@@ -392,7 +373,6 @@ export default function HomePage() {
         {/* HERO */}
 
         <section className="mt-3 overflow-hidden rounded-2xl bg-[#149EAF] sm:mt-4 sm:rounded-3xl">
-
           <div className="relative min-h-[150px] overflow-hidden sm:min-h-[250px]">
 
             <img
@@ -408,25 +388,19 @@ export default function HomePage() {
               <div className="max-w-xl text-white">
 
                 <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/80 sm:mb-2 sm:text-sm">
-                  {pt
-                    ? "Descubra o Algarve"
-                    : "Discover the Algarve"}
+                  {t("Discover the Algarve")}
                 </p>
 
                 <h1 className="text-[30px] font-black leading-[1.05] tracking-tight sm:text-5xl">
-                  {pt
-                    ? "O que está a acontecer"
-                    : "What's happening"}
+                  {t("What's on")}
                   <br />
-                  {pt
-                    ? "perto de si?"
-                    : "near you?"}
+                  {t("near you?")}
                 </h1>
 
                 <p className="mt-2 max-w-md text-xs leading-relaxed text-white/90 sm:mt-4 sm:text-lg">
-                  {pt
-                    ? "Eventos, experiências e tesouros locais, tudo num só lugar."
-                    : "Events, experiences and local gems all in one place."}
+                  {t(
+                    "Events, experiences and local gems all in one place."
+                  )}
                 </p>
 
               </div>
@@ -442,19 +416,19 @@ export default function HomePage() {
           {[
             [
               "near",
-              pt ? "Perto de mim" : "Near Me",
+              t("Near Me"),
             ],
             [
               "today",
-              pt ? "Hoje" : "Today",
+              t("Today"),
             ],
             [
               "weekend",
-              pt ? "Este fim de semana" : "This Weekend",
+              t("This Weekend"),
             ],
             [
               "free",
-              pt ? "Grátis" : "Free",
+              t("Free"),
             ],
           ].map(([value, label]) => {
 
@@ -496,7 +470,7 @@ export default function HomePage() {
           <div className="mb-2 flex items-center justify-between sm:mb-3">
 
             <p className="text-sm font-bold text-slate-600">
-              {pt ? "Filtros" : "Filters"}
+              {t("Filters")}
             </p>
 
             <button
@@ -509,9 +483,7 @@ export default function HomePage() {
               }}
               className="text-xs font-bold text-[#149EAF] hover:underline"
             >
-              {pt
-                ? "Limpar filtros"
-                : "Clear filters"}
+              {t("Clear filters")}
             </button>
 
           </div>
@@ -526,9 +498,7 @@ export default function HomePage() {
                 htmlFor="event-filter"
                 className="mb-1 block text-xs font-semibold text-slate-600 sm:mb-1.5 sm:text-sm"
               >
-                {pt
-                  ? "Filtrar por evento"
-                  : "Filter by event"}
+                {t("Filter by event")}
               </label>
 
               <div className="relative">
@@ -543,10 +513,9 @@ export default function HomePage() {
                   }
                   className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-10 text-xs font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20 sm:h-11 sm:px-4 sm:text-sm"
                 >
+
                   <option value="">
-                    {pt
-                      ? "Todos os tipos de evento"
-                      : "All event types"}
+                    {t("All event types")}
                   </option>
 
                   {eventCategories.map(
@@ -555,9 +524,7 @@ export default function HomePage() {
                         key={category}
                         value={category}
                       >
-                        {pt
-                          ? categoryTranslations[category] || category
-                          : category}
+                        {t(category)}
                       </option>
                     )
                   )}
@@ -595,9 +562,7 @@ export default function HomePage() {
                 htmlFor="location-filter"
                 className="mb-1 block text-xs font-semibold text-slate-600 sm:mb-1.5 sm:text-sm"
               >
-                {pt
-                  ? "Filtrar por localização"
-                  : "Filter by location"}
+                {t("Filter by location")}
               </label>
 
               <div className="relative">
@@ -612,10 +577,9 @@ export default function HomePage() {
                   }
                   className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-10 text-xs font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20 sm:h-11 sm:px-4 sm:text-sm"
                 >
+
                   <option value="">
-                    {pt
-                      ? "Todas as localizações"
-                      : "All locations"}
+                    {t("All locations")}
                   </option>
 
                   {eventLocations.map(
@@ -670,13 +634,13 @@ export default function HomePage() {
                 color: T.navy,
               }}
             >
-              {pt ? "Eventos" : "Events"}
+              {t("Events")}
             </h2>
 
             <p className="mt-0.5 text-xs text-slate-500 sm:mt-1 sm:text-sm">
-              {pt
-                ? "Descubra o que está a acontecer por todo o Algarve"
-                : "Discover what's happening across the Algarve"}
+              {t(
+                "Discover what's happening across the Algarve"
+              )}
             </p>
 
           </div>
@@ -684,9 +648,7 @@ export default function HomePage() {
           {loading ? (
 
             <div className="py-10 text-center text-sm text-slate-500">
-              {pt
-                ? "A carregar eventos..."
-                : "Loading events..."}
+              {t("Loading events...")}
             </div>
 
           ) : filteredEvents.length === 0 ? (
@@ -705,6 +667,7 @@ export default function HomePage() {
                   xmlns="http://www.w3.org/2000/svg"
                   aria-hidden="true"
                 >
+
                   <ellipse
                     cx="18"
                     cy="18"
@@ -756,15 +719,11 @@ export default function HomePage() {
               </div>
 
               <p className="font-semibold text-slate-700">
-                {pt
-                  ? "Nada para ver aqui… ainda!"
-                  : "Nothing to see here… yet!"}
+                {t("Nothing to see here… yet!")}
               </p>
 
               <p className="mt-1 text-sm text-slate-500">
-                {pt
-                  ? "Tente alterar os seus filtros."
-                  : "Try changing your filters."}
+                {t("Try changing your filters.")}
               </p>
 
             </div>
@@ -775,7 +734,6 @@ export default function HomePage() {
 
               {filteredEvents.map(
                 (event) => (
-
                   <EventCard
                     key={event.id}
                     id={event.id}
@@ -796,7 +754,6 @@ export default function HomePage() {
                         0
                     )}
                   />
-
                 )
               )}
 
@@ -809,7 +766,6 @@ export default function HomePage() {
       </div>
 
       <BottomNavigation />
-
     </main>
   );
 }
