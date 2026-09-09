@@ -14,14 +14,14 @@ export default function Header() {
     <>
       {/* MAIN HEADER */}
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-2.5 sm:px-6 sm:py-4">
+        <div className="mx-auto flex h-[125px] max-w-7xl items-center justify-between px-5 sm:h-[145px] sm:px-6">
 
           {/* Menu */}
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
             aria-label={pt ? "Abrir menu" : "Open menu"}
-            className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 transition hover:bg-slate-200 active:scale-95 sm:h-12 sm:w-12"
+            className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 transition hover:bg-slate-200 active:scale-95 sm:h-12 sm:w-12"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -40,14 +40,14 @@ export default function Header() {
           </button>
 
           {/* Logo */}
-          <div className="flex flex-col items-center text-center">
+          <div className="flex flex-col items-center justify-center">
             <img
               src="/images/lokly-logo.png"
               alt="Lokly"
-              className="w-[135px] sm:w-[150px]"
+              className="h-[58px] w-[120px] object-contain sm:h-[72px] sm:w-[145px]"
             />
 
-            <p className="-mt-0.5 text-xs font-medium text-[#149EAF] sm:mt-0 sm:text-sm">
+            <p className="-mt-1 text-[11px] font-medium leading-none text-[#149EAF] sm:text-sm">
               {pt
                 ? "Descobrir • Explorar • Desfrutar"
                 : "Discover • Explore • Enjoy"}
@@ -58,7 +58,7 @@ export default function Header() {
           <Link
             href="/profile"
             aria-label={pt ? "Perfil" : "Profile"}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#149EAF] to-cyan-500 text-white shadow-md transition hover:scale-105 sm:h-12 sm:w-12"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#149EAF] to-cyan-500 text-white shadow-md transition hover:scale-105 sm:h-12 sm:w-12"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -134,10 +134,12 @@ export default function Header() {
             {/* MENU CONTENT */}
             <nav className="flex-1 overflow-y-auto px-4 py-6">
 
+              {/* DISCOVER */}
               <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
                 {pt ? "Descobrir" : "Discover"}
               </p>
 
+              {/* HOME */}
               <Link
                 href="/"
                 onClick={() => setMenuOpen(false)}
@@ -159,11 +161,13 @@ export default function Header() {
                     />
                   </svg>
                 </span>
+
                 <span className="font-semibold">
                   {pt ? "Início" : "Home"}
                 </span>
               </Link>
 
+              {/* SEARCH */}
               <Link
                 href="/search"
                 onClick={() => setMenuOpen(false)}
@@ -185,11 +189,13 @@ export default function Header() {
                     />
                   </svg>
                 </span>
+
                 <span className="font-semibold">
                   {pt ? "Pesquisar" : "Search"}
                 </span>
               </Link>
 
+              {/* MAP */}
               <Link
                 href="/map"
                 onClick={() => setMenuOpen(false)}
@@ -216,16 +222,19 @@ export default function Header() {
                     />
                   </svg>
                 </span>
+
                 <span className="font-semibold">
                   {pt ? "Mapa" : "Map"}
                 </span>
               </Link>
 
+              {/* YOUR LOKLY */}
               <div className="mt-8">
                 <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
                   {pt ? "O seu Lokly" : "Your Lokly"}
                 </p>
 
+                {/* SAVED EVENTS */}
                 <Link
                   href="/saved"
                   onClick={() => setMenuOpen(false)}
@@ -234,11 +243,13 @@ export default function Header() {
                   <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
                     ♡
                   </span>
+
                   <span className="font-semibold">
                     {pt ? "Eventos guardados" : "Saved Events"}
                   </span>
                 </Link>
 
+                {/* MY PROFILE */}
                 <Link
                   href="/profile"
                   onClick={() => setMenuOpen(false)}
@@ -247,11 +258,13 @@ export default function Header() {
                   <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
                     ◯
                   </span>
+
                   <span className="font-semibold">
                     {pt ? "O meu perfil" : "My Profile"}
                   </span>
                 </Link>
 
+                {/* MY LOCATION */}
                 <Link
                   href="/profile/location"
                   onClick={() => setMenuOpen(false)}
@@ -260,17 +273,20 @@ export default function Header() {
                   <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
                     ◎
                   </span>
+
                   <span className="font-semibold">
                     {pt ? "A minha localização" : "My Location"}
                   </span>
                 </Link>
               </div>
 
+              {/* MORE */}
               <div className="mt-8">
                 <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
                   {pt ? "Mais" : "More"}
                 </p>
 
+                {/* NOTIFICATIONS */}
                 <Link
                   href="/profile/notifications"
                   onClick={() => setMenuOpen(false)}
@@ -279,11 +295,13 @@ export default function Header() {
                   <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
                     ♢
                   </span>
+
                   <span className="font-semibold">
                     {pt ? "Notificações" : "Notifications"}
                   </span>
                 </Link>
 
+                {/* ABOUT LOKLY */}
                 <Link
                   href="/about"
                   onClick={() => setMenuOpen(false)}
@@ -292,11 +310,13 @@ export default function Header() {
                   <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
                     ⓘ
                   </span>
+
                   <span className="font-semibold">
                     {pt ? "Sobre o Lokly" : "About Lokly"}
                   </span>
                 </Link>
 
+                {/* TELL A FRIEND */}
                 <Link
                   href="/tell-a-friend"
                   onClick={() => setMenuOpen(false)}
@@ -305,11 +325,13 @@ export default function Header() {
                   <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
                     ♧
                   </span>
+
                   <span className="font-semibold">
                     {pt ? "Diga a um amigo" : "Tell a Friend"}
                   </span>
                 </Link>
 
+                {/* CONTACT */}
                 <button
                   type="button"
                   onClick={() => {
@@ -321,12 +343,14 @@ export default function Header() {
                   <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
                     ▤
                   </span>
+
                   <span className="font-semibold">
                     {pt ? "Contacte-nos" : "Contact Us"}
                   </span>
                 </button>
               </div>
 
+              {/* LANGUAGE */}
               <div className="mt-8 border-t border-slate-100 pt-6">
                 <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
                   {pt ? "Idioma" : "Language"}
@@ -358,10 +382,15 @@ export default function Header() {
                   </button>
                 </div>
               </div>
+
             </nav>
 
+            {/* FOOTER */}
             <div className="border-t border-slate-100 px-6 py-5">
-              <p className="text-xs text-slate-400">Lokly</p>
+              <p className="text-xs text-slate-400">
+                Lokly
+              </p>
+
               <p className="mt-1 text-xs text-slate-400">
                 {pt
                   ? "Descobrir • Explorar • Desfrutar"
