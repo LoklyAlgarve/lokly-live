@@ -3,8 +3,12 @@
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
+import { useLanguage } from "../../LanguageContext";
 
 export default function NotificationsPage() {
+  const { language } = useLanguage();
+  const pt = language === "pt";
+
   const [notifications, setNotifications] = useState(true);
 
   useEffect(() => {
@@ -36,15 +40,17 @@ export default function NotificationsPage() {
           href="/profile"
           className="text-sm font-bold text-[#149EAF] hover:underline"
         >
-          ← Back to Profile
+          {pt ? "← Voltar ao perfil" : "← Back to Profile"}
         </a>
 
         <h1 className="mt-5 text-3xl font-black text-slate-900 sm:text-4xl">
-          Notifications
+          {pt ? "Notificações" : "Notifications"}
         </h1>
 
         <p className="mt-2 text-slate-500">
-          Choose which Lokly notifications you'd like to receive.
+          {pt
+            ? "Escolha as notificações do Lokly que gostaria de receber."
+            : "Choose which Lokly notifications you'd like to receive."}
         </p>
 
         <div className="mt-8 overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100">
@@ -53,12 +59,15 @@ export default function NotificationsPage() {
 
             <div>
               <h2 className="font-bold text-slate-900">
-                Event Notifications
+                {pt
+                  ? "Notificações de eventos"
+                  : "Event Notifications"}
               </h2>
 
               <p className="mt-1 text-sm leading-relaxed text-slate-500">
-                Get notified about events and new things happening
-                around the Algarve.
+                {pt
+                  ? "Receba notificações sobre eventos e novidades que acontecem no Algarve."
+                  : "Get notified about events and new things happening around the Algarve."}
               </p>
             </div>
 
@@ -67,7 +76,11 @@ export default function NotificationsPage() {
               onClick={toggleNotifications}
               aria-label={
                 notifications
-                  ? "Turn notifications off"
+                  ? pt
+                    ? "Desativar notificações"
+                    : "Turn notifications off"
+                  : pt
+                  ? "Ativar notificações"
                   : "Turn notifications on"
               }
               className={`relative h-8 w-14 shrink-0 rounded-full transition ${
@@ -91,12 +104,18 @@ export default function NotificationsPage() {
 
             <p className="text-sm font-semibold text-slate-700">
               {notifications
-                ? "Notifications are ON"
+                ? pt
+                  ? "As notificações estão ATIVADAS"
+                  : "Notifications are ON"
+                : pt
+                ? "As notificações estão DESATIVADAS"
                 : "Notifications are OFF"}
             </p>
 
             <p className="mt-1 text-sm text-slate-500">
-              You can change this setting at any time.
+              {pt
+                ? "Pode alterar esta definição a qualquer momento."
+                : "You can change this setting at any time."}
             </p>
 
           </div>

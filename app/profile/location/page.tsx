@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
+import { useLanguage } from "../../LanguageContext";
 
 const locations = [
   "Albufeira",
@@ -24,6 +25,9 @@ const locations = [
 ];
 
 export default function LocationPage() {
+  const { language } = useLanguage();
+  const pt = language === "pt";
+
   const [location, setLocation] = useState("Algarve");
   const [saved, setSaved] = useState(false);
 
@@ -56,16 +60,17 @@ export default function LocationPage() {
           href="/profile"
           className="inline-flex items-center text-sm font-semibold text-[#149EAF] hover:text-[#117F8E]"
         >
-          ← Back to Profile
+          ← {pt ? "Voltar ao perfil" : "Back to Profile"}
         </a>
 
         <h1 className="mt-6 text-3xl font-black text-slate-900 sm:text-4xl">
-          Your Location
+          {pt ? "A sua localização" : "Your Location"}
         </h1>
 
         <p className="mt-2 text-slate-500">
-          Choose the Algarve town you would like Lokly to use for nearby
-          events.
+          {pt
+            ? "Escolha a localidade do Algarve que gostaria que o Lokly utilizasse para encontrar eventos próximos."
+            : "Choose the Algarve town you would like Lokly to use for nearby events."}
         </p>
 
         <div className="mt-8 overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100">
@@ -74,7 +79,7 @@ export default function LocationPage() {
               htmlFor="location"
               className="block text-sm font-bold text-slate-700"
             >
-              Where are you based?
+              {pt ? "Onde vive?" : "Where are you based?"}
             </label>
 
             <select
@@ -100,13 +105,13 @@ export default function LocationPage() {
               onClick={handleSave}
               className="mt-5 min-h-14 w-full rounded-2xl bg-[#149EAF] px-5 font-bold text-white shadow-sm transition hover:bg-[#117F8E] active:scale-[0.99]"
             >
-              Save Location
+              {pt ? "Guardar localização" : "Save Location"}
             </button>
 
             {saved && (
               <div className="mt-4 rounded-2xl bg-emerald-50 p-4 text-center">
                 <p className="text-sm font-bold text-emerald-700">
-                  Location saved
+                  {pt ? "Localização guardada" : "Location saved"}
                 </p>
               </div>
             )}

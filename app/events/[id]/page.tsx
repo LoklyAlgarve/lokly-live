@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
 import SaveButton from "../../components/SaveButton";
 import { getEvents } from "../../data/events";
+import { useLanguage } from "../../LanguageContext";
 
 type PageProps = {
   params: Promise<{
@@ -10,19 +13,24 @@ type PageProps = {
   }>;
 };
 
-function getFriendlyValue(value: string) {
+function getFriendlyValue(value: string, pt: boolean) {
   const normalised = value?.trim().toLowerCase();
 
-  if (normalised === "yes") return "Yes";
-  if (normalised === "no") return "No";
+  if (normalised === "yes") {
+    return pt ? "Sim" : "Yes";
+  }
 
-  return "Unknown";
+  if (normalised === "no") {
+    return pt ? "Não" : "No";
+  }
+
+  return pt ? "Desconhecido" : "Unknown";
 }
 
 function getFriendlyBadgeClass(value: string) {
-  return value === "Yes"
+  return value === "Yes" || value === "Sim"
     ? "bg-emerald-100 text-emerald-700"
-    : value === "No"
+    : value === "No" || value === "Não"
       ? "bg-slate-200 text-slate-600"
       : "bg-slate-100 text-slate-500";
 }
@@ -66,12 +74,32 @@ export default async function EventPage({ params }: PageProps) {
     event.location
   )}`;
 
+  return (
+    <EventPageContent
+      event={event}
+      directionsUrl={directionsUrl}
+    />
+  );
+}
+
+function EventPageContent({
+  event,
+  directionsUrl,
+}: {
+  event: any;
+  directionsUrl: string;
+}) {
+  const { language } = useLanguage();
+  const pt = language === "pt";
+
   const wheelchairFriendly = getFriendlyValue(
-    event.wheelchairFriendly
+    event.wheelchairFriendly,
+    pt
   );
 
   const petFriendly = getFriendlyValue(
-    event.petFriendly
+    event.petFriendly,
+    pt
   );
 
   return (
@@ -100,7 +128,7 @@ export default async function EventPage({ params }: PageProps) {
             />
           </svg>
 
-          All Events
+          {pt ? "Todos os eventos" : "All Events"}
         </Link>
 
         <article className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100">
@@ -155,7 +183,7 @@ export default async function EventPage({ params }: PageProps) {
 
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
-                      Date
+                      {pt ? "Data" : "Date"}
                     </p>
 
                     <p className="mt-1 truncate text-sm font-semibold text-slate-800 sm:text-base">
@@ -184,11 +212,11 @@ export default async function EventPage({ params }: PageProps) {
 
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
-                      Time
+                      {pt ? "Hora" : "Time"}
                     </p>
 
                     <p className="mt-1 truncate text-sm font-semibold text-slate-800 sm:text-base">
-                      {event.time || "Not specified"}
+                      {event.time || (pt ? "Não especificado" : "Not specified")}
                     </p>
                   </div>
                 </div>
@@ -213,7 +241,7 @@ export default async function EventPage({ params }: PageProps) {
 
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
-                      Location
+                      {pt ? "Localização" : "Location"}
                     </p>
 
                     <p className="mt-1 truncate text-sm font-semibold text-slate-800 sm:text-base">
@@ -230,7 +258,7 @@ export default async function EventPage({ params }: PageProps) {
 
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
-                      Price
+                      {pt ? "Preço" : "Price"}
                     </p>
 
                     <p className="mt-1 truncate text-sm font-semibold text-slate-800 sm:text-base">
@@ -270,7 +298,9 @@ export default async function EventPage({ params }: PageProps) {
 
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
-                      Wheelchair Friendly
+                      {pt
+                        ? "Acessível a cadeiras de rodas"
+                        : "Wheelchair Friendly"}
                     </p>
 
                     <span
@@ -306,7 +336,7 @@ export default async function EventPage({ params }: PageProps) {
 
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
-                      Pet Friendly
+                      {pt ? "Aceita animais" : "Pet Friendly"}
                     </p>
 
                     <span
@@ -324,7 +354,7 @@ export default async function EventPage({ params }: PageProps) {
               {event.description && (
                 <div>
                   <h2 className="text-xl font-black text-slate-900">
-                    About this event
+                    {pt ? "Sobre este evento" : "About this event"}
                   </h2>
 
                   <p className="mt-3 whitespace-pre-line leading-7 text-slate-600">
@@ -373,7 +403,7 @@ export default async function EventPage({ params }: PageProps) {
                       />
                     </svg>
 
-                    Directions
+                    {pt ? "Como chegar" : "Directions"}
                   </a>
 
                   {event.website && (
@@ -383,7 +413,9 @@ export default async function EventPage({ params }: PageProps) {
                       rel="noopener noreferrer"
                       className="flex min-h-14 w-full items-center justify-center rounded-2xl border-2 border-[#149EAF] px-5 text-base font-bold text-[#149EAF] transition hover:bg-[#149EAF] hover:text-white"
                     >
-                      Event Website
+                      {pt
+                        ? "Website do evento"
+                        : "Event Website"}
                     </a>
                   )}
 

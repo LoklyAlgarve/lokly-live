@@ -6,15 +6,23 @@ import EventCard from "../components/EventCard";
 import { useEffect, useState } from "react";
 import { getEvents } from "../data/events";
 import { createClient } from "../../utils/supabase/client";
+import { useLanguage } from "../LanguageContext";
 
 type GoingStatus = "yes" | "maybe" | null;
 
 export default function SavedPage() {
+  const { language } = useLanguage();
+
+  const pt = language === "pt";
+
   const [savedIds, setSavedIds] = useState<number[]>([]);
+
   const [events, setEvents] = useState<any[]>([]);
+
   const [goingStatuses, setGoingStatuses] = useState<
     Record<number, GoingStatus>
   >({});
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -39,6 +47,7 @@ export default function SavedPage() {
 
       if (error) {
         console.error("Error loading saved events:", error);
+
         setSavedIds([]);
         setEvents([]);
         setLoading(false);
@@ -114,13 +123,19 @@ export default function SavedPage() {
 
   function addToCalendar(event: any) {
     const date = String(event.date || "").trim();
-    const time = String(event.time || "00:00").trim();
+
+    const time = String(
+      event.time || "00:00"
+    ).trim();
 
     if (!date) {
       return;
     }
 
-    const cleanTime = time.replace(/[^0-9:]/g, "");
+    const cleanTime = time.replace(
+      /[^0-9:]/g,
+      ""
+    );
 
     const [year, month, day] = date
       .split("-")
@@ -143,15 +158,28 @@ export default function SavedPage() {
     );
 
     const end = new Date(
-      start.getTime() + 2 * 60 * 60 * 1000
+      start.getTime() +
+        2 * 60 * 60 * 1000
     );
 
     function formatICSDate(value: Date) {
       const y = value.getFullYear();
-      const m = String(value.getMonth() + 1).padStart(2, "0");
-      const d = String(value.getDate()).padStart(2, "0");
-      const h = String(value.getHours()).padStart(2, "0");
-      const min = String(value.getMinutes()).padStart(2, "0");
+
+      const m = String(
+        value.getMonth() + 1
+      ).padStart(2, "0");
+
+      const d = String(
+        value.getDate()
+      ).padStart(2, "0");
+
+      const h = String(
+        value.getHours()
+      ).padStart(2, "0");
+
+      const min = String(
+        value.getMinutes()
+      ).padStart(2, "0");
 
       return `${y}${m}${d}T${h}${min}00`;
     }
@@ -177,18 +205,25 @@ export default function SavedPage() {
       `DTEND:${formatICSDate(end)}`,
       `SUMMARY:${escapeICS(event.title)}`,
       `LOCATION:${location}`,
-      `DESCRIPTION:${escapeICS(event.description || "")}`,
+      `DESCRIPTION:${escapeICS(
+        event.description || ""
+      )}`,
       "END:VEVENT",
       "END:VCALENDAR",
     ].join("\r\n");
 
-    const blob = new Blob([calendarContent], {
-      type: "text/calendar;charset=utf-8",
-    });
+    const blob = new Blob(
+      [calendarContent],
+      {
+        type: "text/calendar;charset=utf-8",
+      }
+    );
 
-    const url = URL.createObjectURL(blob);
+    const url =
+      URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
+    const link =
+      document.createElement("a");
 
     link.href = url;
 
@@ -217,11 +252,13 @@ export default function SavedPage() {
       <section className="mx-auto max-w-7xl px-6 py-8">
 
         <h1 className="text-2xl font-black text-slate-900 sm:text-3xl">
-          Saved Events
+          {pt ? "Eventos guardados" : "Saved Events"}
         </h1>
 
         <p className="mt-2 text-slate-500">
-          Your favourite events all in one place.
+          {pt
+            ? "Os seus eventos favoritos, todos num só lugar."
+            : "Your favourite events all in one place."}
         </p>
 
         {loading ? (
@@ -229,7 +266,9 @@ export default function SavedPage() {
           <div className="mt-10 rounded-3xl bg-white p-10 text-center shadow-sm">
 
             <p className="text-slate-500">
-              Loading your saved events...
+              {pt
+                ? "A carregar os seus eventos guardados..."
+                : "Loading your saved events..."}
             </p>
 
           </div>
@@ -238,14 +277,20 @@ export default function SavedPage() {
 
           <div className="mt-10 rounded-3xl bg-white p-10 text-center shadow-sm">
 
-            <div className="text-5xl">♡</div>
+            <div className="text-5xl">
+              ♡
+            </div>
 
             <h2 className="mt-4 text-xl font-bold text-slate-900">
-              No saved events yet
+              {pt
+                ? "Ainda não tem eventos guardados"
+                : "No saved events yet"}
             </h2>
 
             <p className="mt-2 text-slate-500">
-              Tap the heart on an event to save it here.
+              {pt
+                ? "Toque no coração de um evento para o guardar aqui."
+                : "Tap the heart on an event to save it here."}
             </p>
 
           </div>
@@ -257,7 +302,9 @@ export default function SavedPage() {
             {savedEvents.map((event) => {
 
               const status =
-                goingStatuses[Number(event.id)] || null;
+                goingStatuses[
+                  Number(event.id)
+                ] || null;
 
               return (
                 <EventCard
@@ -271,13 +318,18 @@ export default function SavedPage() {
                   latitude={event.latitude}
                   longitude={event.longitude}
                   goingStatus={status}
-                  onGoingStatusChange={handleGoingStatus}
+                  onGoingStatusChange={
+                    handleGoingStatus
+                  }
                   onAddToCalendar={() =>
                     addToCalendar(event)
                   }
-                  onSavedChange={handleSavedChange}
+                  onSavedChange={
+                    handleSavedChange
+                  }
                 />
               );
+
             })}
 
           </div>

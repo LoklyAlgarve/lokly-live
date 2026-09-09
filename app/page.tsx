@@ -6,6 +6,7 @@ import SearchBar from "./components/SearchBar";
 import EventCard from "./components/EventCard";
 import BottomNavigation from "./components/BottomNavigation";
 import { getEvents } from "./data/events";
+import { useLanguage } from "./LanguageContext";
 
 const T = {
   teal: "#149EAF",
@@ -178,7 +179,28 @@ function distanceKm(
   return earthRadius * c;
 }
 
+const categoryTranslations: Record<string, string> = {
+  Music: "Música",
+  Festival: "Festival",
+  Market: "Mercado",
+  "Food & Drink": "Comida e bebida",
+  Sport: "Desporto",
+  Family: "Família",
+  "Arts & Culture": "Artes e cultura",
+  Nightlife: "Vida noturna",
+  Comedy: "Comédia",
+  Theatre: "Teatro",
+  Exhibitions: "Exposições",
+  Workshop: "Workshop",
+  Charity: "Caridade",
+  Community: "Comunidade",
+  Retreat: "Retiro",
+};
+
 export default function HomePage() {
+  const { language } = useLanguage();
+  const pt = language === "pt";
+
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] =
     useState(true);
@@ -251,7 +273,9 @@ export default function HomePage() {
     if (filter === "near") {
       if (!navigator.geolocation) {
         alert(
-          "Location is not available on this device."
+          pt
+            ? "A localização não está disponível neste dispositivo."
+            : "Location is not available on this device."
         );
 
         return;
@@ -266,7 +290,9 @@ export default function HomePage() {
         },
         () => {
           alert(
-            "We couldn't access your location. Please check your location permissions."
+            pt
+              ? "Não foi possível aceder à sua localização. Verifique as permissões de localização."
+              : "We couldn't access your location. Please check your location permissions."
           );
         },
         {
@@ -364,7 +390,9 @@ export default function HomePage() {
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* HERO */}
+
         <section className="mt-3 overflow-hidden rounded-2xl bg-[#149EAF] sm:mt-4 sm:rounded-3xl">
+
           <div className="relative min-h-[150px] overflow-hidden sm:min-h-[250px]">
 
             <img
@@ -380,18 +408,25 @@ export default function HomePage() {
               <div className="max-w-xl text-white">
 
                 <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/80 sm:mb-2 sm:text-sm">
-                  Discover the Algarve
+                  {pt
+                    ? "Descubra o Algarve"
+                    : "Discover the Algarve"}
                 </p>
 
                 <h1 className="text-[30px] font-black leading-[1.05] tracking-tight sm:text-5xl">
-                  What's happening
+                  {pt
+                    ? "O que está a acontecer"
+                    : "What's happening"}
                   <br />
-                  near you?
+                  {pt
+                    ? "perto de si?"
+                    : "near you?"}
                 </h1>
 
                 <p className="mt-2 max-w-md text-xs leading-relaxed text-white/90 sm:mt-4 sm:text-lg">
-                  Events, experiences and local gems
-                  all in one place.
+                  {pt
+                    ? "Eventos, experiências e tesouros locais, tudo num só lugar."
+                    : "Events, experiences and local gems all in one place."}
                 </p>
 
               </div>
@@ -401,13 +436,26 @@ export default function HomePage() {
         </section>
 
         {/* QUICK FILTERS */}
+
         <div className="mt-2.5 flex gap-2 overflow-x-auto pb-1 scrollbar-hide sm:mt-4 sm:gap-3">
 
           {[
-            ["near", "Near Me"],
-            ["today", "Today"],
-            ["weekend", "This Weekend"],
-            ["free", "Free"],
+            [
+              "near",
+              pt ? "Perto de mim" : "Near Me",
+            ],
+            [
+              "today",
+              pt ? "Hoje" : "Today",
+            ],
+            [
+              "weekend",
+              pt ? "Este fim de semana" : "This Weekend",
+            ],
+            [
+              "free",
+              pt ? "Grátis" : "Free",
+            ],
           ].map(([value, label]) => {
 
             const active =
@@ -436,17 +484,19 @@ export default function HomePage() {
         </div>
 
         {/* SEARCH */}
+
         <div className="mt-2.5 sm:mt-4">
           <SearchBar />
         </div>
 
         {/* FILTER PANEL */}
+
         <section className="mt-3 rounded-2xl bg-[#E6FAFC] p-3 sm:mt-5 sm:p-5">
 
           <div className="mb-2 flex items-center justify-between sm:mb-3">
 
             <p className="text-sm font-bold text-slate-600">
-              Filters
+              {pt ? "Filtros" : "Filters"}
             </p>
 
             <button
@@ -459,7 +509,9 @@ export default function HomePage() {
               }}
               className="text-xs font-bold text-[#149EAF] hover:underline"
             >
-              Clear filters
+              {pt
+                ? "Limpar filtros"
+                : "Clear filters"}
             </button>
 
           </div>
@@ -467,13 +519,16 @@ export default function HomePage() {
           <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2 md:gap-4">
 
             {/* EVENT FILTER */}
+
             <div>
 
               <label
                 htmlFor="event-filter"
                 className="mb-1 block text-xs font-semibold text-slate-600 sm:mb-1.5 sm:text-sm"
               >
-                Filter by event
+                {pt
+                  ? "Filtrar por evento"
+                  : "Filter by event"}
               </label>
 
               <div className="relative">
@@ -489,7 +544,9 @@ export default function HomePage() {
                   className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-10 text-xs font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20 sm:h-11 sm:px-4 sm:text-sm"
                 >
                   <option value="">
-                    All event types
+                    {pt
+                      ? "Todos os tipos de evento"
+                      : "All event types"}
                   </option>
 
                   {eventCategories.map(
@@ -498,10 +555,13 @@ export default function HomePage() {
                         key={category}
                         value={category}
                       >
-                        {category}
+                        {pt
+                          ? categoryTranslations[category] || category
+                          : category}
                       </option>
                     )
                   )}
+
                 </select>
 
                 <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 sm:right-4">
@@ -528,13 +588,16 @@ export default function HomePage() {
             </div>
 
             {/* LOCATION FILTER */}
+
             <div>
 
               <label
                 htmlFor="location-filter"
                 className="mb-1 block text-xs font-semibold text-slate-600 sm:mb-1.5 sm:text-sm"
               >
-                Filter by location
+                {pt
+                  ? "Filtrar por localização"
+                  : "Filter by location"}
               </label>
 
               <div className="relative">
@@ -550,7 +613,9 @@ export default function HomePage() {
                   className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-10 text-xs font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20 sm:h-11 sm:px-4 sm:text-sm"
                 >
                   <option value="">
-                    All locations
+                    {pt
+                      ? "Todas as localizações"
+                      : "All locations"}
                   </option>
 
                   {eventLocations.map(
@@ -563,6 +628,7 @@ export default function HomePage() {
                       </option>
                     )
                   )}
+
                 </select>
 
                 <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 sm:right-4">
@@ -593,6 +659,7 @@ export default function HomePage() {
         </section>
 
         {/* EVENTS */}
+
         <section className="mt-5 sm:mt-7">
 
           <div className="mb-2.5 sm:mb-4">
@@ -603,11 +670,13 @@ export default function HomePage() {
                 color: T.navy,
               }}
             >
-              Events
+              {pt ? "Eventos" : "Events"}
             </h2>
 
             <p className="mt-0.5 text-xs text-slate-500 sm:mt-1 sm:text-sm">
-              Discover what's happening across the Algarve
+              {pt
+                ? "Descubra o que está a acontecer por todo o Algarve"
+                : "Discover what's happening across the Algarve"}
             </p>
 
           </div>
@@ -615,19 +684,87 @@ export default function HomePage() {
           {loading ? (
 
             <div className="py-10 text-center text-sm text-slate-500">
-              Loading events...
+              {pt
+                ? "A carregar eventos..."
+                : "Loading events..."}
             </div>
 
           ) : filteredEvents.length === 0 ? (
 
             <div className="rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center shadow-sm">
 
+              {/* LITTLE LOKLY EYES */}
+
+              <div className="mb-3 flex justify-center">
+
+                <svg
+                  width="58"
+                  height="34"
+                  viewBox="0 0 58 34"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <ellipse
+                    cx="18"
+                    cy="18"
+                    rx="12"
+                    ry="14"
+                    stroke="#102F56"
+                    strokeWidth="3"
+                  />
+
+                  <ellipse
+                    cx="40"
+                    cy="18"
+                    rx="12"
+                    ry="14"
+                    stroke="#102F56"
+                    strokeWidth="3"
+                  />
+
+                  <circle
+                    cx="20"
+                    cy="19"
+                    r="5"
+                    fill="#149EAF"
+                  />
+
+                  <circle
+                    cx="38"
+                    cy="19"
+                    r="5"
+                    fill="#149EAF"
+                  />
+
+                  <circle
+                    cx="21.5"
+                    cy="17.5"
+                    r="1.5"
+                    fill="white"
+                  />
+
+                  <circle
+                    cx="39.5"
+                    cy="17.5"
+                    r="1.5"
+                    fill="white"
+                  />
+
+                </svg>
+
+              </div>
+
               <p className="font-semibold text-slate-700">
-                No events found
+                {pt
+                  ? "Nada para ver aqui… ainda!"
+                  : "Nothing to see here… yet!"}
               </p>
 
               <p className="mt-1 text-sm text-slate-500">
-                Try changing your filters.
+                {pt
+                  ? "Tente alterar os seus filtros."
+                  : "Try changing your filters."}
               </p>
 
             </div>
@@ -672,6 +809,7 @@ export default function HomePage() {
       </div>
 
       <BottomNavigation />
+
     </main>
   );
 }

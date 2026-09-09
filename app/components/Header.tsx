@@ -76,6 +76,7 @@ export default function Header() {
               />
             </svg>
           </Link>
+
         </div>
       </header>
 
@@ -94,6 +95,7 @@ export default function Header() {
 
             {/* Menu Header */}
             <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5">
+
               <div>
                 <img
                   src="/images/lokly-logo.png"
@@ -129,6 +131,7 @@ export default function Header() {
                   />
                 </svg>
               </button>
+
             </div>
 
             {/* MENU CONTENT */}
@@ -230,6 +233,7 @@ export default function Header() {
 
               {/* YOUR LOKLY */}
               <div className="mt-8">
+
                 <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
                   {pt ? "O seu Lokly" : "Your Lokly"}
                 </p>
@@ -246,6 +250,21 @@ export default function Header() {
 
                   <span className="font-semibold">
                     {pt ? "Eventos guardados" : "Saved Events"}
+                  </span>
+                </Link>
+
+                {/* PAST EVENTS */}
+                <Link
+                  href="/past"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
+                >
+                  <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
+                    ◷
+                  </span>
+
+                  <span className="font-semibold">
+                    {pt ? "Eventos anteriores" : "Past Events"}
                   </span>
                 </Link>
 
@@ -278,10 +297,12 @@ export default function Header() {
                     {pt ? "A minha localização" : "My Location"}
                   </span>
                 </Link>
+
               </div>
 
               {/* MORE */}
               <div className="mt-8">
+
                 <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
                   {pt ? "Mais" : "More"}
                 </p>
@@ -348,15 +369,18 @@ export default function Header() {
                     {pt ? "Contacte-nos" : "Contact Us"}
                   </span>
                 </button>
+
               </div>
 
               {/* LANGUAGE */}
               <div className="mt-8 border-t border-slate-100 pt-6">
+
                 <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
                   {pt ? "Idioma" : "Language"}
                 </p>
 
                 <div className="grid grid-cols-2 gap-2 px-3">
+
                   <button
                     type="button"
                     onClick={() => setLanguage("en")}
@@ -380,6 +404,7 @@ export default function Header() {
                   >
                     🇵🇹 Português
                   </button>
+
                 </div>
               </div>
 
@@ -387,6 +412,7 @@ export default function Header() {
 
             {/* FOOTER */}
             <div className="border-t border-slate-100 px-6 py-5">
+
               <p className="text-xs text-slate-400">
                 Lokly
               </p>
@@ -396,6 +422,7 @@ export default function Header() {
                   ? "Descobrir • Explorar • Desfrutar"
                   : "Discover • Explore • Enjoy"}
               </p>
+
             </div>
 
           </aside>

@@ -1,7 +1,13 @@
+"use client";
+
 import Header from "../components/Header";
 import BottomNavigation from "../components/BottomNavigation";
+import { useLanguage } from "../LanguageContext";
 
 export default function ContactPage() {
+  const { language } = useLanguage();
+  const pt = language === "pt";
+
   return (
     <main className="min-h-screen bg-slate-50 pb-40">
       <Header />
@@ -9,20 +15,23 @@ export default function ContactPage() {
       <section className="mx-auto max-w-4xl px-5 py-8 sm:px-6 sm:py-12">
         <div className="text-center">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#149EAF]">
-            GET IN TOUCH
+            {pt ? "ENTRE EM CONTACTO" : "GET IN TOUCH"}
           </p>
 
           <h1 className="mt-3 text-4xl font-black leading-tight text-slate-900 sm:text-5xl">
-            Contact Lokly
+            {pt ? "Contacte o Lokly" : "Contact Lokly"}
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
-            Got a question, spotted something that needs changing, or just want
-            to say hello?
+            {pt
+              ? "Tem alguma pergunta, encontrou algo que precisa de ser alterado ou simplesmente quer dizer olá?"
+              : "Got a question, spotted something that needs changing, or just want to say hello?"}
           </p>
 
           <p className="mx-auto mt-3 max-w-2xl text-lg leading-relaxed text-slate-600">
-            We'd love to hear from you.
+            {pt
+              ? "Adoraríamos ouvir de si."
+              : "We'd love to hear from you."}
           </p>
         </div>
 
@@ -45,25 +54,28 @@ export default function ContactPage() {
           </div>
 
           <p className="mt-7 text-base leading-relaxed text-slate-600">
-            Whether you've found an event that's missing, noticed some
-            information that's not quite right, or have an idea that could
-            make Lokly better, get in touch.
+            {pt
+              ? "Se encontrou um evento em falta, reparou que alguma informação não está correta ou tem uma ideia que poderia tornar o Lokly ainda melhor, entre em contacto connosco."
+              : "Whether you've found an event that's missing, noticed some information that's not quite right, or have an idea that could make Lokly better, get in touch."}
           </p>
 
           <div className="mt-8 rounded-2xl bg-[#e5f3f5] p-6">
             <h2 className="text-xl font-black text-slate-900">
-              For event organisers and local businesses
+              {pt
+                ? "Para organizadores de eventos e empresas locais"
+                : "For event organisers and local businesses"}
             </h2>
 
             <p className="mt-3 text-base leading-relaxed text-slate-600">
-              Want to tell more people about your event or have your business
-              featured on Lokly? We'd be happy to hear from you too.
+              {pt
+                ? "Quer dar a conhecer o seu evento a mais pessoas ou ter o seu negócio destacado no Lokly? Teremos todo o gosto em falar consigo."
+                : "Want to tell more people about your event or have your business featured on Lokly? We'd be happy to hear from you too."}
             </p>
           </div>
 
           <div className="mt-8 text-center">
             <p className="text-sm font-bold uppercase tracking-[0.15em] text-slate-500">
-              Email us
+              {pt ? "Envie-nos um email" : "Email us"}
             </p>
 
             <a
@@ -77,7 +89,9 @@ export default function ContactPage() {
 
         <div className="mt-8 text-center">
           <p className="text-sm text-slate-500">
-            Lokly - Discover what's happening in the Algarve.
+            {pt
+              ? "Lokly - Descubra o que está a acontecer no Algarve."
+              : "Lokly - Discover what's happening in the Algarve."}
           </p>
         </div>
       </section>

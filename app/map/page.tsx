@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import BottomNavigation from "../components/BottomNavigation";
 import { getEvents } from "../data/events";
 import { useEffect, useState } from "react";
+import { useLanguage } from "../LanguageContext";
 
 type Event = {
   id: number;
@@ -48,6 +49,25 @@ const categories = [
   "Retreat",
 ];
 
+const categoryTranslations: Record<string, string> = {
+  "All Categories": "Todas as categorias",
+  Music: "Música",
+  Festival: "Festival",
+  Market: "Mercado",
+  "Food & Drink": "Comida e bebida",
+  Sport: "Desporto",
+  Family: "Família",
+  "Arts & Culture": "Artes e cultura",
+  Nightlife: "Vida noturna",
+  Comedy: "Comédia",
+  Theatre: "Teatro",
+  Exhibitions: "Exposições",
+  Workshop: "Workshop",
+  Charity: "Caridade",
+  Community: "Comunidade",
+  Retreat: "Retiro",
+};
+
 const areas = [
   "All Areas",
   "Albufeira",
@@ -63,6 +83,23 @@ const areas = [
   "Tavira",
   "Vila Real de Santo António",
 ];
+
+const areaTranslations: Record<string, string> = {
+  "All Areas": "Todas as áreas",
+  Albufeira: "Albufeira",
+  Aljezur: "Aljezur",
+  Carvoeiro: "Carvoeiro",
+  Faro: "Faro",
+  Lagos: "Lagos",
+  Lagoa: "Lagoa",
+  Loulé: "Loulé",
+  Olhão: "Olhão",
+  Portimão: "Portimão",
+  Silves: "Silves",
+  Tavira: "Tavira",
+  "Vila Real de Santo António":
+    "Vila Real de Santo António",
+};
 
 function distanceInKm(
   lat1: number,
@@ -88,6 +125,9 @@ function distanceInKm(
 }
 
 export default function MapPage() {
+  const { language } = useLanguage();
+  const pt = language === "pt";
+
   const [events, setEvents] = useState<Event[]>([]);
 
   const [userLocation, setUserLocation] = useState<{
@@ -120,13 +160,20 @@ export default function MapPage() {
   function findNearMe() {
     if (!navigator.geolocation) {
       setLocationMessage(
-        "Location services are not available in this browser."
+        pt
+          ? "Os serviços de localização não estão disponíveis neste navegador."
+          : "Location services are not available in this browser."
       );
       return;
     }
 
     setLocating(true);
-    setLocationMessage("Finding your location...");
+
+    setLocationMessage(
+      pt
+        ? "A encontrar a sua localização..."
+        : "Finding your location..."
+    );
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -153,7 +200,9 @@ export default function MapPage() {
           setLocating(false);
 
           setLocationMessage(
-            "Location permission was denied. Please allow location access for Lokly in your browser settings."
+            pt
+              ? "A permissão de localização foi recusada. Permita o acesso à localização do Lokly nas definições do seu navegador."
+              : "Location permission was denied. Please allow location access for Lokly in your browser settings."
           );
 
           return;
@@ -161,7 +210,9 @@ export default function MapPage() {
 
         if (error.code === 2) {
           setLocationMessage(
-            "Trying another way to find your location..."
+            pt
+              ? "A tentar outra forma de encontrar a sua localização..."
+              : "Trying another way to find your location..."
           );
 
           navigator.geolocation.getCurrentPosition(
@@ -191,17 +242,23 @@ export default function MapPage() {
 
               if (fallbackError.code === 1) {
                 setLocationMessage(
-                  "Location permission was denied. Please allow location access for Lokly in your browser settings."
+                  pt
+                    ? "A permissão de localização foi recusada. Permita o acesso à localização do Lokly nas definições do seu navegador."
+                    : "Location permission was denied. Please allow location access for Lokly in your browser settings."
                 );
               } else if (
                 fallbackError.code === 3
               ) {
                 setLocationMessage(
-                  "The location request took too long. Please try again."
+                  pt
+                    ? "O pedido de localização demorou demasiado tempo. Tente novamente."
+                    : "The location request took too long. Please try again."
                 );
               } else {
                 setLocationMessage(
-                  "We couldn't determine your location. Please check that location services are enabled on your computer and try again."
+                  pt
+                    ? "Não foi possível determinar a sua localização. Verifique se os serviços de localização estão ativados no seu computador e tente novamente."
+                    : "We couldn't determine your location. Please check that location services are enabled on your computer and try again."
                 );
               }
             },
@@ -219,7 +276,9 @@ export default function MapPage() {
           setLocating(false);
 
           setLocationMessage(
-            "The location request took too long. Please try again."
+            pt
+              ? "O pedido de localização demorou demasiado tempo. Tente novamente."
+              : "The location request took too long. Please try again."
           );
 
           return;
@@ -228,7 +287,9 @@ export default function MapPage() {
         setLocating(false);
 
         setLocationMessage(
-          "We couldn't find your location. Please try again."
+          pt
+            ? "Não foi possível encontrar a sua localização. Tente novamente."
+            : "We couldn't find your location. Please try again."
         );
       },
       {
@@ -281,13 +342,17 @@ export default function MapPage() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
 
           <div>
+
             <h1 className="text-[24px] font-black text-[#102b52] sm:text-4xl">
-              Event Map
+              {pt ? "Mapa de eventos" : "Event Map"}
             </h1>
 
             <p className="mt-1 text-[12px] text-slate-500 sm:mt-2 sm:text-base">
-              Discover events happening across the Algarve.
+              {pt
+                ? "Descubra os eventos que acontecem por todo o Algarve."
+                : "Discover events happening across the Algarve."}
             </p>
+
           </div>
 
           <button
@@ -319,9 +384,14 @@ export default function MapPage() {
 
             <span>
               {locating
-                ? "Finding you..."
+                ? pt
+                  ? "A encontrar..."
+                  : "Finding you..."
+                : pt
+                ? "Perto de mim"
                 : "Near Me"}
             </span>
+
           </button>
 
         </div>
@@ -333,14 +403,18 @@ export default function MapPage() {
           {/* CATEGORY */}
 
           <div className="relative">
+
             <label
               htmlFor="category-filter"
               className="sr-only"
             >
-              Filter by category
+              {pt
+                ? "Filtrar por categoria"
+                : "Filter by category"}
             </label>
 
             <div className="relative">
+
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#149EAF]"
@@ -371,7 +445,9 @@ export default function MapPage() {
                     key={category}
                     value={category}
                   >
-                    {category}
+                    {pt
+                      ? categoryTranslations[category]
+                      : category}
                   </option>
                 ))}
               </select>
@@ -390,20 +466,26 @@ export default function MapPage() {
                   d="M6 9l6 6 6-6"
                 />
               </svg>
+
             </div>
+
           </div>
 
           {/* AREA */}
 
           <div className="relative">
+
             <label
               htmlFor="area-filter"
               className="sr-only"
             >
-              Filter by area
+              {pt
+                ? "Filtrar por área"
+                : "Filter by area"}
             </label>
 
             <div className="relative">
+
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#149EAF]"
@@ -440,7 +522,9 @@ export default function MapPage() {
                     key={area}
                     value={area}
                   >
-                    {area}
+                    {pt
+                      ? areaTranslations[area]
+                      : area}
                   </option>
                 ))}
               </select>
@@ -459,7 +543,9 @@ export default function MapPage() {
                   d="M6 9l6 6 6-6"
                 />
               </svg>
+
             </div>
+
           </div>
 
         </div>
@@ -469,27 +555,45 @@ export default function MapPage() {
         <div className="mt-3 flex items-center justify-between">
 
           <p className="text-[12px] font-semibold text-slate-500 sm:text-sm">
-            {visibleEvents.length} event
-            {visibleEvents.length === 1
-              ? ""
-              : "s"} showing
+
+            {visibleEvents.length}{" "}
+
+            {pt
+              ? visibleEvents.length === 1
+                ? "evento"
+                : "eventos"
+              : `event${
+                  visibleEvents.length === 1
+                    ? ""
+                    : "s"
+                }`}
+
+            {pt
+              ? " a mostrar"
+              : " showing"}
+
           </p>
 
           {(selectedCategory !==
             "All Categories" ||
             selectedArea !== "All Areas") && (
+
             <button
               type="button"
               onClick={() => {
                 setSelectedCategory(
                   "All Categories"
                 );
+
                 setSelectedArea("All Areas");
               }}
               className="text-[12px] font-bold text-[#149EAF] sm:text-sm"
             >
-              Clear filters
+              {pt
+                ? "Limpar filtros"
+                : "Clear filters"}
             </button>
+
           )}
 
         </div>
@@ -500,33 +604,42 @@ export default function MapPage() {
           !locationMessage.startsWith(
             "Location found:"
           ) && (
+
             <div className="mt-3 rounded-2xl bg-white px-4 py-3 text-[12px] font-semibold text-slate-600 shadow-sm ring-1 ring-slate-100 sm:mt-5 sm:px-5 sm:py-4 sm:text-sm">
               {locationMessage}
             </div>
+
           )}
 
         {/* NEAR ME */}
 
         {userLocation && (
+
           <div className="mt-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100 sm:mt-4">
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
               <div>
+
                 <p className="text-sm font-bold text-slate-900">
-                  Events near you
+                  {pt
+                    ? "Eventos perto de si"
+                    : "Events near you"}
                 </p>
 
                 <p className="text-[12px] text-slate-500 sm:text-sm">
-                  Showing events within{" "}
-                  {radius} km
+                  {pt
+                    ? `A mostrar eventos num raio de ${radius} km`
+                    : `Showing events within ${radius} km`}
                 </p>
+
               </div>
 
               <div className="flex flex-wrap gap-2">
 
                 {[5, 10, 25, 50].map(
                   (distance) => (
+
                     <button
                       key={distance}
                       type="button"
@@ -541,6 +654,7 @@ export default function MapPage() {
                     >
                       {distance} km
                     </button>
+
                   )
                 )}
 
@@ -549,6 +663,7 @@ export default function MapPage() {
             </div>
 
           </div>
+
         )}
 
         {/* MAP */}

@@ -2,16 +2,37 @@
 
 import Header from "../components/Header";
 import BottomNavigation from "../components/BottomNavigation";
+import { useLanguage } from "../LanguageContext";
 
 export default function TellAFriendPage() {
+  const { language } = useLanguage();
+  const pt = language === "pt";
+
   async function copyLink() {
     try {
       await navigator.clipboard.writeText("https://www.lokly.live");
-      alert("Lokly link copied!");
+
+      alert(
+        pt
+          ? "Link do Lokly copiado!"
+          : "Lokly link copied!"
+      );
     } catch {
-      alert("Copying the link wasn't available on this device.");
+      alert(
+        pt
+          ? "Não foi possível copiar o link neste dispositivo."
+          : "Copying the link wasn't available on this device."
+      );
     }
   }
+
+  const whatsappMessage = pt
+    ? "Já descobriu o Lokly? É uma ótima forma de descobrir o que está a acontecer no Algarve: https://www.lokly.live"
+    : "Have you found Lokly yet? It's a great way to discover what's happening in the Algarve: https://www.lokly.live";
+
+  const emailSubject = pt
+    ? "Já descobriu o Lokly?"
+    : "Have you found Lokly?";
 
   return (
     <main className="min-h-screen bg-slate-50 pb-40">
@@ -21,16 +42,19 @@ export default function TellAFriendPage() {
 
         <div className="text-center">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#149EAF]">
-            SPREAD THE WORD
+            {pt ? "PARTILHE" : "SPREAD THE WORD"}
           </p>
 
           <h1 className="mt-3 text-4xl font-black leading-tight text-slate-900 sm:text-5xl">
-            Tell a friend about Lokly
+            {pt
+              ? "Fale aos seus amigos sobre o Lokly"
+              : "Tell a friend about Lokly"}
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
-            Know someone who'd love to know what's happening in the Algarve?
-            Send them Lokly and help them discover what's going on.
+            {pt
+              ? "Conhece alguém que gostaria de saber o que está a acontecer no Algarve? Envie-lhe o Lokly e ajude-o a descobrir o que se passa."
+              : "Know someone who'd love to know what's happening in the Algarve? Send them Lokly and help them discover what's going on."}
           </p>
         </div>
 
@@ -66,30 +90,39 @@ export default function TellAFriendPage() {
           </div>
 
           <h2 className="mt-7 text-2xl font-black text-slate-900">
-            Share Lokly
+            {pt ? "Partilhe o Lokly" : "Share Lokly"}
           </h2>
 
           <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-slate-600">
-            Markets, music, festivals, food, family events and plenty more -
-            there might be something your friends don't know about yet.
+            {pt
+              ? "Mercados, música, festivais, comida, eventos para famílias e muito mais - pode haver algo que os seus amigos ainda não conhecem."
+              : "Markets, music, festivals, food, family events and plenty more - there might be something your friends don't know about yet."}
           </p>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
 
             <a
-              href="https://wa.me/?text=Have%20you%20found%20Lokly%20yet%3F%20It%27s%20a%20great%20way%20to%20discover%20what%27s%20happening%20in%20the%20Algarve%3A%20https%3A%2F%2Fwww.lokly.live"
+              href={`https://wa.me/?text=${encodeURIComponent(
+                whatsappMessage
+              )}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex min-h-14 items-center justify-center rounded-2xl bg-[#149EAF] px-5 text-base font-bold text-white transition hover:opacity-90 active:scale-[0.98]"
             >
-              Share on WhatsApp
+              {pt
+                ? "Partilhar no WhatsApp"
+                : "Share on WhatsApp"}
             </a>
 
             <a
-              href="mailto:?subject=Have%20you%20found%20Lokly%3F&body=Have%20you%20found%20Lokly%20yet%3F%20It%27s%20a%20great%20way%20to%20discover%20what%27s%20happening%20in%20the%20Algarve%3A%20https%3A%2F%2Fwww.lokly.live"
+              href={`mailto:?subject=${encodeURIComponent(
+                emailSubject
+              )}&body=${encodeURIComponent(whatsappMessage)}`}
               className="flex min-h-14 items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 text-base font-bold text-slate-700 transition hover:bg-slate-50 active:scale-[0.98]"
             >
-              Share by Email
+              {pt
+                ? "Partilhar por email"
+                : "Share by Email"}
             </a>
 
             <button
@@ -97,7 +130,7 @@ export default function TellAFriendPage() {
               onClick={copyLink}
               className="flex min-h-14 items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 text-base font-bold text-slate-700 transition hover:bg-slate-50 active:scale-[0.98]"
             >
-              Copy Link
+              {pt ? "Copiar link" : "Copy Link"}
             </button>
 
           </div>
@@ -133,12 +166,15 @@ export default function TellAFriendPage() {
             </div>
 
             <h2 className="mt-6 text-2xl font-black text-slate-900">
-              Want Lokly one tap away?
+              {pt
+                ? "Quer ter o Lokly a um toque de distância?"
+                : "Want Lokly one tap away?"}
             </h2>
 
             <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-slate-600">
-              Add Lokly to your phone's home screen and it'll be there whenever
-              you're wondering what's on.
+              {pt
+                ? "Adicione o Lokly ao ecrã inicial do seu telemóvel e estará sempre disponível quando quiser saber o que está a acontecer."
+                : "Add Lokly to your phone's home screen and it'll be there whenever you're wondering what's on."}
             </p>
           </div>
 
@@ -146,14 +182,35 @@ export default function TellAFriendPage() {
 
             <div className="rounded-2xl bg-[#e5f3f5] p-6">
               <h3 className="text-lg font-black text-slate-900">
-                iPhone & iPad
+                iPhone e iPad
               </h3>
 
               <ol className="mt-4 space-y-2 text-sm leading-relaxed text-slate-600">
-                <li><strong>1.</strong> Open lokly.live in Safari.</li>
-                <li><strong>2.</strong> Tap the Share button.</li>
-                <li><strong>3.</strong> Tap Add to Home Screen.</li>
-                <li><strong>4.</strong> Tap Add.</li>
+                <li>
+                  <strong>1.</strong>{" "}
+                  {pt
+                    ? "Abra o lokly.live no Safari."
+                    : "Open lokly.live in Safari."}
+                </li>
+
+                <li>
+                  <strong>2.</strong>{" "}
+                  {pt
+                    ? "Toque no botão Partilhar."
+                    : "Tap the Share button."}
+                </li>
+
+                <li>
+                  <strong>3.</strong>{" "}
+                  {pt
+                    ? "Toque em Adicionar ao ecrã principal."
+                    : "Tap Add to Home Screen."}
+                </li>
+
+                <li>
+                  <strong>4.</strong>{" "}
+                  {pt ? "Toque em Adicionar." : "Tap Add."}
+                </li>
               </ol>
             </div>
 
@@ -163,10 +220,33 @@ export default function TellAFriendPage() {
               </h3>
 
               <ol className="mt-4 space-y-2 text-sm leading-relaxed text-slate-600">
-                <li><strong>1.</strong> Open lokly.live in Chrome.</li>
-                <li><strong>2.</strong> Tap the ⋮ menu.</li>
-                <li><strong>3.</strong> Tap Add to Home screen or Install app.</li>
-                <li><strong>4.</strong> Tap Add or Install.</li>
+                <li>
+                  <strong>1.</strong>{" "}
+                  {pt
+                    ? "Abra o lokly.live no Chrome."
+                    : "Open lokly.live in Chrome."}
+                </li>
+
+                <li>
+                  <strong>2.</strong>{" "}
+                  {pt
+                    ? "Toque no menu ⋮."
+                    : "Tap the ⋮ menu."}
+                </li>
+
+                <li>
+                  <strong>3.</strong>{" "}
+                  {pt
+                    ? "Toque em Adicionar ao ecrã inicial ou Instalar aplicação."
+                    : "Tap Add to Home screen or Install app."}
+                </li>
+
+                <li>
+                  <strong>4.</strong>{" "}
+                  {pt
+                    ? "Toque em Adicionar ou Instalar."
+                    : "Tap Add or Install."}
+                </li>
               </ol>
             </div>
 
@@ -175,11 +255,15 @@ export default function TellAFriendPage() {
 
         <div className="mt-8 rounded-3xl bg-[#e5f3f5] p-7 text-center sm:p-9">
           <p className="text-lg font-bold text-slate-900">
-            Because nobody wants to hear...
+            {pt
+              ? "Porque ninguém quer ouvir..."
+              : "Because nobody wants to hear..."}
           </p>
 
           <p className="mt-3 text-xl font-black text-[#149EAF]">
-            "Oh, you should have gone - it was brilliant."
+            {pt
+              ? '"Ah, devias ter ido - foi fantástico."'
+              : '"Oh, you should have gone - it was brilliant."'}
           </p>
         </div>
 
