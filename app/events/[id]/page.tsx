@@ -126,13 +126,14 @@ export default async function EventPage({ params }: PageProps) {
                 </h1>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              {/* Event information */}
+              <div className="grid grid-cols-2 gap-3">
 
                 {/* Date */}
-                <div className="flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
+                <div className="flex min-w-0 items-start gap-2.5 rounded-2xl bg-slate-50 p-3 sm:p-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="mt-0.5 h-5 w-5 shrink-0 text-[#149EAF]"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-[#149EAF] sm:h-5 sm:w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -152,22 +153,22 @@ export default async function EventPage({ params }: PageProps) {
                     />
                   </svg>
 
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
                       Date
                     </p>
 
-                    <p className="mt-1 font-semibold text-slate-800">
+                    <p className="mt-1 truncate text-sm font-semibold text-slate-800 sm:text-base">
                       {event.date}
                     </p>
                   </div>
                 </div>
 
                 {/* Time */}
-                <div className="flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
+                <div className="flex min-w-0 items-start gap-2.5 rounded-2xl bg-slate-50 p-3 sm:p-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="mt-0.5 h-5 w-5 shrink-0 text-[#149EAF]"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-[#149EAF] sm:h-5 sm:w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -181,22 +182,22 @@ export default async function EventPage({ params }: PageProps) {
                     />
                   </svg>
 
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
                       Time
                     </p>
 
-                    <p className="mt-1 font-semibold text-slate-800">
-                      {event.time || "Time not specified"}
+                    <p className="mt-1 truncate text-sm font-semibold text-slate-800 sm:text-base">
+                      {event.time || "Not specified"}
                     </p>
                   </div>
                 </div>
 
                 {/* Location */}
-                <div className="flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
+                <div className="flex min-w-0 items-start gap-2.5 rounded-2xl bg-slate-50 p-3 sm:p-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="mt-0.5 h-5 w-5 shrink-0 text-[#149EAF]"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-[#149EAF] sm:h-5 sm:w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -210,39 +211,39 @@ export default async function EventPage({ params }: PageProps) {
                     <circle cx="12" cy="10" r="2.5" />
                   </svg>
 
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
                       Location
                     </p>
 
-                    <p className="mt-1 font-semibold text-slate-800">
+                    <p className="mt-1 truncate text-sm font-semibold text-slate-800 sm:text-base">
                       {event.location}
                     </p>
                   </div>
                 </div>
 
                 {/* Price */}
-                <div className="flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
-                  <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[22px] font-medium leading-none text-[#149EAF]">
+                <div className="flex min-w-0 items-start gap-2.5 rounded-2xl bg-slate-50 p-3 sm:p-4">
+                  <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center text-lg font-medium leading-none text-[#149EAF] sm:h-5 sm:w-5 sm:text-[22px]">
                     €
                   </div>
 
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
                       Price
                     </p>
 
-                    <p className="mt-1 font-semibold text-slate-800">
+                    <p className="mt-1 truncate text-sm font-semibold text-slate-800 sm:text-base">
                       {event.price}
                     </p>
                   </div>
                 </div>
 
                 {/* Wheelchair Friendly */}
-                <div className="flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
+                <div className="flex min-w-0 items-start gap-2.5 rounded-2xl bg-slate-50 p-3 sm:p-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="mt-0.5 h-5 w-5 shrink-0 text-[#149EAF]"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-[#149EAF] sm:h-5 sm:w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -268,12 +269,12 @@ export default async function EventPage({ params }: PageProps) {
                   </svg>
 
                   <div className="min-w-0">
-                    <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
                       Wheelchair Friendly
                     </p>
 
                     <span
-                      className={`mt-2 inline-flex rounded-full px-3 py-1 text-xs font-bold ${getFriendlyBadgeClass(
+                      className={`mt-1.5 inline-flex rounded-full px-2.5 py-1 text-[11px] font-bold ${getFriendlyBadgeClass(
                         wheelchairFriendly
                       )}`}
                     >
@@ -283,10 +284,10 @@ export default async function EventPage({ params }: PageProps) {
                 </div>
 
                 {/* Pet Friendly */}
-                <div className="flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
+                <div className="flex min-w-0 items-start gap-2.5 rounded-2xl bg-slate-50 p-3 sm:p-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="mt-0.5 h-5 w-5 shrink-0 text-[#149EAF]"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-[#149EAF] sm:h-5 sm:w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -304,12 +305,12 @@ export default async function EventPage({ params }: PageProps) {
                   </svg>
 
                   <div className="min-w-0">
-                    <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
                       Pet Friendly
                     </p>
 
                     <span
-                      className={`mt-2 inline-flex rounded-full px-3 py-1 text-xs font-bold ${getFriendlyBadgeClass(
+                      className={`mt-1.5 inline-flex rounded-full px-2.5 py-1 text-[11px] font-bold ${getFriendlyBadgeClass(
                         petFriendly
                       )}`}
                     >
