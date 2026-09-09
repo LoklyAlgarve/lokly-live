@@ -63,33 +63,29 @@ export default async function Home() {
 
           <button
             type="button"
-            className="flex h-12 shrink-0 items-center gap-2 rounded-full bg-[#12aebb] px-5 text-sm font-bold text-white shadow-md"
+            className="flex h-12 shrink-0 items-center justify-center rounded-full bg-[#12aebb] px-5 text-sm font-bold text-white shadow-md"
           >
-            <span className="text-lg">⌖</span>
             Near Me
           </button>
 
           <button
             type="button"
-            className="flex h-12 shrink-0 items-center gap-2 rounded-full bg-white px-5 text-sm font-bold text-slate-800 shadow-md ring-1 ring-slate-100"
+            className="flex h-12 shrink-0 items-center justify-center rounded-full bg-white px-5 text-sm font-bold text-slate-800 shadow-md ring-1 ring-slate-100"
           >
-            <span className="text-lg">▣</span>
             Today
           </button>
 
           <button
             type="button"
-            className="flex h-12 shrink-0 items-center gap-2 rounded-full bg-white px-5 text-sm font-bold text-slate-800 shadow-md ring-1 ring-slate-100"
+            className="flex h-12 shrink-0 items-center justify-center rounded-full bg-white px-5 text-sm font-bold text-slate-800 shadow-md ring-1 ring-slate-100"
           >
-            <span className="text-lg">▣</span>
             This Weekend
           </button>
 
           <button
             type="button"
-            className="flex h-12 shrink-0 items-center gap-2 rounded-full bg-white px-5 text-sm font-bold text-slate-800 shadow-md ring-1 ring-slate-100"
+            className="flex h-12 shrink-0 items-center justify-center rounded-full bg-white px-5 text-sm font-bold text-slate-800 shadow-md ring-1 ring-slate-100"
           >
-            <span className="text-lg">◇</span>
             Free
           </button>
 

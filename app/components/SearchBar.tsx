@@ -1,17 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function SearchBar() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
   const [search, setSearch] = useState("");
-  const [clickedFilter, setClickedFilter] = useState<string | null>(null);
-
-  const urlFilter = searchParams?.get("filter") || "";
-  const activeFilter = clickedFilter || urlFilter;
 
   function handleSearch() {
     const query = search.trim();
@@ -21,22 +15,6 @@ export default function SearchBar() {
     router.push(
       "/search?query=" + encodeURIComponent(query)
     );
-  }
-
-  function handleFilter(filter: string) {
-    setClickedFilter(filter);
-
-    router.push(
-      "/search?filter=" + encodeURIComponent(filter)
-    );
-  }
-
-  function filterClass(filter: string) {
-    const active = activeFilter === filter;
-
-    return active
-      ? "shrink-0 whitespace-nowrap rounded-full bg-[#149EAF] px-5 py-2.5 text-sm font-semibold text-white shadow"
-      : "shrink-0 whitespace-nowrap rounded-full bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow";
   }
 
   return (
@@ -102,50 +80,6 @@ export default function SearchBar() {
             <circle cx="10" cy="10" r="6" />
           </svg>
 
-        </button>
-
-      </div>
-
-      <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1 sm:pb-2">
-
-        <button
-          type="button"
-          onClick={() => handleFilter("today")}
-          className={filterClass("today")}
-        >
-          Today
-        </button>
-
-        <button
-          type="button"
-          onClick={() => handleFilter("weekend")}
-          className={filterClass("weekend")}
-        >
-          This Weekend
-        </button>
-
-        <button
-          type="button"
-          onClick={() => handleFilter("free")}
-          className={filterClass("free")}
-        >
-          Free
-        </button>
-
-        <button
-          type="button"
-          onClick={() => handleFilter("family")}
-          className={filterClass("family")}
-        >
-          Family
-        </button>
-
-        <button
-          type="button"
-          onClick={() => handleFilter("music")}
-          className={filterClass("music")}
-        >
-          Music
         </button>
 
       </div>
