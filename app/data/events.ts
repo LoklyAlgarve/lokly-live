@@ -12,6 +12,8 @@ export type Event = {
   website?: string;
   latitude: number;
   longitude: number;
+  wheelchairFriendly: string;
+  petFriendly: string;
 };
 
 const EVENTS_URL =
@@ -34,6 +36,8 @@ type SheetEvent = {
   "Website"?: string;
   "Price"?: string;
   "Featured"?: string;
+  "Wheelchair Friendly"?: string;
+  "Pet Friendly"?: string;
 };
 
 export async function getEvents(): Promise<Event[]> {
@@ -51,7 +55,8 @@ export async function getEvents(): Promise<Event[]> {
     return data.map((item, index) => ({
       id: index + 1,
       title: item["Event Name"] || "Untitled Event",
-      location: item["Town"] || item["Venue"] || "Algarve",
+      location:
+        item["Town"] || item["Venue"] || "Algarve",
       date: item["Start Date"] || "",
       time: item["Start Time"] || "",
       category: item["Category"] || "",
@@ -62,12 +67,23 @@ export async function getEvents(): Promise<Event[]> {
       featured:
         String(item["Featured"]).toLowerCase() === "true",
       description: item["Description"] || "",
-      website: item["Website"] || item["Ticket Link"] || "",
+      website:
+        item["Website"] || item["Ticket Link"] || "",
       latitude: Number(item["Latitude"]) || 0,
       longitude: Number(item["Longitude"]) || 0,
+
+      wheelchairFriendly:
+        item["Wheelchair Friendly"] || "Unknown",
+
+      petFriendly:
+        item["Pet Friendly"] || "Unknown",
     }));
   } catch (error) {
-    console.error("Could not load Lokly events:", error);
+    console.error(
+      "Could not load Lokly events:",
+      error
+    );
+
     return [];
   }
 }

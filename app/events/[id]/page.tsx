@@ -10,6 +10,23 @@ type PageProps = {
   }>;
 };
 
+function getFriendlyValue(value: string) {
+  const normalised = value?.trim().toLowerCase();
+
+  if (normalised === "yes") return "Yes";
+  if (normalised === "no") return "No";
+
+  return "Unknown";
+}
+
+function getFriendlyBadgeClass(value: string) {
+  return value === "Yes"
+    ? "bg-emerald-100 text-emerald-700"
+    : value === "No"
+      ? "bg-slate-200 text-slate-600"
+      : "bg-slate-100 text-slate-500";
+}
+
 export default async function EventPage({ params }: PageProps) {
   const { id } = await params;
   const events = await getEvents();
@@ -48,6 +65,14 @@ export default async function EventPage({ params }: PageProps) {
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
     event.location
   )}`;
+
+  const wheelchairFriendly = getFriendlyValue(
+    event.wheelchairFriendly
+  );
+
+  const petFriendly = getFriendlyValue(
+    event.petFriendly
+  );
 
   return (
     <main className="min-h-screen bg-slate-50 pb-32">
@@ -210,6 +235,86 @@ export default async function EventPage({ params }: PageProps) {
                     <p className="mt-1 font-semibold text-slate-800">
                       {event.price}
                     </p>
+                  </div>
+                </div>
+
+                {/* Wheelchair Friendly */}
+                <div className="flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="mt-0.5 h-5 w-5 shrink-0 text-[#149EAF]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <circle cx="9" cy="5" r="2" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 8v5l4 2"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 10h6l2 4"
+                    />
+                    <circle cx="10" cy="17" r="4" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M14 17h4"
+                    />
+                  </svg>
+
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+                      Wheelchair Friendly
+                    </p>
+
+                    <span
+                      className={`mt-2 inline-flex rounded-full px-3 py-1 text-xs font-bold ${getFriendlyBadgeClass(
+                        wheelchairFriendly
+                      )}`}
+                    >
+                      {wheelchairFriendly}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Pet Friendly */}
+                <div className="flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="mt-0.5 h-5 w-5 shrink-0 text-[#149EAF]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 20c-3.5 0-6-2.5-6-5.5 0-2.2 1.4-3.5 3-4.2C9.7 9.7 10.5 8 12 8s2.3 1.7 3 2.3c1.6.7 3 2 3 4.2C18 17.5 15.5 20 12 20z"
+                    />
+                    <circle cx="7" cy="8" r="1.5" />
+                    <circle cx="10" cy="5.5" r="1.5" />
+                    <circle cx="14" cy="5.5" r="1.5" />
+                    <circle cx="17" cy="8" r="1.5" />
+                  </svg>
+
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+                      Pet Friendly
+                    </p>
+
+                    <span
+                      className={`mt-2 inline-flex rounded-full px-3 py-1 text-xs font-bold ${getFriendlyBadgeClass(
+                        petFriendly
+                      )}`}
+                    >
+                      {petFriendly}
+                    </span>
                   </div>
                 </div>
 

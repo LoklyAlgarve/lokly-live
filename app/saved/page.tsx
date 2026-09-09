@@ -12,11 +12,9 @@ type GoingStatus = "yes" | "maybe" | null;
 export default function SavedPage() {
   const [savedIds, setSavedIds] = useState<number[]>([]);
   const [events, setEvents] = useState<any[]>([]);
-
   const [goingStatuses, setGoingStatuses] = useState<
     Record<number, GoingStatus>
   >({});
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -218,7 +216,7 @@ export default function SavedPage() {
 
       <section className="mx-auto max-w-7xl px-6 py-8">
 
-        <h1 className="text-4xl font-black text-slate-900">
+        <h1 className="text-2xl font-black text-slate-900 sm:text-3xl">
           Saved Events
         </h1>
 
@@ -262,7 +260,6 @@ export default function SavedPage() {
                 goingStatuses[Number(event.id)] || null;
 
               return (
-
                 <EventCard
                   key={event.id}
                   id={event.id}
@@ -280,9 +277,7 @@ export default function SavedPage() {
                   }
                   onSavedChange={handleSavedChange}
                 />
-
               );
-
             })}
 
           </div>
