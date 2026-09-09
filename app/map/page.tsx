@@ -10,6 +10,7 @@ type Event = {
   id: number;
   title: string;
   location: string;
+  category: string;
   latitude: number;
   longitude: number;
 };
@@ -19,7 +20,7 @@ const EventMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-[65vh] min-h-[500px] items-center justify-center bg-slate-100">
+      <div className="flex h-[62vh] min-h-[460px] items-center justify-center bg-slate-100">
         <p className="font-semibold text-slate-500">
           Loading map...
         </p>
@@ -27,6 +28,41 @@ const EventMap = dynamic(
     ),
   }
 );
+
+const categories = [
+  "All Categories",
+  "Music",
+  "Festival",
+  "Market",
+  "Food & Drink",
+  "Sport",
+  "Family",
+  "Arts & Culture",
+  "Nightlife",
+  "Comedy",
+  "Theatre",
+  "Exhibitions",
+  "Workshop",
+  "Charity",
+  "Community",
+  "Retreat",
+];
+
+const areas = [
+  "All Areas",
+  "Albufeira",
+  "Aljezur",
+  "Carvoeiro",
+  "Faro",
+  "Lagos",
+  "Lagoa",
+  "Loulé",
+  "Olhão",
+  "Portimão",
+  "Silves",
+  "Tavira",
+  "Vila Real de Santo António",
+];
 
 function distanceInKm(
   lat1: number,
@@ -61,9 +97,16 @@ export default function MapPage() {
 
   const [radius, setRadius] = useState(10);
 
-  const [locationMessage, setLocationMessage] = useState("");
+  const [locationMessage, setLocationMessage] =
+    useState("");
 
   const [locating, setLocating] = useState(false);
+
+  const [selectedCategory, setSelectedCategory] =
+    useState("All Categories");
+
+  const [selectedArea, setSelectedArea] =
+    useState("All Areas");
 
   useEffect(() => {
     async function loadEvents() {
@@ -98,7 +141,9 @@ export default function MapPage() {
         setRadius(10);
 
         setLocationMessage(
-          `Location found: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
+          `Location found: ${latitude.toFixed(
+            4
+          )}, ${longitude.toFixed(4)}`
         );
 
         setLocating(false);
@@ -121,8 +166,10 @@ export default function MapPage() {
 
           navigator.geolocation.getCurrentPosition(
             (position) => {
-              const latitude = position.coords.latitude;
-              const longitude = position.coords.longitude;
+              const latitude =
+                position.coords.latitude;
+              const longitude =
+                position.coords.longitude;
 
               setUserLocation({
                 latitude,
@@ -132,7 +179,9 @@ export default function MapPage() {
               setRadius(10);
 
               setLocationMessage(
-                `Location found: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
+                `Location found: ${latitude.toFixed(
+                  4
+                )}, ${longitude.toFixed(4)}`
               );
 
               setLocating(false);
@@ -144,7 +193,9 @@ export default function MapPage() {
                 setLocationMessage(
                   "Location permission was denied. Please allow location access for Lokly in your browser settings."
                 );
-              } else if (fallbackError.code === 3) {
+              } else if (
+                fallbackError.code === 3
+              ) {
                 setLocationMessage(
                   "The location request took too long. Please try again."
                 );
@@ -188,7 +239,7 @@ export default function MapPage() {
     );
   }
 
-  const visibleEvents = userLocation
+  const nearEvents = userLocation
     ? events.filter((event) => {
         const distance = distanceInKm(
           userLocation.latitude,
@@ -201,21 +252,40 @@ export default function MapPage() {
       })
     : events;
 
+  const categoryFilteredEvents =
+    selectedCategory === "All Categories"
+      ? nearEvents
+      : nearEvents.filter(
+          (event) =>
+            event.category === selectedCategory
+        );
+
+  const visibleEvents =
+    selectedArea === "All Areas"
+      ? categoryFilteredEvents
+      : categoryFilteredEvents.filter((event) =>
+          event.location
+            .toLowerCase()
+            .includes(selectedArea.toLowerCase())
+        );
+
   return (
-    <main className="relative min-h-screen bg-slate-50 pb-36">
+    <main className="relative min-h-screen bg-white pb-32 sm:pb-40">
 
       <Header />
 
-      <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
+      <section className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 sm:pt-8">
 
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        {/* HEADER */}
+
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
 
           <div>
-            <h1 className="text-3xl font-black text-slate-900 sm:text-4xl">
+            <h1 className="text-[24px] font-black text-[#102b52] sm:text-4xl">
               Event Map
             </h1>
 
-            <p className="mt-2 text-slate-500">
+            <p className="mt-1 text-[12px] text-slate-500 sm:mt-2 sm:text-base">
               Discover events happening across the Algarve.
             </p>
           </div>
@@ -224,11 +294,11 @@ export default function MapPage() {
             type="button"
             onClick={findNearMe}
             disabled={locating}
-            className="flex items-center justify-center gap-2 rounded-2xl bg-[#149EAF] px-6 py-3 font-bold text-white shadow-sm transition hover:bg-[#117F8E] active:scale-[0.98] disabled:cursor-wait disabled:opacity-70"
+            className="flex h-10 w-fit items-center justify-center gap-2 rounded-full bg-[#149EAF] px-5 text-[13px] font-bold text-white shadow-sm transition hover:bg-[#117F8E] active:scale-[0.98] disabled:cursor-wait disabled:opacity-70 sm:h-12 sm:rounded-2xl sm:px-6 sm:text-base"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-4 w-4 sm:h-5 sm:w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -248,52 +318,231 @@ export default function MapPage() {
             </svg>
 
             <span>
-              {locating ? "Finding you..." : "Near Me"}
+              {locating
+                ? "Finding you..."
+                : "Near Me"}
             </span>
           </button>
 
         </div>
 
+        {/* FILTERS */}
+
+        <div className="mt-4 grid grid-cols-1 gap-2 sm:mt-5 sm:grid-cols-2">
+
+          {/* CATEGORY */}
+
+          <div className="relative">
+            <label
+              htmlFor="category-filter"
+              className="sr-only"
+            >
+              Filter by category
+            </label>
+
+            <div className="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#149EAF]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 6h16M7 12h10M10 18h4"
+                />
+              </svg>
+
+              <select
+                id="category-filter"
+                value={selectedCategory}
+                onChange={(event) =>
+                  setSelectedCategory(
+                    event.target.value
+                  )
+                }
+                className="h-12 w-full appearance-none rounded-2xl border border-slate-200 bg-white pl-12 pr-10 text-sm font-bold text-[#102b52] shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
+              >
+                {categories.map((category) => (
+                  <option
+                    key={category}
+                    value={category}
+                  >
+                    {category}
+                  </option>
+                ))}
+              </select>
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 9l6 6 6-6"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* AREA */}
+
+          <div className="relative">
+            <label
+              htmlFor="area-filter"
+              className="sr-only"
+            >
+              Filter by area
+            </label>
+
+            <div className="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#149EAF]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 21s7-6.1 7-11a7 7 0 10-14 0c0 4.9 7 11 7 11z"
+                />
+
+                <circle
+                  cx="12"
+                  cy="10"
+                  r="2.5"
+                />
+              </svg>
+
+              <select
+                id="area-filter"
+                value={selectedArea}
+                onChange={(event) =>
+                  setSelectedArea(
+                    event.target.value
+                  )
+                }
+                className="h-12 w-full appearance-none rounded-2xl border border-slate-200 bg-white pl-12 pr-10 text-sm font-bold text-[#102b52] shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
+              >
+                {areas.map((area) => (
+                  <option
+                    key={area}
+                    value={area}
+                  >
+                    {area}
+                  </option>
+                ))}
+              </select>
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 9l6 6 6-6"
+                />
+              </svg>
+            </div>
+          </div>
+
+        </div>
+
+        {/* RESULT SUMMARY */}
+
+        <div className="mt-3 flex items-center justify-between">
+
+          <p className="text-[12px] font-semibold text-slate-500 sm:text-sm">
+            {visibleEvents.length} event
+            {visibleEvents.length === 1
+              ? ""
+              : "s"} showing
+          </p>
+
+          {(selectedCategory !==
+            "All Categories" ||
+            selectedArea !== "All Areas") && (
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedCategory(
+                  "All Categories"
+                );
+                setSelectedArea("All Areas");
+              }}
+              className="text-[12px] font-bold text-[#149EAF] sm:text-sm"
+            >
+              Clear filters
+            </button>
+          )}
+
+        </div>
+
+        {/* LOCATION MESSAGE */}
+
         {locationMessage &&
-          !locationMessage.startsWith("Location found:") && (
-            <div className="mt-5 rounded-2xl bg-white px-5 py-4 text-sm font-semibold text-slate-600 shadow-sm ring-1 ring-slate-100">
+          !locationMessage.startsWith(
+            "Location found:"
+          ) && (
+            <div className="mt-3 rounded-2xl bg-white px-4 py-3 text-[12px] font-semibold text-slate-600 shadow-sm ring-1 ring-slate-100 sm:mt-5 sm:px-5 sm:py-4 sm:text-sm">
               {locationMessage}
             </div>
           )}
 
-        {userLocation && (
-          <div className="mt-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100">
+        {/* NEAR ME */}
 
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        {userLocation && (
+          <div className="mt-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100 sm:mt-4">
+
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
               <div>
-                <p className="font-bold text-slate-900">
+                <p className="text-sm font-bold text-slate-900">
                   Events near you
                 </p>
 
-                <p className="text-sm text-slate-500">
-                  {visibleEvents.length} event
-                  {visibleEvents.length === 1 ? "" : "s"} within{" "}
+                <p className="text-[12px] text-slate-500 sm:text-sm">
+                  Showing events within{" "}
                   {radius} km
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-2">
 
-                {[5, 10, 25, 50].map((distance) => (
-                  <button
-                    key={distance}
-                    type="button"
-                    onClick={() => setRadius(distance)}
-                    className={`rounded-full px-4 py-2 text-sm font-bold transition ${
-                      radius === distance
-                        ? "bg-[#149EAF] text-white"
-                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                    }`}
-                  >
-                    {distance} km
-                  </button>
-                ))}
+                {[5, 10, 25, 50].map(
+                  (distance) => (
+                    <button
+                      key={distance}
+                      type="button"
+                      onClick={() =>
+                        setRadius(distance)
+                      }
+                      className={`rounded-full px-3 py-1.5 text-[11px] font-bold transition sm:px-4 sm:py-2 sm:text-sm ${
+                        radius === distance
+                          ? "bg-[#149EAF] text-white"
+                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      }`}
+                    >
+                      {distance} km
+                    </button>
+                  )
+                )}
 
               </div>
 
@@ -302,7 +551,9 @@ export default function MapPage() {
           </div>
         )}
 
-        <div className="relative z-0 isolate mt-6 overflow-hidden rounded-3xl bg-white shadow sm:mt-8">
+        {/* MAP */}
+
+        <div className="relative z-0 isolate mt-4 overflow-hidden rounded-2xl bg-white shadow sm:mt-6 sm:rounded-3xl">
 
           <EventMap
             events={visibleEvents}

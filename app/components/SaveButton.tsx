@@ -97,11 +97,19 @@ export default function SaveButton({
         disabled={loading}
         className="flex min-h-14 w-full items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 text-base font-bold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {loading
-          ? "Saving..."
-          : saved
-          ? "♥ Saved Event"
-          : "♡ Save Event"}
+        {loading ? (
+          "Saving..."
+        ) : saved ? (
+          <>
+            <span className="mr-2 text-xl text-[#149EAF]">♥</span>
+            Saved Event
+          </>
+        ) : (
+          <>
+            <span className="mr-2 text-xl text-slate-700">♡</span>
+            Save Event
+          </>
+        )}
       </button>
     );
   }
@@ -118,7 +126,9 @@ export default function SaveButton({
           : "Save event"
       }
     >
-      {saved ? "♥" : "♡"}
+      <span className={saved ? "text-[#149EAF]" : "text-slate-700"}>
+        {saved ? "♥" : "♡"}
+      </span>
     </button>
   );
 }
