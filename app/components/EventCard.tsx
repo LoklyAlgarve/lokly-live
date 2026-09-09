@@ -9,7 +9,7 @@ type EventCardProps = {
   id: number;
   title: string;
   location: string;
-  date: string;
+  date?: string;
   category: string;
   image: string;
   latitude: number;
@@ -27,8 +27,17 @@ type EventCardProps = {
   onSavedChange?: (eventId: number, saved: boolean) => void;
 };
 
-function formatEventDate(date: string) {
+function formatEventDate(date?: string) {
+  if (!date) {
+    return "Date to be confirmed";
+  }
+
   const [datePart, timePart] = date.split(" • ");
+
+  if (!datePart) {
+    return date;
+  }
+
   const parts = datePart.split("-");
 
   if (parts.length !== 3) {
@@ -56,8 +65,17 @@ function formatEventDate(date: string) {
     : formattedDate;
 }
 
-function isToday(date: string) {
+function isToday(date?: string) {
+  if (!date) {
+    return false;
+  }
+
   const datePart = date.split(" • ")[0];
+
+  if (!datePart) {
+    return false;
+  }
+
   const parts = datePart.split("-");
 
   if (parts.length !== 3) {
@@ -112,7 +130,6 @@ export default function EventCard({
 
       {/* Image */}
       <div className="relative">
-
         <img
           src={image}
           alt={title}
@@ -133,7 +150,6 @@ export default function EventCard({
             onSavedChange?.(id, saved)
           }
         />
-
       </div>
 
       {/* Content */}
@@ -141,7 +157,6 @@ export default function EventCard({
 
         {/* Category + Price */}
         <div className="flex items-center gap-2">
-
           {category && (
             <span className="rounded-full bg-[#149EAF]/10 px-3 py-1 text-xs font-semibold uppercase text-[#149EAF]">
               {category}
@@ -151,7 +166,6 @@ export default function EventCard({
           <span className="rounded-full bg-[#149EAF]/10 px-3 py-1 text-xs font-semibold text-[#149EAF]">
             Free
           </span>
-
         </div>
 
         {/* Title */}
@@ -198,7 +212,7 @@ export default function EventCard({
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M8 7V3m8 4v4m-9 0h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5v12a2 2 0 002 2z"
+                d="M8 7V3m8 4v4m-9 0h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5v12a2 2 0 00-2 2z"
               />
             </svg>
 
@@ -306,7 +320,6 @@ export default function EventCard({
         )}
 
       </div>
-
     </article>
   );
 }
