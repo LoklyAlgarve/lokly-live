@@ -15,6 +15,7 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   async function handleSignUp(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,6 +43,8 @@ export default function SignUpPage() {
       setMessage(error.message);
       return;
     }
+
+    setSuccess(true);
 
     setMessage(
       t("Account created! Please check your email to confirm your account.")
@@ -145,14 +148,20 @@ export default function SignUpPage() {
 
             <button
               type="submit"
-              disabled={loading}
-              className={`min-h-14 w-full rounded-2xl px-5 font-bold shadow-sm transition ${
-                loading
-                  ? "cursor-not-allowed bg-slate-400 text-white"
-                  : "bg-[#149EAF] text-white hover:bg-[#117F8E] active:scale-[0.99]"
+              disabled={loading || success}
+              className={`min-h-14 w-full rounded-2xl px-5 font-bold text-white shadow-sm transition ${
+                success
+                  ? "cursor-not-allowed bg-slate-400"
+                  : loading
+                  ? "cursor-not-allowed bg-slate-400"
+                  : "bg-[#149EAF] hover:bg-[#117F8E] active:scale-[0.99]"
               }`}
             >
-              {loading ? t("Creating Account...") : t("Create Account")}
+              {success
+                ? t("Nearly there...")
+                : loading
+                ? t("Creating Account...")
+                : t("Create Account")}
             </button>
           </form>
 
