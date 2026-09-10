@@ -11,21 +11,35 @@ export default function AboutPage() {
     <main className="min-h-screen bg-slate-50 pb-40">
       <Header />
 
-      <section className="mx-auto max-w-6xl px-5 py-8 sm:px-6 sm:py-12">
+      <section className="mx-auto max-w-3xl px-5 py-8 sm:px-6 sm:py-12">
 
         {/* INTRO */}
-        <div className="max-w-3xl">
+        <div>
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#149EAF]">
             {t("ABOUT LOKLY")}
           </p>
 
           <h1 className="mt-3 text-4xl font-black leading-tight text-slate-900 sm:text-5xl">
-            {t("Discover more of the Algarve")}
+            {t("There’s always something happening in the Algarve.")}
           </h1>
 
-          <p className="mt-6 text-lg leading-relaxed text-slate-600">
+          <p className="mt-5 text-xl font-bold leading-relaxed text-slate-900">
+            {t('How many times have you heard - "If only I’d known, I would have gone"?')}
+          </p>
+
+          <p className="mt-5 text-lg leading-relaxed text-slate-600">
+            {t("That’s exactly the problem Lokly is here to solve.")}
+          </p>
+
+          <p className="mt-5 text-lg leading-relaxed text-slate-600">
             {t(
-              "Lokly makes it easier to discover what's happening around the Algarve - from local markets and live music to festivals, family days, exhibitions and sporting events."
+              "There are markets, live music, festivals, family days, exhibitions, sports and all sorts of local events happening across the Algarve. But finding out about them isn’t always easy."
+            )}
+          </p>
+
+          <p className="mt-5 text-lg leading-relaxed text-slate-600">
+            {t(
+              "Lokly brings them together in one simple place, so you can discover what’s happening, where and when - and stop missing out on things you would have loved to go to."
             )}
           </p>
         </div>
@@ -38,30 +52,28 @@ export default function AboutPage() {
 
           <div className="mt-6 space-y-5 text-base leading-relaxed text-slate-600">
             <p className="font-semibold text-slate-800">
-              {t("It started with a simple problem.")}
+              {t("The Algarve is full of things to do. The problem is finding them.")}
             </p>
 
             <p>
               {t(
-                "There is always something happening in the Algarve. Finding out what's happening, where it is and when it's on isn't always easy."
+                "Information is scattered across Facebook, websites, posters and word of mouth. Great events can pass you by simply because you never knew they were happening."
               )}
             </p>
 
             <p>
               {t(
-                "Information is scattered across Facebook, websites, posters and word of mouth. People miss events - and local businesses and organisers can struggle to get their events in front of the right people."
+                "And for local businesses and organisers, getting their events in front of the right people can be just as difficult."
               )}
             </p>
 
             <p className="font-semibold text-slate-800">
-              {t(
-                "That's the problem Lokly is designed to solve."
-              )}
+              {t("Lokly brings the two together.")}
             </p>
 
             <p>
               {t(
-                "Lokly brings events together in one simple place, making it easier for people to discover what's going on around them and easier for local businesses and organisers to be discovered."
+                "A simple place for people to discover more of the Algarve - and for the people creating those experiences to be discovered."
               )}
             </p>
           </div>
