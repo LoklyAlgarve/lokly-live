@@ -19,9 +19,7 @@ export default function PastEventsPage() {
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [feedback, setFeedback] =
-    useState<FeedbackState>(null);
-
+  const [feedback, setFeedback] = useState<FeedbackState>(null);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -43,27 +41,17 @@ export default function PastEventsPage() {
   const pastEvents = events.filter((event) => {
     if (!event.date) return false;
 
-    const [year, month, day] = event.date
-      .split("-")
-      .map(Number);
+    const [year, month, day] = event.date.split("-").map(Number);
 
     if (!year || !month || !day) return false;
 
-    const eventDate = new Date(
-      year,
-      month - 1,
-      day
-    );
-
+    const eventDate = new Date(year, month - 1, day);
     eventDate.setHours(0, 0, 0, 0);
 
     return eventDate < today;
   });
 
-  function openFeedback(
-    eventId: number,
-    eventTitle: string
-  ) {
+  function openFeedback(eventId: number, eventTitle: string) {
     setFeedback({
       eventId,
       eventTitle,
@@ -94,42 +82,28 @@ export default function PastEventsPage() {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      alert(
-        t("Please sign in to leave feedback.")
-      );
-
+      alert(t("Please sign in to leave feedback."));
       setSubmitting(false);
       return;
     }
 
-    const { error } = await supabase
-      .from("event_feedback")
-      .insert({
-        event_id: feedback.eventId,
-        event_title: feedback.eventTitle,
-        rating,
-        comment: comment.trim() || null,
-        user_id: user.id,
-      });
+    const { error } = await supabase.from("event_feedback").insert({
+      event_id: feedback.eventId,
+      event_title: feedback.eventTitle,
+      rating,
+      comment: comment.trim() || null,
+      user_id: user.id,
+    });
 
     if (error) {
-      console.error(
-        "Error submitting feedback:",
-        error
-      );
+      console.error("Error submitting feedback:", error);
 
-      alert(
-        t("Sorry, we couldn't submit your feedback.")
-      );
-
+      alert(t("Sorry, we couldn't submit your feedback."));
       setSubmitting(false);
       return;
     }
 
-    setSubmitted((current) => [
-      ...current,
-      feedback.eventId,
-    ]);
+    setSubmitted((current) => [...current, feedback.eventId]);
 
     setSubmitting(false);
   }
@@ -139,7 +113,7 @@ export default function PastEventsPage() {
       <Header />
 
       <section className="mx-auto max-w-7xl px-6 py-8">
-        <h1 className="text-4xl font-black text-slate-900">
+        <h1 className="text-2xl font-black text-slate-900 sm:text-3xl">
           {t("Past Events")}
         </h1>
 
@@ -155,31 +129,23 @@ export default function PastEventsPage() {
           </div>
         ) : pastEvents.length === 0 ? (
           <div className="mt-10 rounded-3xl bg-white p-10 text-center shadow-sm">
-            <div className="text-4xl text-slate-300">
-              ◷
-            </div>
+            <div className="text-4xl text-slate-300">◷</div>
 
             <h2 className="mt-4 text-xl font-bold text-slate-900">
               {t("No past events")}
             </h2>
 
             <p className="mt-2 text-slate-500">
-              {t(
-                "Past events will appear here automatically."
-              )}
+              {t("Past events will appear here automatically.")}
             </p>
           </div>
         ) : (
           <div className="mt-10 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
             {pastEvents.map((event) => {
-              const alreadySubmitted =
-                submitted.includes(Number(event.id));
+              const alreadySubmitted = submitted.includes(Number(event.id));
 
               return (
-                <div
-                  key={event.id}
-                  className="relative"
-                >
+                <div key={event.id} className="relative">
                   <div className="absolute left-4 top-4 z-10 rounded-full bg-slate-900/80 px-3 py-1 text-xs font-semibold text-white">
                     {t("Past Event")}
                   </div>
@@ -203,10 +169,7 @@ export default function PastEventsPage() {
                     <button
                       type="button"
                       onClick={() =>
-                        openFeedback(
-                          Number(event.id),
-                          event.title
-                        )
+                        openFeedback(Number(event.id), event.title)
                       }
                       className="mt-3 flex w-full items-center justify-center rounded-xl border border-[#149EAF] bg-white px-4 py-3 font-semibold text-[#149EAF] transition hover:bg-[#149EAF]/10"
                     >
@@ -214,21 +177,16 @@ export default function PastEventsPage() {
                     </button>
                   )}
 
-                  {feedback?.eventId ===
-                    Number(event.id) && (
+                  {feedback?.eventId === Number(event.id) && (
                     <div className="mt-3 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-                      {submitted.includes(
-                        Number(event.id)
-                      ) ? (
+                      {submitted.includes(Number(event.id)) ? (
                         <div className="text-center">
                           <h3 className="font-bold text-slate-900">
                             {t("Thank you!")}
                           </h3>
 
                           <p className="mt-1 text-sm text-slate-500">
-                            {t(
-                              "Your feedback has been submitted."
-                            )}
+                            {t("Your feedback has been submitted.")}
                           </p>
 
                           <button
@@ -250,41 +208,35 @@ export default function PastEventsPage() {
                               type="button"
                               onClick={closeFeedback}
                               className="text-xl text-slate-400"
-                              aria-label={t(
-                                "Close feedback"
-                              )}
+                              aria-label={t("Close feedback")}
                             >
                               ×
                             </button>
                           </div>
 
                           <div className="mt-4 flex justify-center gap-2">
-                            {[1, 2, 3, 4, 5].map(
-                              (star) => (
-                                <button
-                                  key={star}
-                                  type="button"
-                                  onClick={() =>
-                                    setRating(star)
-                                  }
-                                  aria-label={`${star} ${star === 1 ? t("star") : t("stars")}`}
-                                  className={`text-3xl transition ${
-                                    star <= rating
-                                      ? "text-[#149EAF]"
-                                      : "text-slate-300"
-                                  }`}
-                                >
-                                  ★
-                                </button>
-                              )
-                            )}
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <button
+                                key={star}
+                                type="button"
+                                onClick={() => setRating(star)}
+                                aria-label={`${star} ${
+                                  star === 1 ? t("star") : t("stars")
+                                }`}
+                                className={`text-3xl transition ${
+                                  star <= rating
+                                    ? "text-[#149EAF]"
+                                    : "text-slate-300"
+                                }`}
+                              >
+                                ★
+                              </button>
+                            ))}
                           </div>
 
                           <textarea
                             value={comment}
-                            onChange={(e) =>
-                              setComment(e.target.value)
-                            }
+                            onChange={(e) => setComment(e.target.value)}
                             placeholder={t(
                               "Anything you'd like to tell us? (optional)"
                             )}
@@ -295,10 +247,7 @@ export default function PastEventsPage() {
                           <button
                             type="button"
                             onClick={submitFeedback}
-                            disabled={
-                              rating === 0 ||
-                              submitting
-                            }
+                            disabled={rating === 0 || submitting}
                             className="mt-3 flex w-full items-center justify-center rounded-xl bg-[#149EAF] px-4 py-3 font-semibold text-white transition hover:bg-[#117F8E] disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             {submitting

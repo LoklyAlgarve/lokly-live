@@ -2,127 +2,118 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const items = [
-  {
-    name: "Home",
-    href: "/",
-    icon: "home",
-  },
-  {
-    name: "Search",
-    href: "/search",
-    icon: "search",
-  },
-  {
-    name: "Map",
-    href: "/map",
-    icon: "map",
-  },
-  {
-    name: "Saved",
-    href: "/saved",
-    icon: "heart",
-  },
-];
-
-function Icon({ type }: { type: string }) {
-  if (type === "home") {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-7 w-7"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M3 10.5 12 3l9 7.5" />
-        <path d="M5.5 9.5V21h13V9.5" />
-        <path d="M9.5 21v-6h5v6" />
-      </svg>
-    );
-  }
-
-  if (type === "search") {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-7 w-7"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="10.8" cy="10.8" r="6.8" />
-        <path d="m16 16 5 5" />
-      </svg>
-    );
-  }
-
-  if (type === "map") {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-7 w-7"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z" />
-        <path d="M9 3v15" />
-        <path d="M15 6v15" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-7 w-7"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20.8 8.8c0 5.4-8.8 10.2-8.8 10.2S3.2 14.2 3.2 8.8A5.2 5.2 0 0 1 12 5.5a5.2 5.2 0 0 1 8.8 3.3Z" />
-    </svg>
-  );
-}
+import { useLanguage } from "../LanguageContext";
 
 export default function BottomNavigation() {
   const pathname = usePathname();
+  const { t } = useLanguage();
+
+  const items = [
+    {
+      href: "/",
+      label: t("Home"),
+      icon: "home",
+    },
+    {
+      href: "/map",
+      label: t("Map"),
+      icon: "map",
+    },
+    {
+      href: "/saved",
+      label: t("Saved"),
+      icon: "heart",
+    },
+  ];
 
   return (
-    <nav className="fixed bottom-6 left-1/2 z-50 w-[95%] max-w-lg -translate-x-1/2">
-      <div className="flex items-center justify-around rounded-3xl bg-white/95 p-3 shadow-2xl backdrop-blur-xl">
+    <nav className="fixed bottom-4 left-1/2 z-50 w-[calc(100%-32px)] max-w-md -translate-x-1/2 rounded-3xl bg-white px-3 py-2 shadow-[0_8px_30px_rgba(15,23,42,0.14)] ring-1 ring-slate-100">
+      <div className="grid grid-cols-3 items-center">
 
         {items.map((item) => {
-          const active = pathname === item.href;
+          const active =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(item.href);
 
           return (
             <Link
-              key={item.name}
+              key={item.href}
               href={item.href}
-              className={`flex min-w-[72px] flex-col items-center rounded-2xl px-4 py-3 transition ${
+              className={`flex min-h-[58px] flex-col items-center justify-center rounded-2xl transition ${
                 active
-                  ? "bg-[#149EAF] text-white shadow-sm"
-                  : "text-slate-500 hover:bg-slate-100"
+                  ? "bg-[#149EAF] text-white"
+                  : "text-slate-500 hover:text-[#102F56]"
               }`}
             >
-              <Icon type={item.icon} />
+              {item.icon === "home" && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 10.5 12 3l9 7.5"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5.5 9.5V21h13V9.5"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9.5 21v-6h5v6"
+                  />
+                </svg>
+              )}
 
-              <span className="mt-1.5 text-xs font-semibold">
-                {item.name}
+              {item.icon === "map" && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m9 18-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 3v15M15 6v15"
+                  />
+                </svg>
+              )}
+
+              {item.icon === "heart" && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"
+                  />
+                </svg>
+              )}
+
+              <span className="mt-1 text-[11px] font-bold">
+                {item.label}
               </span>
             </Link>
           );

@@ -42,9 +42,7 @@ function parseEventDate(value?: string) {
 
   const parsed = new Date(trimmed);
 
-  return Number.isNaN(parsed.getTime())
-    ? null
-    : parsed;
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
 function startOfDay(date: Date) {
@@ -195,6 +193,9 @@ export default function HomePage() {
   const [locationFilter, setLocationFilter] =
     useState("");
 
+  const [filtersOpen, setFiltersOpen] =
+    useState(false);
+
   const [userLocation, setUserLocation] =
     useState<{
       lat: number;
@@ -285,6 +286,13 @@ export default function HomePage() {
     }
   }
 
+  function clearFilters() {
+    setEventFilter("");
+    setLocationFilter("");
+    setQuickFilter("");
+    setUserLocation(null);
+  }
+
   const filteredEvents = useMemo(() => {
     const today = startOfDay(new Date());
 
@@ -373,63 +381,41 @@ export default function HomePage() {
         {/* HERO */}
 
         <section className="mt-3 overflow-hidden rounded-2xl bg-[#149EAF] sm:mt-4 sm:rounded-3xl">
-          <div className="relative min-h-[150px] overflow-hidden sm:min-h-[250px]">
+          <div className="flex min-h-[125px] items-center px-5 py-4 sm:min-h-[200px] sm:px-10 sm:py-6">
+            <div className="max-w-xl text-white">
 
-            <img
-              src="/hero-algarve.jpg"
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover"
-            />
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/80 sm:mb-2 sm:text-sm">
+                {t("Discover the Algarve")}
+              </p>
+<h1 className="text-[30px] font-black leading-[1.05] tracking-tight sm:text-5xl">
+  {t("What's on near you?")}
+</h1>
 
-            <div className="absolute inset-0 bg-[#149EAF]/70" />
-
-            <div className="relative z-10 flex min-h-[150px] items-center px-5 py-5 sm:min-h-[250px] sm:px-10 sm:py-8">
-
-              <div className="max-w-xl text-white">
-
-                <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/80 sm:mb-2 sm:text-sm">
-                  {t("Discover the Algarve")}
-                </p>
-
-                <h1 className="text-[30px] font-black leading-[1.05] tracking-tight sm:text-5xl">
-                  {t("What's on")}
-                  <br />
-                  {t("near you?")}
-                </h1>
-
-                <p className="mt-2 max-w-md text-xs leading-relaxed text-white/90 sm:mt-4 sm:text-lg">
-                  {t(
-                    "Events, experiences and local gems all in one place."
-                  )}
-                </p>
-
-              </div>
+              <p className="mt-2 max-w-md text-xs leading-relaxed text-white/90 sm:mt-4 sm:text-lg">
+                {t(
+                  "Events, experiences and local gems all in one place."
+                )}
+              </p>
 
             </div>
           </div>
         </section>
 
+        {/* SEARCH */}
+
+        <div className="mt-3 sm:mt-4">
+          <SearchBar />
+        </div>
+
         {/* QUICK FILTERS */}
 
-        <div className="mt-2.5 flex gap-2 overflow-x-auto pb-1 scrollbar-hide sm:mt-4 sm:gap-3">
+        <div className="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide sm:mt-4 sm:gap-3">
 
           {[
-            [
-              "near",
-              t("Near Me"),
-            ],
-            [
-              "today",
-              t("Today"),
-            ],
-            [
-              "weekend",
-              t("This Weekend"),
-            ],
-            [
-              "free",
-              t("Free"),
-            ],
+            ["near", t("Near Me")],
+            ["today", t("Today")],
+            ["weekend", t("This Weekend")],
+            ["free", t("Free")],
           ].map(([value, label]) => {
 
             const active =
@@ -457,170 +443,194 @@ export default function HomePage() {
 
         </div>
 
-        {/* SEARCH */}
+        {/* FILTER TOGGLE */}
 
-        <div className="mt-2.5 sm:mt-4">
-          <SearchBar />
-        </div>
+        <button
+          type="button"
+          onClick={() =>
+            setFiltersOpen((open) => !open)
+          }
+          className="mt-3 flex w-full items-center justify-center gap-3 rounded-2xl bg-[#E6FAFC] px-4 py-3.5 text-sm font-bold text-[#102F56] transition hover:bg-[#DDF7FA] sm:mt-4 sm:py-4"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 5h16M7 12h10M10 19h4"
+            />
+          </svg>
+
+          <span>
+            {t("Filters")}
+          </span>
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={`h-4 w-4 transition-transform ${
+              filtersOpen
+                ? "rotate-180"
+                : ""
+            }`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 9l6 6 6-6"
+            />
+          </svg>
+        </button>
 
         {/* FILTER PANEL */}
 
-        <section className="mt-3 rounded-2xl bg-[#E6FAFC] p-3 sm:mt-5 sm:p-5">
+        {filtersOpen && (
+          <section className="mt-2 rounded-2xl bg-[#E6FAFC] p-3 sm:mt-3 sm:p-5">
 
-          <div className="mb-2 flex items-center justify-between sm:mb-3">
+            <div className="mb-3 flex items-center justify-between">
+              <p className="text-sm font-bold text-slate-600">
+                {t("Filter events")}
+              </p>
 
-            <p className="text-sm font-bold text-slate-600">
-              {t("Filters")}
-            </p>
-
-            <button
-              type="button"
-              onClick={() => {
-                setEventFilter("");
-                setLocationFilter("");
-                setQuickFilter("");
-                setUserLocation(null);
-              }}
-              className="text-xs font-bold text-[#149EAF] hover:underline"
-            >
-              {t("Clear filters")}
-            </button>
-
-          </div>
-
-          <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2 md:gap-4">
-
-            {/* EVENT FILTER */}
-
-            <div>
-
-              <label
-                htmlFor="event-filter"
-                className="mb-1 block text-xs font-semibold text-slate-600 sm:mb-1.5 sm:text-sm"
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="text-xs font-bold text-[#149EAF] hover:underline"
               >
-                {t("Filter by event")}
-              </label>
+                {t("Clear filters")}
+              </button>
+            </div>
 
-              <div className="relative">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
 
-                <select
-                  id="event-filter"
-                  value={eventFilter}
-                  onChange={(e) =>
-                    setEventFilter(
-                      e.target.value
-                    )
-                  }
-                  className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-10 text-xs font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20 sm:h-11 sm:px-4 sm:text-sm"
+              {/* EVENT TYPE */}
+
+              <div>
+                <label
+                  htmlFor="event-filter"
+                  className="mb-1 block text-xs font-semibold text-slate-600 sm:text-sm"
                 >
+                  {t("Event type")}
+                </label>
 
-                  <option value="">
-                    {t("All event types")}
-                  </option>
+                <div className="relative">
 
-                  {eventCategories.map(
-                    (category) => (
-                      <option
-                        key={category}
-                        value={category}
-                      >
-                        {t(category)}
-                      </option>
-                    )
-                  )}
-
-                </select>
-
-                <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 sm:right-4">
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 text-slate-500 sm:h-5 sm:w-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
+                  <select
+                    id="event-filter"
+                    value={eventFilter}
+                    onChange={(e) =>
+                      setEventFilter(
+                        e.target.value
+                      )
+                    }
+                    className="h-11 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-10 text-sm font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20 sm:px-4"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 9l6 6 6-6"
-                    />
-                  </svg>
+                    <option value="">
+                      {t("All event types")}
+                    </option>
+
+                    {eventCategories.map(
+                      (category) => (
+                        <option
+                          key={category}
+                          value={category}
+                        >
+                          {t(category)}
+                        </option>
+                      )
+                    )}
+                  </select>
+
+                  <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-slate-500"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 9l6 6 6-6"
+                      />
+                    </svg>
+                  </div>
 
                 </div>
+              </div>
 
+              {/* LOCATION */}
+
+              <div>
+                <label
+                  htmlFor="location-filter"
+                  className="mb-1 block text-xs font-semibold text-slate-600 sm:text-sm"
+                >
+                  {t("Location")}
+                </label>
+
+                <div className="relative">
+
+                  <select
+                    id="location-filter"
+                    value={locationFilter}
+                    onChange={(e) =>
+                      setLocationFilter(
+                        e.target.value
+                      )
+                    }
+                    className="h-11 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-10 text-sm font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20 sm:px-4"
+                  >
+                    <option value="">
+                      {t("All locations")}
+                    </option>
+
+                    {eventLocations.map(
+                      (location) => (
+                        <option
+                          key={location}
+                          value={location}
+                        >
+                          {location}
+                        </option>
+                      )
+                    )}
+                  </select>
+
+                  <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-slate-500"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 9l6 6 6-6"
+                      />
+                    </svg>
+                  </div>
+
+                </div>
               </div>
 
             </div>
-
-            {/* LOCATION FILTER */}
-
-            <div>
-
-              <label
-                htmlFor="location-filter"
-                className="mb-1 block text-xs font-semibold text-slate-600 sm:mb-1.5 sm:text-sm"
-              >
-                {t("Filter by location")}
-              </label>
-
-              <div className="relative">
-
-                <select
-                  id="location-filter"
-                  value={locationFilter}
-                  onChange={(e) =>
-                    setLocationFilter(
-                      e.target.value
-                    )
-                  }
-                  className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-10 text-xs font-semibold text-slate-800 shadow-sm outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20 sm:h-11 sm:px-4 sm:text-sm"
-                >
-
-                  <option value="">
-                    {t("All locations")}
-                  </option>
-
-                  {eventLocations.map(
-                    (location) => (
-                      <option
-                        key={location}
-                        value={location}
-                      >
-                        {location}
-                      </option>
-                    )
-                  )}
-
-                </select>
-
-                <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 sm:right-4">
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 text-slate-500 sm:h-5 sm:w-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 9l6 6 6-6"
-                    />
-                  </svg>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
+          </section>
+        )}
 
         {/* EVENTS */}
 
@@ -655,8 +665,6 @@ export default function HomePage() {
 
             <div className="rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center shadow-sm">
 
-              {/* LITTLE LOKLY EYES */}
-
               <div className="mb-3 flex justify-center">
 
                 <svg
@@ -667,7 +675,6 @@ export default function HomePage() {
                   xmlns="http://www.w3.org/2000/svg"
                   aria-hidden="true"
                 >
-
                   <ellipse
                     cx="18"
                     cy="18"
@@ -713,7 +720,6 @@ export default function HomePage() {
                     r="1.5"
                     fill="white"
                   />
-
                 </svg>
 
               </div>

@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
 import { createClient } from "../../../utils/supabase/client";
+import { useLanguage } from "../../LanguageContext";
 
 export default function SignInPage() {
   const router = useRouter();
+  const { t } = useLanguage();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,22 +45,21 @@ export default function SignInPage() {
 
       <section className="mx-auto max-w-xl px-5 py-8 sm:px-6">
         <h1 className="text-3xl font-black text-slate-900 sm:text-4xl">
-          Sign in to Lokly
+          {t("Sign in to Lokly")}
         </h1>
 
         <p className="mt-2 text-slate-500">
-          Sign in to save your favourite events.
+          {t("Sign in to save your favourite events.")}
         </p>
 
         <div className="mt-8 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:p-8">
           <form onSubmit={handleSignIn} className="space-y-6">
-
             <div>
               <label
                 htmlFor="email"
                 className="block text-sm font-bold text-slate-700"
               >
-                Email address
+                {t("Email address")}
               </label>
 
               <input
@@ -66,7 +67,7 @@ export default function SignInPage() {
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                placeholder="you@example.com"
+                placeholder={t("you@example.com")}
                 autoComplete="email"
                 required
                 className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-4 text-base text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
@@ -78,7 +79,7 @@ export default function SignInPage() {
                 htmlFor="password"
                 className="block text-sm font-bold text-slate-700"
               >
-                Password
+                {t("Password")}
               </label>
 
               <input
@@ -86,7 +87,7 @@ export default function SignInPage() {
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                placeholder="Your password"
+                placeholder={t("Your password")}
                 autoComplete="current-password"
                 required
                 className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-4 text-base text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
@@ -104,18 +105,18 @@ export default function SignInPage() {
               disabled={loading}
               className="w-full rounded-2xl bg-[#149EAF] px-5 py-4 font-bold text-white shadow-sm transition hover:bg-[#117F8E] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? t("Signing in...") : t("Sign In")}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-slate-500">
-              Don't have a Lokly account?{" "}
+              {t("Don't have a Lokly account?")}{" "}
               <a
                 href="/profile/signup"
                 className="font-bold text-[#149EAF] hover:underline"
               >
-                Create Account
+                {t("Create Account")}
               </a>
             </p>
           </div>

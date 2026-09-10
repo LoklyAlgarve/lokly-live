@@ -1,3 +1,5 @@
+import { createClient } from "@/utils/supabase/client";
+
 export type Event = {
   id: number;
   title: string;
@@ -16,54 +18,8 @@ export type Event = {
   petFriendly: string;
 };
 
-const EVENTS_URL =
-  "https://script.google.com/macros/s/AKfycbwCOnagvtUQWWTKjs56w6ZlrjRkceh0bnxRPN4Bn7VTukl55iLrNzObL44ZtcbLdH2o/exec";
-
 const CACHE_KEY = "lokly-events";
 const CACHE_TIME = 5 * 60 * 1000;
-
-type SheetEvent = {
-  "Event Name"?: string;
-  "Category"?: string;
-  "Description"?: string;
-  "Venue"?: string;
-  "Town"?: string;
-  "Latitude"?: string;
-  "Longitude"?: string;
-  "Start Date"?: string;
-  "Start Time"?: string;
-  "End Date"?: string;
-  "End Time"?: string;
-  "Image"?: string;
-  "Ticket Link"?: string;
-  "Website"?: string;
-  "Price"?: string;
-  "Featured"?: string;
-  "Wheelchair Friendly"?: string;
-  "Pet Friendly"?: string;
-};
-
-function convertEvents(data: SheetEvent[]): Event[] {
-  return data.map((item, index) => ({
-    id: index + 1,
-    title: item["Event Name"] || "Untitled Event",
-    location: item["Town"] || item["Venue"] || "Algarve",
-    date: item["Start Date"] || "",
-    time: item["Start Time"] || "",
-    category: item["Category"] || "",
-    price: item["Price"] || "Free",
-    image:
-      item["Image"] ||
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200",
-    featured: String(item["Featured"]).toLowerCase() === "true",
-    description: item["Description"] || "",
-    website: item["Website"] || item["Ticket Link"] || "",
-    latitude: Number(item["Latitude"]) || 0,
-    longitude: Number(item["Longitude"]) || 0,
-    wheelchairFriendly: item["Wheelchair Friendly"] || "Unknown",
-    petFriendly: item["Pet Friendly"] || "Unknown",
-  }));
-}
 
 export async function getEvents(): Promise<Event[]> {
   try {
@@ -71,26 +27,55 @@ export async function getEvents(): Promise<Event[]> {
       const cached = localStorage.getItem(CACHE_KEY);
 
       if (cached) {
-        const parsed = JSON.parse(cached);
+        try {
+          const parsed = JSON.parse(cached);
 
-        if (
-          parsed.timestamp &&
-          Date.now() - parsed.timestamp < CACHE_TIME &&
-          Array.isArray(parsed.events)
-        ) {
-          return parsed.events;
+          if (
+            parsed.timestamp &&
+            Date.now() - parsed.timestamp < CACHE_TIME &&
+            Array.isArray(parsed.events)
+          ) {
+            return parsed.events;
+          }
+        } catch {
+          // Ignore invalid cache
         }
       }
     }
 
-    const response = await fetch(EVENTS_URL);
+    const supabase = createClient();
 
-    if (!response.ok) {
-      throw new Error(`Events request failed: ${response.status}`);
+    const { data, error } = await supabase
+      .from("events")
+      .select("*")
+      .eq("approved", true)
+      .order("date", { ascending: true });
+
+    if (error) {
+      throw error;
     }
 
-    const data: SheetEvent[] = await response.json();
-    const events = convertEvents(data);
+    const events: Event[] = (data || []).map((item) => ({
+      id: Number(item.id),
+      title: item.title || "Untitled Event",
+      location: item.location || "Algarve",
+      date: item.date || "",
+      time: item.time || "",
+      category: item.category || "",
+      price: item.price || "Free",
+      image:
+        item.image ||
+        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200",
+      featured: Boolean(item.featured),
+      description: item.description || "",
+      website: item.website || "",
+      latitude: Number(item.latitude) || 0,
+      longitude: Number(item.longitude) || 0,
+      wheelchairFriendly:
+        item.wheelchair_friendly || "Unknown",
+      petFriendly:
+        item.pet_friendly || "Unknown",
+    }));
 
     if (typeof window !== "undefined") {
       localStorage.setItem(
@@ -112,7 +97,10 @@ export async function getEvents(): Promise<Event[]> {
       if (cached) {
         try {
           const parsed = JSON.parse(cached);
-          return Array.isArray(parsed.events) ? parsed.events : [];
+
+          return Array.isArray(parsed.events)
+            ? parsed.events
+            : [];
         } catch {
           return [];
         }

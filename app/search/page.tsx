@@ -1,10 +1,12 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import EventCard from "../components/EventCard";
 import BottomNavigation from "../components/BottomNavigation";
-import T from "../components/T";
-
 import { getEvents } from "../data/events";
+import { useLanguage } from "../LanguageContext";
 
 type SearchPageProps = {
   searchParams: Promise<{
@@ -22,7 +24,6 @@ function parseEventDate(dateString: string) {
 
   const trimmed = dateString.trim();
 
-  // Handles YYYY-MM-DD
   const isoMatch = trimmed.match(
     /^(\d{4})-(\d{1,2})-(\d{1,2})$/
   );
@@ -35,7 +36,6 @@ function parseEventDate(dateString: string) {
     return new Date(year, month, day);
   }
 
-  // Handles DD/MM/YYYY
   const ukMatch = trimmed.match(
     /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
   );
@@ -48,7 +48,6 @@ function parseEventDate(dateString: string) {
     return new Date(year, month, day);
   }
 
-  // Fallback for other date formats
   const parsed = new Date(trimmed);
 
   if (Number.isNaN(parsed.getTime())) {
@@ -77,9 +76,13 @@ function isThisWeekend(date: Date, today: Date) {
     dayOfWeek === 0 ? 6 : 6 - dayOfWeek;
 
   const saturday = new Date(today);
-  saturday.setDate(today.getDate() + daysUntilSaturday);
+
+  saturday.setDate(
+    today.getDate() + daysUntilSaturday
+  );
 
   const sunday = new Date(saturday);
+
   sunday.setDate(saturday.getDate() + 1);
 
   return (
@@ -88,17 +91,49 @@ function isThisWeekend(date: Date, today: Date) {
   );
 }
 
-export default async function SearchPage({
-  searchParams,
-}: SearchPageProps) {
-  const params = await searchParams;
+export default function SearchPage() {
+  const { t } = useLanguage();
 
-  const query = (params.query || "").trim().toLowerCase();
-  const category = (params.category || "").trim().toLowerCase();
-  const location = (params.location || "").trim().toLowerCase();
-  const filter = (params.filter || "").trim().toLowerCase();
+  const [params, setParams] = useState({
+    query: "",
+    category: "",
+    location: "",
+    filter: "",
+  });
 
-  const events = await getEvents();
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+
+    setParams({
+      query: searchParams.get("query") || "",
+      category: searchParams.get("category") || "",
+      location: searchParams.get("location") || "",
+      filter: searchParams.get("filter") || "",
+    });
+  }, []);
+
+  useEffect(() => {
+    async function loadEvents() {
+      try {
+        const allEvents = await getEvents();
+        setEvents(allEvents);
+      } catch (error) {
+        console.error("Could not load Lokly events:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadEvents();
+  }, []);
+
+  const query = params.query.trim().toLowerCase();
+  const category = params.category.trim().toLowerCase();
+  const location = params.location.trim().toLowerCase();
+  const filter = params.filter.trim().toLowerCase();
 
   const today = new Date();
 
@@ -163,26 +198,26 @@ export default async function SearchPage({
 
   const filterHeading =
     filter === "today"
-      ? "Events Today"
+      ? t("Events Today")
       : filter === "weekend"
-        ? "This Weekend"
+        ? t("This Weekend")
         : filter === "free"
-          ? "Free Events"
+          ? t("Free Events")
           : filter === "family"
-            ? "Family Events"
+            ? t("Family Events")
             : filter === "music"
-              ? "Music Events"
+              ? t("Music Events")
               : null;
 
   const heading = isLocationSearch
-    ? `Events near ${params.location}`
+    ? `${t("Events near")} ${params.location}`
     : filterHeading
       ? filterHeading
       : category
-        ? `${params.category} Events`
+        ? `${params.category} ${t("Events")}`
         : query
-          ? `Search results for "${params.query}"`
-          : "All Events";
+          ? `${t("Search results for")} "${params.query}"`
+          : t("All Events");
 
   const otherAlgarveEvents = isLocationSearch
     ? events.filter((event) => {
@@ -207,138 +242,123 @@ export default async function SearchPage({
 
   return (
     <main className="min-h-screen bg-slate-50 pb-36">
-
       <Header />
 
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
-
-        {/* SEARCH */}
-
         <div className="mb-7 sm:mb-8">
           <SearchBar />
         </div>
 
-        {/* RESULTS HEADER */}
+        {loading ? (
+          <div className="rounded-3xl bg-white p-10 text-center shadow-sm">
+            <p className="text-slate-500">
+              {t("Loading events...")}
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="mb-7 sm:mb-8">
+              <h1 className="text-2xl font-black text-slate-900 sm:text-3xl">
+                {heading}
+              </h1>
 
-        <div className="mb-7 sm:mb-8">
+              <p className="mt-2 text-sm text-slate-500 sm:text-base">
+                {filteredEvents.length}{" "}
+                {filteredEvents.length === 1
+                  ? t("event")
+                  : t("events")}{" "}
+                {t("found")}
+              </p>
+            </div>
 
-          <h1 className="text-2xl font-black text-slate-900 sm:text-3xl">
-            {heading}
-          </h1>
+            {filteredEvents.length > 0 && (
+              <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                {filteredEvents.map((event) => (
+                  <EventCard
+                    key={event.id}
+                    id={event.id}
+                    title={event.title}
+                    location={event.location}
+                    date={`${event.date} • ${event.time}`}
+                    category={event.category}
+                    image={event.image}
+                    latitude={event.latitude}
+                    longitude={event.longitude}
+                  />
+                ))}
+              </section>
+            )}
 
-          <p className="mt-2 text-sm text-slate-500 sm:text-base">
-            {filteredEvents.length}{" "}
-            {filteredEvents.length === 1
-              ? "event"
-              : "events"}{" "}
-            found
-          </p>
-
-        </div>
-
-        {/* LOCAL RESULTS */}
-
-        {filteredEvents.length > 0 && (
-          <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-
-            {filteredEvents.map((event) => (
-              <EventCard
-                key={event.id}
-                id={event.id}
-                title={event.title}
-                location={event.location}
-                date={`${event.date} • ${event.time}`}
-                category={event.category}
-                image={event.image}
-                latitude={event.latitude}
-                longitude={event.longitude}
-              />
-            ))}
-
-          </section>
-        )}
-
-        {/* NO LOCAL RESULTS */}
-
-        {isLocationSearch &&
-          filteredEvents.length === 0 && (
-            <>
-
-              <div className="rounded-3xl bg-white p-8 text-center shadow sm:p-10">
-
-                <h2 className="text-xl font-bold text-slate-900">
-                  Nothing happening in {params.location} right now
-                </h2>
-
-                <p className="mt-2 text-slate-500">
-                  We couldn't find any events in{" "}
-                  {params.location}, but there may be
-                  something elsewhere in the Algarve.
-                </p>
-
-              </div>
-
-              {otherAlgarveEvents.length > 0 && (
+            {isLocationSearch &&
+              filteredEvents.length === 0 && (
                 <>
-
-                  <div className="mb-6 mt-10 sm:mt-12">
-
-                    <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
-                      Other Algarve Events
+                  <div className="rounded-3xl bg-white p-8 text-center shadow sm:p-10">
+                    <h2 className="text-xl font-bold text-slate-900">
+                      {t("Nothing happening in")}{" "}
+                      {params.location}{" "}
+                      {t("right now")}
                     </h2>
 
-                    <p className="mt-1 text-sm text-slate-500 sm:text-base">
-                      More events happening across the Algarve.
+                    <p className="mt-2 text-slate-500">
+                      {t("We couldn't find any events in")}{" "}
+                      {params.location},{" "}
+                      {t(
+                        "but there may be something elsewhere in the Algarve."
+                      )}
                     </p>
-
                   </div>
 
-                  <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                  {otherAlgarveEvents.length > 0 && (
+                    <>
+                      <div className="mb-6 mt-10 sm:mt-12">
+                        <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
+                          {t("Other Algarve Events")}
+                        </h2>
 
-                    {otherAlgarveEvents.map((event) => (
-                      <EventCard
-                        key={event.id}
-                        id={event.id}
-                        title={event.title}
-                        location={event.location}
-                        date={`${event.date} • ${event.time}`}
-                        category={event.category}
-                        image={event.image}
-                        latitude={event.latitude}
-                        longitude={event.longitude}
-                      />
-                    ))}
+                        <p className="mt-1 text-sm text-slate-500 sm:text-base">
+                          {t(
+                            "More events happening across the Algarve."
+                          )}
+                        </p>
+                      </div>
 
-                  </section>
-
+                      <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                        {otherAlgarveEvents.map((event) => (
+                          <EventCard
+                            key={event.id}
+                            id={event.id}
+                            title={event.title}
+                            location={event.location}
+                            date={`${event.date} • ${event.time}`}
+                            category={event.category}
+                            image={event.image}
+                            latitude={event.latitude}
+                            longitude={event.longitude}
+                          />
+                        ))}
+                      </section>
+                    </>
+                  )}
                 </>
               )}
 
-            </>
-          )}
+            {!isLocationSearch &&
+              filteredEvents.length === 0 && (
+                <div className="rounded-3xl bg-white p-8 text-center shadow sm:p-10">
+                  <h2 className="text-xl font-bold text-slate-900">
+                    {t("No events found")}
+                  </h2>
 
-        {/* NO RESULTS FOR NORMAL SEARCH */}
-
-        {!isLocationSearch &&
-          filteredEvents.length === 0 && (
-
-            <div className="rounded-3xl bg-white p-8 text-center shadow sm:p-10">
-
-              <h2 className="text-xl font-bold text-slate-900">
-                <T k="noEvents" />
-              </h2>
-
-              <p className="mt-2 text-slate-500">
-                Try another category, town or event.
-              </p>
-
-            </div>
-          )}
-
+                  <p className="mt-2 text-slate-500">
+                    {t("Try another category, town or event.")}
+                  </p>
+                </div>
+              )}
+          </>
+        )}
       </div>
 
       <BottomNavigation />
-
     </main>
   );
 }
