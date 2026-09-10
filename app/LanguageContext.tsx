@@ -116,7 +116,6 @@ const translations: Record<string, string> = {
   "All Categories": "Todas as categorias",
   "All Areas": "Todas as áreas",
   "Events near you": "Eventos perto de si",
-  "Clear filters": "Limpar filtros",
 
   // General
   "Yes": "Sim",
