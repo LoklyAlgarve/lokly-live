@@ -146,7 +146,11 @@ export default function SignUpPage() {
             <button
               type="submit"
               disabled={loading}
-              className="min-h-14 w-full rounded-2xl bg-[#149EAF] px-5 font-bold text-white shadow-sm transition hover:bg-[#117F8E] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+              className={`min-h-14 w-full rounded-2xl px-5 font-bold shadow-sm transition ${
+                loading
+                  ? "cursor-not-allowed bg-slate-400 text-white"
+                  : "bg-[#149EAF] text-white hover:bg-[#117F8E] active:scale-[0.99]"
+              }`}
             >
               {loading ? t("Creating Account...") : t("Create Account")}
             </button>
