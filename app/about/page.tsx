@@ -11,20 +11,22 @@ export default function AboutPage() {
     <main className="min-h-screen bg-slate-50 pb-40">
       <Header />
 
-      <section className="mx-auto max-w-3xl px-5 py-8 sm:px-6 sm:py-12">
+      <section className="mx-auto max-w-4xl px-4 py-5 sm:px-6 sm:py-8">
 
         {/* INTRO */}
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#149EAF]">
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#149EAF] sm:text-sm">
             {t("ABOUT LOKLY")}
           </p>
 
-          <h1 className="mt-3 text-4xl font-black leading-tight text-slate-900 sm:text-5xl">
+          <h1 className="mt-2 text-[28px] font-black leading-tight text-slate-900 sm:text-5xl">
             {t("There’s always something happening in the Algarve.")}
           </h1>
 
-          <p className="mt-5 text-xl font-bold leading-relaxed text-slate-900">
-            {t('How many times have you heard - "If only I’d known, I would have gone"?')}
+          <p className="mt-3 text-xl font-bold leading-relaxed text-slate-900 sm:mt-4">
+            {t(
+              'How many times have you heard - "If only I’d known, I would have gone"?'
+            )}
           </p>
 
           <p className="mt-5 text-lg leading-relaxed text-slate-600">
@@ -52,7 +54,9 @@ export default function AboutPage() {
 
           <div className="mt-6 space-y-5 text-base leading-relaxed text-slate-600">
             <p className="font-semibold text-slate-800">
-              {t("The Algarve is full of things to do. The problem is finding them.")}
+              {t(
+                "The Algarve is full of things to do. The problem is finding them."
+              )}
             </p>
 
             <p>
