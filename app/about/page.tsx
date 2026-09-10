@@ -19,27 +19,27 @@ export default function AboutPage() {
             {t("ABOUT LOKLY")}
           </p>
 
-          <h1 className="mt-2 text-[28px] font-black leading-tight text-slate-900 sm:text-5xl">
+          <h1 className="mt-2 text-[28px] font-black leading-tight text-slate-900 sm:text-4xl">
             {t("There’s always something happening in the Algarve.")}
           </h1>
 
-          <p className="mt-3 text-xl font-bold leading-relaxed text-slate-900 sm:mt-4">
+          <p className="mt-4 text-lg font-bold leading-relaxed text-slate-900 sm:text-xl">
             {t(
               'How many times have you heard - "If only I’d known, I would have gone"?'
             )}
           </p>
 
-          <p className="mt-5 text-lg leading-relaxed text-slate-600">
+          <p className="mt-4 text-base leading-relaxed text-slate-600 sm:mt-5 sm:text-lg">
             {t("That’s exactly the problem Lokly is here to solve.")}
           </p>
 
-          <p className="mt-5 text-lg leading-relaxed text-slate-600">
+          <p className="mt-4 text-base leading-relaxed text-slate-600 sm:mt-5 sm:text-lg">
             {t(
               "There are markets, live music, festivals, family days, exhibitions, sports and all sorts of local events happening across the Algarve. But finding out about them isn’t always easy."
             )}
           </p>
 
-          <p className="mt-5 text-lg leading-relaxed text-slate-600">
+          <p className="mt-4 text-base leading-relaxed text-slate-600 sm:mt-5 sm:text-lg">
             {t(
               "Lokly brings them together in one simple place, so you can discover what’s happening, where and when - and stop missing out on things you would have loved to go to."
             )}
@@ -47,7 +47,7 @@ export default function AboutPage() {
         </div>
 
         {/* WHY LOKLY */}
-        <div className="mt-12 rounded-3xl bg-white p-6 shadow-sm sm:p-10">
+        <div className="mt-10 rounded-3xl bg-white p-6 shadow-sm sm:mt-12 sm:p-10">
           <h2 className="text-2xl font-black text-slate-900">
             {t("Why Lokly exists")}
           </h2>
