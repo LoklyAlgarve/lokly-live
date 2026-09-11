@@ -115,19 +115,13 @@ export default function SavedPage() {
 
   function addToCalendar(event: any) {
     const date = String(event.date || "").trim();
-
-    const time = String(
-      event.time || "00:00"
-    ).trim();
+    const time = String(event.time || "00:00").trim();
 
     if (!date) {
       return;
     }
 
-    const cleanTime = time.replace(
-      /[^0-9:]/g,
-      ""
-    );
+    const cleanTime = time.replace(/[^0-9:]/g, "");
 
     const [year, month, day] = date
       .split("-")
@@ -137,69 +131,99 @@ export default function SavedPage() {
       .split(":")
       .map(Number);
 
-    if (!year || !month || !day) {
+    if (
+      !year ||
+      !month ||
+      !day ||
+      Number.isNaN(hour) ||
+      Number.isNaN(minute)
+    ) {
       return;
     }
 
+    /*
+     * Lokly events use local Algarve/Portugal time.
+     *
+     * We first create the local date/time and then convert it
+     * to UTC for the ICS file. This makes the calendar event
+     * display correctly according to the user's calendar timezone.
+     */
     const start = new Date(
       year,
       month - 1,
       day,
       hour,
-      minute
+      minute,
+      0
     );
 
     const end = new Date(
-      start.getTime() +
-        2 * 60 * 60 * 1000
+      start.getTime() + 2 * 60 * 60 * 1000
     );
 
     function formatICSDate(value: Date) {
-      const y = value.getFullYear();
+      const y = value.getUTCFullYear();
 
       const m = String(
-        value.getMonth() + 1
+        value.getUTCMonth() + 1
       ).padStart(2, "0");
 
       const d = String(
-        value.getDate()
+        value.getUTCDate()
       ).padStart(2, "0");
 
       const h = String(
-        value.getHours()
+        value.getUTCHours()
       ).padStart(2, "0");
 
       const min = String(
-        value.getMinutes()
+        value.getUTCMinutes()
       ).padStart(2, "0");
 
-      return `${y}${m}${d}T${h}${min}00`;
+      const s = String(
+        value.getUTCSeconds()
+      ).padStart(2, "0");
+
+      return `${y}${m}${d}T${h}${min}${s}Z`;
     }
 
-    const escapeICS = (value: string) =>
-      value
+    function escapeICS(value: string) {
+      return String(value)
         .replace(/\\/g, "\\\\")
         .replace(/;/g, "\\;")
         .replace(/,/g, "\\,")
-        .replace(/\n/g, "\\n");
+        .replace(/\r?\n/g, "\\n");
+    }
+
+    const title = escapeICS(
+      event.title || "Lokly Event"
+    );
 
     const location = escapeICS(
       event.location || "Algarve"
     );
 
+    const description = escapeICS(
+      event.description || ""
+    );
+
+    const uid =
+      `lokly-${event.id}-${Date.now()}@lokly.live`;
+
     const calendarContent = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
       "PRODID:-//Lokly//Events//EN",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
       "BEGIN:VEVENT",
-      `UID:lokly-${event.id}-${Date.now()}@lokly`,
+      `UID:${uid}`,
+      `DTSTAMP:${formatICSDate(new Date())}`,
       `DTSTART:${formatICSDate(start)}`,
       `DTEND:${formatICSDate(end)}`,
-      `SUMMARY:${escapeICS(event.title)}`,
+      `SUMMARY:${title}`,
       `LOCATION:${location}`,
-      `DESCRIPTION:${escapeICS(
-        event.description || ""
-      )}`,
+      `DESCRIPTION:${description}`,
       "END:VEVENT",
       "END:VCALENDAR",
     ].join("\r\n");
@@ -211,17 +235,16 @@ export default function SavedPage() {
       }
     );
 
-    const url =
-      URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
 
-    const link =
-      document.createElement("a");
+    const link = document.createElement("a");
 
     link.href = url;
 
-    link.download = `${event.title
-      .replace(/[^a-z0-9]/gi, "-")
-      .toLowerCase()}.ics`;
+    link.download =
+      `${String(event.title || "lokly-event")
+        .replace(/[^a-z0-9]/gi, "-")
+        .toLowerCase()}.ics`;
 
     document.body.appendChild(link);
 
@@ -229,7 +252,9 @@ export default function SavedPage() {
 
     document.body.removeChild(link);
 
-    URL.revokeObjectURL(url);
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+    }, 1000);
   }
 
   const savedEvents = events.filter((event) =>
@@ -275,9 +300,7 @@ export default function SavedPage() {
           <div className="mt-10 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
             {savedEvents.map((event) => {
               const status =
-                goingStatuses[
-                  Number(event.id)
-                ] || null;
+                goingStatuses[Number(event.id)] || null;
 
               return (
                 <EventCard
