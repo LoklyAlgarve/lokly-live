@@ -114,10 +114,13 @@ export default function SavedPage() {
   }
 
   function addToCalendar(event: any) {
+    console.log("Lokly: Add to Calendar clicked", event);
+
     const date = String(event.date || "").trim();
     const time = String(event.time || "00:00").trim();
 
     if (!date) {
+      console.error("Lokly: Event has no date", event);
       return;
     }
 
@@ -138,16 +141,13 @@ export default function SavedPage() {
       Number.isNaN(hour) ||
       Number.isNaN(minute)
     ) {
+      console.error("Lokly: Invalid event date/time", {
+        date,
+        time,
+      });
       return;
     }
 
-    /*
-     * Lokly events use local Algarve/Portugal time.
-     *
-     * We first create the local date/time and then convert it
-     * to UTC for the ICS file. This makes the calendar event
-     * display correctly according to the user's calendar timezone.
-     */
     const start = new Date(
       year,
       month - 1,
@@ -163,26 +163,11 @@ export default function SavedPage() {
 
     function formatICSDate(value: Date) {
       const y = value.getUTCFullYear();
-
-      const m = String(
-        value.getUTCMonth() + 1
-      ).padStart(2, "0");
-
-      const d = String(
-        value.getUTCDate()
-      ).padStart(2, "0");
-
-      const h = String(
-        value.getUTCHours()
-      ).padStart(2, "0");
-
-      const min = String(
-        value.getUTCMinutes()
-      ).padStart(2, "0");
-
-      const s = String(
-        value.getUTCSeconds()
-      ).padStart(2, "0");
+      const m = String(value.getUTCMonth() + 1).padStart(2, "0");
+      const d = String(value.getUTCDate()).padStart(2, "0");
+      const h = String(value.getUTCHours()).padStart(2, "0");
+      const min = String(value.getUTCMinutes()).padStart(2, "0");
+      const s = String(value.getUTCSeconds()).padStart(2, "0");
 
       return `${y}${m}${d}T${h}${min}${s}Z`;
     }
@@ -195,21 +180,6 @@ export default function SavedPage() {
         .replace(/\r?\n/g, "\\n");
     }
 
-    const title = escapeICS(
-      event.title || "Lokly Event"
-    );
-
-    const location = escapeICS(
-      event.location || "Algarve"
-    );
-
-    const description = escapeICS(
-      event.description || ""
-    );
-
-    const uid =
-      `lokly-${event.id}-${Date.now()}@lokly.live`;
-
     const calendarContent = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
@@ -217,44 +187,57 @@ export default function SavedPage() {
       "CALSCALE:GREGORIAN",
       "METHOD:PUBLISH",
       "BEGIN:VEVENT",
-      `UID:${uid}`,
+      `UID:lokly-${event.id}-${Date.now()}@lokly.live`,
       `DTSTAMP:${formatICSDate(new Date())}`,
       `DTSTART:${formatICSDate(start)}`,
       `DTEND:${formatICSDate(end)}`,
-      `SUMMARY:${title}`,
-      `LOCATION:${location}`,
-      `DESCRIPTION:${description}`,
+      `SUMMARY:${escapeICS(event.title || "Lokly Event")}`,
+      `LOCATION:${escapeICS(event.location || "Algarve")}`,
+      `DESCRIPTION:${escapeICS(event.description || "")}`,
       "END:VEVENT",
       "END:VCALENDAR",
     ].join("\r\n");
 
-    const blob = new Blob(
-      [calendarContent],
-      {
-        type: "text/calendar;charset=utf-8",
-      }
-    );
+    try {
+      const blob = new Blob(
+        [calendarContent],
+        {
+          type: "text/calendar",
+        }
+      );
 
-    const url = URL.createObjectURL(blob);
+      const url = window.URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
+      const filename =
+        `${String(event.title || "lokly-event")
+          .replace(/[^a-z0-9]/gi, "-")
+          .toLowerCase()}.ics`;
 
-    link.href = url;
+      const link = document.createElement("a");
 
-    link.download =
-      `${String(event.title || "lokly-event")
-        .replace(/[^a-z0-9]/gi, "-")
-        .toLowerCase()}.ics`;
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.display = "none";
 
-    document.body.appendChild(link);
+      document.body.appendChild(link);
 
-    link.click();
+      console.log("Lokly: triggering calendar download");
 
-    document.body.removeChild(link);
+      link.click();
 
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-    }, 1000);
+      document.body.removeChild(link);
+
+      // Give the browser time to start the download
+      // before removing the temporary URL.
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+      }, 5000);
+    } catch (error) {
+      console.error(
+        "Lokly: Calendar download failed",
+        error
+      );
+    }
   }
 
   const savedEvents = events.filter((event) =>
