@@ -34,6 +34,7 @@ export default function NotificationsPage() {
       <Header />
 
       <section className="mx-auto max-w-2xl px-5 py-8 sm:px-6">
+
         <a
           href="/profile"
           className="text-sm font-bold text-[#149EAF] hover:underline"
@@ -41,24 +42,26 @@ export default function NotificationsPage() {
           {t("← Back to Profile")}
         </a>
 
-        <h1 className="mt-5 text-3xl font-black text-slate-900 sm:text-4xl">
+        <h1 className="mt-5 text-[28px] font-black leading-tight tracking-tight text-slate-900 sm:text-4xl">
           {t("Notifications")}
         </h1>
 
-        <p className="mt-2 text-slate-500">
+        <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
           {t(
             "Choose which Lokly notifications you'd like to receive."
           )}
         </p>
 
         <div className="mt-8 overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100">
+
           <div className="flex items-center justify-between gap-5 p-6 sm:p-8">
+
             <div>
-              <h2 className="font-bold text-slate-900">
+              <h2 className="text-xl font-black text-slate-900 sm:text-2xl">
                 {t("Event Notifications")}
               </h2>
 
-              <p className="mt-1 text-sm leading-relaxed text-slate-500">
+              <p className="mt-2 text-base leading-relaxed text-slate-600 sm:text-lg">
                 {t(
                   "Get notified about events and new things happening around the Algarve."
                 )}
@@ -87,20 +90,25 @@ export default function NotificationsPage() {
                 }`}
               />
             </button>
+
           </div>
 
-          <div className="border-t border-slate-100 px-6 py-4 sm:px-8">
-            <p className="text-sm font-semibold text-slate-700">
+          <div className="border-t border-slate-100 px-6 py-5 sm:px-8">
+
+            <p className="text-base font-bold text-slate-700 sm:text-lg">
               {notifications
                 ? t("Notifications are ON")
                 : t("Notifications are OFF")}
             </p>
 
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-2 text-base leading-relaxed text-slate-500">
               {t("You can change this setting at any time.")}
             </p>
+
           </div>
+
         </div>
+
       </section>
 
       <BottomNavigation />

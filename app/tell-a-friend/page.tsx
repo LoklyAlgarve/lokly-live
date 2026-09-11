@@ -31,32 +31,36 @@ export default function TellAFriendPage() {
     <main className="min-h-screen bg-slate-50 pb-32 sm:pb-40">
       <Header />
 
-      <section className="mx-auto max-w-4xl px-4 py-5 sm:px-6 sm:py-8">
+      <section className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
 
         {/* INTRO */}
         <div className="text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#149EAF] sm:text-sm">
+
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#149EAF] sm:text-sm">
             {t("SPREAD THE WORD")}
           </p>
 
-          <h1 className="mt-2 text-[28px] font-black leading-tight text-slate-900 sm:text-5xl">
+          <h1 className="mt-3 text-[28px] font-black leading-tight tracking-tight text-slate-900 sm:text-4xl">
             {t("Tell a friend about Lokly")}
           </h1>
 
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:mt-4 sm:text-lg">
+          <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-[#149EAF]" />
+
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
             {t(
               "Know someone who'd love to know what's happening in the Algarve? Send them Lokly and help them discover what's going on."
             )}
           </p>
+
         </div>
 
         {/* SHARE */}
         <div className="mt-6 rounded-2xl bg-white p-5 text-center shadow-sm sm:mt-8 sm:rounded-3xl sm:p-10">
 
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#149EAF]/10 text-[#149EAF] sm:h-20 sm:w-20">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#149EAF]/10 text-[#149EAF] sm:h-16 sm:w-16">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-7 w-7 sm:h-10 sm:w-10"
+              className="h-8 w-8 sm:h-9 sm:w-9"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -67,13 +71,11 @@ export default function TellAFriendPage() {
                 strokeLinejoin="round"
                 d="M12 16v-7"
               />
-
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 d="m8.5 12.5 3.5-3.5 3.5 3.5"
               />
-
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -82,17 +84,17 @@ export default function TellAFriendPage() {
             </svg>
           </div>
 
-          <h2 className="mt-4 text-xl font-black text-slate-900 sm:mt-7 sm:text-2xl">
+          <h2 className="mt-5 text-2xl font-black text-slate-900 sm:mt-6 sm:text-3xl">
             {t("Share Lokly")}
           </h2>
 
-          <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-slate-600 sm:mt-3 sm:text-base">
+          <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
             {t(
               "Markets, music, festivals, food, family events and plenty more - there might be something your friends don't know about yet."
             )}
           </p>
 
-          <div className="mt-5 grid gap-2 sm:mt-8 sm:grid-cols-3 sm:gap-3">
+          <div className="mt-6 grid gap-2 sm:mt-8 sm:grid-cols-3 sm:gap-3">
 
             <a
               href={`https://wa.me/?text=${encodeURIComponent(
@@ -127,122 +129,19 @@ export default function TellAFriendPage() {
           </div>
         </div>
 
-        {/* ADD TO HOME SCREEN */}
-        <div className="mt-5 rounded-2xl bg-white p-5 shadow-sm sm:mt-8 sm:rounded-3xl sm:p-9">
-
-          <div className="text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#149EAF]/10 text-[#149EAF] sm:h-16 sm:w-16">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 sm:h-8 sm:w-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.8}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 3v12"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m7 8 5-5 5 5"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M5 14v4a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-4"
-                />
-              </svg>
-            </div>
-
-            <h2 className="mt-4 text-xl font-black text-slate-900 sm:mt-6 sm:text-2xl">
-              {t("Want Lokly one tap away?")}
-            </h2>
-
-            <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-slate-600 sm:mt-3 sm:text-base">
-              {t(
-                "Add Lokly to your phone's home screen and it'll be there whenever you're wondering what's on."
-              )}
-            </p>
-          </div>
-
-          <div className="mt-5 grid gap-3 sm:mt-8 sm:grid-cols-2 sm:gap-5">
-
-            <div className="rounded-xl bg-[#e5f3f5] p-4 sm:rounded-2xl sm:p-6">
-              <h3 className="text-base font-black text-slate-900 sm:text-lg">
-                {t("iPhone & iPad")}
-              </h3>
-
-              <ol className="mt-3 space-y-1.5 text-xs leading-relaxed text-slate-600 sm:mt-4 sm:space-y-2 sm:text-sm">
-                <li>
-                  <strong>1.</strong>{" "}
-                  {t("Open lokly.live in Safari.")}
-                </li>
-
-                <li>
-                  <strong>2.</strong>{" "}
-                  {t("Tap the Share button.")}
-                </li>
-
-                <li>
-                  <strong>3.</strong>{" "}
-                  {t("Tap Add to Home Screen.")}
-                </li>
-
-                <li>
-                  <strong>4.</strong>{" "}
-                  {t("Tap Add.")}
-                </li>
-              </ol>
-            </div>
-
-            <div className="rounded-xl bg-slate-100 p-4 sm:rounded-2xl sm:p-6">
-              <h3 className="text-base font-black text-slate-900 sm:text-lg">
-                Android
-              </h3>
-
-              <ol className="mt-3 space-y-1.5 text-xs leading-relaxed text-slate-600 sm:mt-4 sm:space-y-2 sm:text-sm">
-                <li>
-                  <strong>1.</strong>{" "}
-                  {t("Open lokly.live in Chrome.")}
-                </li>
-
-                <li>
-                  <strong>2.</strong>{" "}
-                  {t("Tap the ⋮ menu.")}
-                </li>
-
-                <li>
-                  <strong>3.</strong>{" "}
-                  {t(
-                    "Tap Add to Home screen or Install app."
-                  )}
-                </li>
-
-                <li>
-                  <strong>4.</strong>{" "}
-                  {t("Tap Add or Install.")}
-                </li>
-              </ol>
-            </div>
-
-          </div>
-        </div>
-
         {/* FINAL QUOTE */}
-        <div className="mt-5 rounded-2xl bg-[#e5f3f5] p-5 text-center sm:mt-8 sm:rounded-3xl sm:p-9">
-          <p className="text-sm font-bold text-slate-900 sm:text-lg">
+        <div className="mt-6 rounded-2xl bg-[#e5f3f5] p-6 text-center sm:mt-8 sm:rounded-3xl sm:p-9">
+
+          <p className="text-base font-bold text-slate-900 sm:text-lg">
             {t("Because nobody wants to hear...")}
           </p>
 
-          <p className="mt-2 text-base font-black text-[#149EAF] sm:mt-3 sm:text-xl">
+          <p className="mt-3 text-lg font-black text-[#149EAF] sm:text-xl">
             {t(
               '"Oh, you should have gone - it was brilliant."'
             )}
           </p>
+
         </div>
 
       </section>

@@ -307,18 +307,52 @@ export default function Header() {
                   {pt ? "Mais" : "More"}
                 </p>
 
-                {/* NOTIFICATIONS */}
+                {/* LOKLY APP */}
                 <Link
-                  href="/profile/notifications"
+                  href="/lokly-app"
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
                 >
                   <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
-                    ♢
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.7}
+                    >
+                      <rect
+                        x="7"
+                        y="3"
+                        width="10"
+                        height="18"
+                        rx="2"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        d="M10 6h4M11 18h2"
+                      />
+                    </svg>
                   </span>
 
                   <span className="font-semibold">
-                    {pt ? "Notificações" : "Notifications"}
+                    Lokly App
+                  </span>
+                </Link>
+
+                {/* TELL A FRIEND */}
+                <Link
+                  href="/tell-a-friend"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
+                >
+                  <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
+                    ♧
+                  </span>
+
+                  <span className="font-semibold">
+                    {pt ? "Diga a um amigo" : "Tell a Friend"}
                   </span>
                 </Link>
 
@@ -337,18 +371,18 @@ export default function Header() {
                   </span>
                 </Link>
 
-                {/* TELL A FRIEND */}
+                {/* NOTIFICATIONS */}
                 <Link
-                  href="/tell-a-friend"
+                  href="/profile/notifications"
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
                 >
                   <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
-                    ♧
+                    ♢
                   </span>
 
                   <span className="font-semibold">
-                    {pt ? "Diga a um amigo" : "Tell a Friend"}
+                    {pt ? "Notificações" : "Notifications"}
                   </span>
                 </Link>
 
