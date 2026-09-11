@@ -82,6 +82,22 @@ function isToday(date: string) {
   );
 }
 
+function getImageUrl(image: string) {
+  if (!image) {
+    return "/images/lokly-logo.png";
+  }
+
+  if (
+    image.startsWith("http://") ||
+    image.startsWith("https://") ||
+    image.startsWith("/")
+  ) {
+    return image;
+  }
+
+  return `/${image}`;
+}
+
 export default function EventCard({
   id,
   title,
@@ -123,7 +139,7 @@ export default function EventCard({
       <div className="relative">
 
         <img
-          src={image}
+          src={getImageUrl(image)}
           alt={title}
           className="h-32 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-60"
         />

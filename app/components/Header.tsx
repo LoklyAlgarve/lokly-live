@@ -406,6 +406,43 @@ export default function Header() {
 
               </div>
 
+              {/* BUSINESS */}
+              <div className="mt-8">
+
+                <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
+                  {pt ? "Negócios" : "Business"}
+                </p>
+
+                {/* ADD YOUR EVENT */}
+                <Link
+                  href="/add-event"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
+                >
+                  <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.7}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 5v14M5 12h14"
+                      />
+                    </svg>
+                  </span>
+
+                  <span className="font-semibold">
+                    {pt ? "Adicionar um evento" : "Add your event"}
+                  </span>
+                </Link>
+
+              </div>
+
               {/* LANGUAGE */}
               <div className="mt-8 border-t border-slate-100 pt-6">
 
