@@ -156,7 +156,7 @@ export default function AddEventPage() {
     }
 
     try {
-      const notificationResponse = await fetch("/api/events/add", {
+      const notificationResponse = await fetch("/api/events", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
