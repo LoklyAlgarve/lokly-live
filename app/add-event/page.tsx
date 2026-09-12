@@ -9,6 +9,25 @@ import { createClient } from "@/utils/supabase/client";
 const EVENT_IMAGE_BUCKET = "event-images";
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 
+const ALGARVE_CONCELHOS = [
+  "Albufeira",
+  "Alcoutim",
+  "Aljezur",
+  "Castro Marim",
+  "Faro",
+  "Lagoa",
+  "Lagos",
+  "Loulé",
+  "Monchique",
+  "Olhão",
+  "Portimão",
+  "São Brás de Alportel",
+  "Silves",
+  "Tavira",
+  "Vila do Bispo",
+  "Vila Real de Santo António",
+];
+
 export default function AddEventPage() {
   const { t } = useLanguage();
 
@@ -25,7 +44,6 @@ export default function AddEventPage() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-
     const supabase = createClient();
 
     const title = String(formData.get("eventName") || "").trim();
@@ -33,17 +51,16 @@ export default function AddEventPage() {
     const date = String(formData.get("date") || "").trim();
     const time = String(formData.get("time") || "").trim();
     const location = String(formData.get("location") || "").trim();
-    const price = String(formData.get("price") || "Free").trim();
+    const concelho = String(formData.get("concelho") || "").trim();
+    const price = String(formData.get("price") || "").trim();
     const description = String(formData.get("description") || "").trim();
     const website = String(formData.get("website") || "").trim();
     const businessName = String(formData.get("businessName") || "").trim();
     const email = String(formData.get("email") || "").trim();
     const phone = String(formData.get("phone") || "").trim();
-
     const wheelchair = String(
       formData.get("wheelchair") || "Not sure"
     );
-
     const pets = String(formData.get("pets") || "Not sure");
 
     let imageUrl: string | null = null;
@@ -128,6 +145,7 @@ export default function AddEventPage() {
       date,
       time,
       location,
+      concelho,
       price,
       description,
       website,
@@ -135,8 +153,6 @@ export default function AddEventPage() {
       business_name: businessName,
       contact_email: email,
       contact_phone: phone,
-      latitude: null,
-      longitude: null,
       wheelchair_friendly: wheelchair,
       pet_friendly: pets,
       approved: false,
@@ -167,6 +183,7 @@ export default function AddEventPage() {
           date,
           time,
           location,
+          concelho,
           businessName,
           email,
         }),
@@ -205,6 +222,20 @@ export default function AddEventPage() {
           </p>
         </div>
 
+        {submitted && (
+          <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+            <p className="font-semibold text-emerald-800">
+              {t("Event submitted")}
+            </p>
+
+            <p className="mt-1 text-sm text-emerald-700">
+              {t(
+                "Thank you. We'll review your event before it appears on Lokly."
+              )}
+            </p>
+          </div>
+        )}
+
         {errorMessage && (
           <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4">
             <p className="text-sm font-medium text-red-700">
@@ -214,8 +245,6 @@ export default function AddEventPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* YOUR EVENT */}
-
           <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
             <h2 className="text-lg font-semibold text-slate-900">
               {t("Your event")}
@@ -256,54 +285,24 @@ export default function AddEventPage() {
                   <option value="">
                     {t("Select a category")}
                   </option>
-
                   <option value="Arts & Culture">
                     {t("Arts & Culture")}
                   </option>
-
-                  <option value="Comedy">
-                    {t("Comedy")}
-                  </option>
-
-                  <option value="Community">
-                    {t("Community")}
-                  </option>
-
+                  <option value="Comedy">{t("Comedy")}</option>
+                  <option value="Community">{t("Community")}</option>
                   <option value="Exhibitions">
                     {t("Exhibitions")}
                   </option>
-
-                  <option value="Family">
-                    {t("Family")}
-                  </option>
-
-                  <option value="Festival">
-                    {t("Festival")}
-                  </option>
-
-                  <option value="Music">
-                    {t("Music")}
-                  </option>
-
+                  <option value="Family">{t("Family")}</option>
+                  <option value="Festival">{t("Festival")}</option>
+                  <option value="Music">{t("Music")}</option>
                   <option value="Nightlife">
                     {t("Nightlife")}
                   </option>
-
-                  <option value="Retreat">
-                    {t("Retreat")}
-                  </option>
-
-                  <option value="Sport">
-                    {t("Sport")}
-                  </option>
-
-                  <option value="Theatre">
-                    {t("Theatre")}
-                  </option>
-
-                  <option value="Workshop">
-                    {t("Workshop")}
-                  </option>
+                  <option value="Retreat">{t("Retreat")}</option>
+                  <option value="Sport">{t("Sport")}</option>
+                  <option value="Theatre">{t("Theatre")}</option>
+                  <option value="Workshop">{t("Workshop")}</option>
                 </select>
               </div>
 
@@ -327,8 +326,6 @@ export default function AddEventPage() {
               </div>
             </div>
           </section>
-
-          {/* WHEN & WHERE */}
 
           <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
             <h2 className="text-lg font-semibold text-slate-900">
@@ -370,10 +367,39 @@ export default function AddEventPage() {
 
               <div className="sm:col-span-2">
                 <label
+                  htmlFor="concelho"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
+                  {t("Concelho")}
+                </label>
+
+                <select
+                  id="concelho"
+                  name="concelho"
+                  defaultValue=""
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                >
+                  <option value="">
+                    {t("Select a concelho")}
+                  </option>
+
+                  {ALGARVE_CONCELHOS.map((concelhoName) => (
+                    <option
+                      key={concelhoName}
+                      value={concelhoName}
+                    >
+                      {concelhoName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label
                   htmlFor="location"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("Venue / address")}
+                  {t("Venue / location")}
                 </label>
 
                 <input
@@ -387,15 +413,11 @@ export default function AddEventPage() {
                 />
 
                 <p className="mt-2 text-xs text-slate-500">
-                  {t(
-                    "Add the venue name or address if you have it."
-                  )}
+                  {t("Enter the venue name or location.")}
                 </p>
               </div>
             </div>
           </section>
-
-          {/* PRICE & BOOKING */}
 
           <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
             <h2 className="text-lg font-semibold text-slate-900">
@@ -438,8 +460,6 @@ export default function AddEventPage() {
               </div>
             </div>
           </section>
-
-          {/* CONTACT */}
 
           <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
             <h2 className="text-lg font-semibold text-slate-900">
@@ -500,16 +520,12 @@ export default function AddEventPage() {
             </div>
           </section>
 
-          {/* MORE DETAILS */}
-
           <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
             <h2 className="text-lg font-semibold text-slate-900">
               {t("A few more details")}
             </h2>
 
             <div className="mt-5 space-y-7">
-              {/* IMAGE */}
-
               <div>
                 <label
                   htmlFor="image"
@@ -530,8 +546,6 @@ export default function AddEventPage() {
                   {t("JPG, PNG or WebP - maximum 5 MB.")}
                 </p>
               </div>
-
-              {/* WHEELCHAIR */}
 
               <div>
                 <p className="mb-3 text-sm font-medium text-slate-700">
@@ -557,8 +571,6 @@ export default function AddEventPage() {
                   ))}
                 </div>
               </div>
-
-              {/* PETS */}
 
               <div>
                 <p className="mb-3 text-sm font-medium text-slate-700">
@@ -587,8 +599,6 @@ export default function AddEventPage() {
             </div>
           </section>
 
-          {/* SUBMIT */}
-
           <button
             type="submit"
             disabled={submitting}
@@ -598,20 +608,6 @@ export default function AddEventPage() {
               ? t("Submitting...")
               : t("Submit event")}
           </button>
-
-          {submitted && (
-            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-center">
-              <p className="font-semibold text-emerald-800">
-                {t("Event submitted")}
-              </p>
-
-              <p className="mt-1 text-sm text-emerald-700">
-                {t(
-                  "Thank you. We'll review your event before it appears on Lokly."
-                )}
-              </p>
-            </div>
-          )}
         </form>
       </main>
 

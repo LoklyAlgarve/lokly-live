@@ -4,6 +4,7 @@ export type Event = {
   id: number;
   title: string;
   location: string;
+  concelho: string;
   date: string;
   time: string;
   category: string;
@@ -18,7 +19,7 @@ export type Event = {
   petFriendly: string;
 };
 
-const CACHE_KEY = "lokly-events";
+const CACHE_KEY = "lokly-events-v5";
 const CACHE_TIME = 5 * 60 * 1000;
 
 export async function getEvents(): Promise<Event[]> {
@@ -35,6 +36,15 @@ export async function getEvents(): Promise<Event[]> {
             Date.now() - parsed.timestamp < CACHE_TIME &&
             Array.isArray(parsed.events)
           ) {
+            console.log(
+              "LOKLY DEBUG - events loaded from cache:",
+              parsed.events.map((event: Event) => ({
+                id: event.id,
+                title: event.title,
+                concelho: event.concelho,
+              }))
+            );
+
             return parsed.events;
           }
         } catch {
@@ -55,10 +65,21 @@ export async function getEvents(): Promise<Event[]> {
       throw error;
     }
 
-    const events: Event[] = (data || []).map((item) => ({
+    console.log(
+      "LOKLY DEBUG - raw Supabase events:",
+      data?.map((item: any) => ({
+        id: item.id,
+        title: item.title,
+        location: item.location,
+        concelho: item.concelho,
+      }))
+    );
+
+    const events: Event[] = (data || []).map((item: any) => ({
       id: Number(item.id),
       title: item.title || "Untitled Event",
       location: item.location || "Algarve",
+      concelho: String(item.concelho ?? "").trim(),
       date: item.date || "",
       time: item.time || "",
       category: item.category || "",
@@ -76,6 +97,16 @@ export async function getEvents(): Promise<Event[]> {
       petFriendly:
         item.pet_friendly || "Unknown",
     }));
+
+    console.log(
+      "LOKLY DEBUG - final events:",
+      events.map((event) => ({
+        id: event.id,
+        title: event.title,
+        location: event.location,
+        concelho: event.concelho,
+      }))
+    );
 
     if (typeof window !== "undefined") {
       localStorage.setItem(
