@@ -115,10 +115,6 @@ export default function EventCard({
   const directionsUrl =
     `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
 
-  const showPlanning =
-    !!onGoingStatusChange &&
-    !!onAddToCalendar;
-
   function handleStatus(
     status: GoingStatus
   ) {
@@ -244,7 +240,7 @@ export default function EventCard({
 
         </div>
 
-        {/* BUTTONS */}
+        {/* MAIN BUTTONS */}
         <div className="grid grid-cols-2 gap-1.5 pt-1 sm:gap-3 sm:pt-2">
 
           <a
@@ -265,7 +261,19 @@ export default function EventCard({
 
         </div>
 
-        {showPlanning && (
+        {/* ADD TO CALENDAR */}
+        {onAddToCalendar && (
+          <button
+            type="button"
+            onClick={onAddToCalendar}
+            className="w-full rounded-lg border border-slate-200 px-2 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-50 sm:rounded-xl sm:py-3 sm:text-sm"
+          >
+            Add to Calendar
+          </button>
+        )}
+
+        {/* PLANNING */}
+        {onGoingStatusChange && (
           <div className="border-t border-slate-200 pt-3 sm:pt-4">
 
             <p className="text-xs font-bold text-slate-900">
@@ -303,14 +311,6 @@ export default function EventCard({
               </button>
 
             </div>
-
-            <button
-              type="button"
-              onClick={onAddToCalendar}
-              className="mt-2 w-full rounded-lg border border-slate-200 px-2 py-2 text-xs font-bold text-slate-700"
-            >
-              Add to Calendar
-            </button>
 
           </div>
         )}
