@@ -170,34 +170,6 @@ export default function Header() {
                 </span>
               </Link>
 
-              {/* SEARCH */}
-              <Link
-                href="/search"
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
-              >
-                <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1.8}
-                  >
-                    <circle cx="10.8" cy="10.8" r="6.2" />
-                    <path
-                      strokeLinecap="round"
-                      d="m16 16 5 5"
-                    />
-                  </svg>
-                </span>
-
-                <span className="font-semibold">
-                  {pt ? "Pesquisar" : "Search"}
-                </span>
-              </Link>
-
               {/* MAP */}
               <Link
                 href="/map"
