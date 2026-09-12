@@ -105,7 +105,9 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
+    const searchParams = new URLSearchParams(
+      window.location.search
+    );
 
     setParams({
       query: searchParams.get("query") || "",
@@ -142,19 +144,20 @@ export default function SearchPage() {
 
     const matchesQuery =
       !query ||
-      event.title.toLowerCase().includes(query) ||
-      event.location.toLowerCase().includes(query) ||
-      event.category.toLowerCase().includes(query) ||
-      event.description.toLowerCase().includes(query);
+      String(event.title ?? "").toLowerCase().includes(query) ||
+      String(event.location ?? "").toLowerCase().includes(query) ||
+      String(event.category ?? "").toLowerCase().includes(query) ||
+      String(event.description ?? "").toLowerCase().includes(query) ||
+      String(event.concelho ?? "").toLowerCase().includes(query);
 
     const matchesCategory =
       !category ||
-      event.category.toLowerCase() === category;
+      String(event.category ?? "").toLowerCase() === category;
 
     const matchesLocation =
       !location ||
       location === "algarve" ||
-      event.location.toLowerCase() === location;
+      String(event.location ?? "").toLowerCase() === location;
 
     let matchesFilter = true;
 
@@ -172,17 +175,20 @@ export default function SearchPage() {
 
     if (filter === "free") {
       matchesFilter =
-        event.price.trim().toLowerCase() === "free";
+        String(event.price ?? "").trim().toLowerCase() ===
+        "free";
     }
 
     if (filter === "family") {
       matchesFilter =
-        event.category.trim().toLowerCase() === "family";
+        String(event.category ?? "").trim().toLowerCase() ===
+        "family";
     }
 
     if (filter === "music") {
       matchesFilter =
-        event.category.trim().toLowerCase() === "music";
+        String(event.category ?? "").trim().toLowerCase() ===
+        "music";
     }
 
     return (
@@ -223,19 +229,20 @@ export default function SearchPage() {
     ? events.filter((event) => {
         const matchesQuery =
           !query ||
-          event.title.toLowerCase().includes(query) ||
-          event.location.toLowerCase().includes(query) ||
-          event.category.toLowerCase().includes(query) ||
-          event.description.toLowerCase().includes(query);
+          String(event.title ?? "").toLowerCase().includes(query) ||
+          String(event.location ?? "").toLowerCase().includes(query) ||
+          String(event.category ?? "").toLowerCase().includes(query) ||
+          String(event.description ?? "").toLowerCase().includes(query) ||
+          String(event.concelho ?? "").toLowerCase().includes(query);
 
         const matchesCategory =
           !category ||
-          event.category.toLowerCase() === category;
+          String(event.category ?? "").toLowerCase() === category;
 
         return (
           matchesQuery &&
           matchesCategory &&
-          event.location.toLowerCase() !== location
+          String(event.location ?? "").toLowerCase() !== location
         );
       })
     : [];
@@ -245,6 +252,7 @@ export default function SearchPage() {
       <Header />
 
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
+
         <div className="mb-7 sm:mb-8">
           <SearchBar />
         </div>

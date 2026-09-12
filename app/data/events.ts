@@ -19,7 +19,7 @@ export type Event = {
   petFriendly: string;
 };
 
-const CACHE_KEY = "lokly-events-v5";
+const CACHE_KEY = "lokly-events-v6";
 const CACHE_TIME = 5 * 60 * 1000;
 
 export async function getEvents(): Promise<Event[]> {
