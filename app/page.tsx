@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import EventCard from "./components/EventCard";
@@ -184,6 +189,12 @@ export default function HomePage() {
   const [loading, setLoading] =
     useState(true);
 
+  const [refreshing, setRefreshing] =
+    useState(false);
+
+  const touchStartY = useRef(0);
+  const pulling = useRef(false);
+
   const [quickFilter, setQuickFilter] =
     useState<QuickFilter>("");
 
@@ -201,6 +212,24 @@ export default function HomePage() {
       lat: number;
       lng: number;
     } | null>(null);
+
+  async function refreshEvents() {
+    if (refreshing) return;
+
+    setRefreshing(true);
+
+    try {
+      const data = await getEvents();
+      setEvents(data || []);
+    } catch (error) {
+      console.error(
+        "Failed to refresh events:",
+        error
+      );
+    } finally {
+      setRefreshing(false);
+    }
+  }
 
   useEffect(() => {
     async function loadEvents() {
@@ -220,6 +249,56 @@ export default function HomePage() {
 
     loadEvents();
   }, []);
+
+  useEffect(() => {
+    function handleTouchStart(e: TouchEvent) {
+      if (window.scrollY === 0) {
+        touchStartY.current =
+          e.touches[0].clientY;
+
+        pulling.current = true;
+      }
+    }
+
+    function handleTouchEnd(e: TouchEvent) {
+      if (!pulling.current) return;
+
+      const distance =
+        e.changedTouches[0].clientY -
+        touchStartY.current;
+
+      pulling.current = false;
+
+      if (
+        distance > 80 &&
+        window.scrollY === 0
+      ) {
+        refreshEvents();
+      }
+    }
+
+    window.addEventListener(
+      "touchstart",
+      handleTouchStart
+    );
+
+    window.addEventListener(
+      "touchend",
+      handleTouchEnd
+    );
+
+    return () => {
+      window.removeEventListener(
+        "touchstart",
+        handleTouchStart
+      );
+
+      window.removeEventListener(
+        "touchend",
+        handleTouchEnd
+      );
+    };
+  }, [refreshing]);
 
   const eventCategories = useMemo(() => {
     return Array.from(
@@ -376,6 +455,12 @@ export default function HomePage() {
     <main className="min-h-screen bg-white pb-24">
       <Header />
 
+      {refreshing && (
+        <div className="py-2 text-center text-xs font-semibold text-[#149EAF]">
+          {t("Refreshing events...")}
+        </div>
+      )}
+
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* HERO */}
@@ -387,9 +472,10 @@ export default function HomePage() {
               <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/80 sm:mb-2 sm:text-sm">
                 {t("Discover the Algarve")}
               </p>
-<h1 className="text-[30px] font-black leading-[1.05] tracking-tight sm:text-5xl">
-  {t("What's on near you?")}
-</h1>
+
+              <h1 className="text-[30px] font-black leading-[1.05] tracking-tight sm:text-5xl">
+                {t("What's on near you?")}
+              </h1>
 
               <p className="mt-2 max-w-md text-xs leading-relaxed text-white/90 sm:mt-4 sm:text-lg">
                 {t(
