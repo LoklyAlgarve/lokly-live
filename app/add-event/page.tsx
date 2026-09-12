@@ -46,62 +46,6 @@ export default function AddEventPage() {
 
     const pets = String(formData.get("pets") || "Not sure");
 
-    /*
-     * ---------------------------------------------------------
-     * 1. Find the event coordinates from the location
-     * ---------------------------------------------------------
-     */
-
-    let latitude: number | null = null;
-    let longitude: number | null = null;
-
-    if (location) {
-      try {
-        const searchAddress = `${location}, Portugal`;
-
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=pt&q=${encodeURIComponent(
-            searchAddress
-          )}`
-        );
-
-        if (!response.ok) {
-          throw new Error("Geocoding request failed");
-        }
-
-        const results = await response.json();
-
-        if (results.length === 0) {
-          setSubmitting(false);
-          setErrorMessage(
-            t(
-              "We couldn't find that location. Please check the venue and address and try again."
-            )
-          );
-          return;
-        }
-
-        latitude = Number(results[0].lat);
-        longitude = Number(results[0].lon);
-      } catch (error) {
-        console.error("Could not find event coordinates:", error);
-
-        setSubmitting(false);
-        setErrorMessage(
-          t(
-            "We couldn't find the location right now. Please check the address and try again."
-          )
-        );
-        return;
-      }
-    }
-
-    /*
-     * ---------------------------------------------------------
-     * 2. Upload the event image
-     * ---------------------------------------------------------
-     */
-
     let imageUrl: string | null = null;
 
     const imageFile = formData.get("image");
@@ -178,12 +122,6 @@ export default function AddEventPage() {
       }
     }
 
-    /*
-     * ---------------------------------------------------------
-     * 3. Save the event
-     * ---------------------------------------------------------
-     */
-
     const { error } = await supabase.from("events").insert({
       title,
       category,
@@ -197,8 +135,8 @@ export default function AddEventPage() {
       business_name: businessName,
       contact_email: email,
       contact_phone: phone,
-      latitude,
-      longitude,
+      latitude: null,
+      longitude: null,
       wheelchair_friendly: wheelchair,
       pet_friendly: pets,
       approved: false,
@@ -216,12 +154,6 @@ export default function AddEventPage() {
       );
       return;
     }
-
-    /*
-     * ---------------------------------------------------------
-     * 4. Send notification email
-     * ---------------------------------------------------------
-     */
 
     try {
       const notificationResponse = await fetch("/api/events/add", {
@@ -252,6 +184,7 @@ export default function AddEventPage() {
 
     setSubmitting(false);
     setSubmitted(true);
+
     form.reset();
   }
 
@@ -337,24 +270,54 @@ export default function AddEventPage() {
                   <option value="">
                     {t("Select a category")}
                   </option>
+
                   <option value="Arts & Culture">
                     {t("Arts & Culture")}
                   </option>
-                  <option value="Comedy">{t("Comedy")}</option>
-                  <option value="Community">{t("Community")}</option>
+
+                  <option value="Comedy">
+                    {t("Comedy")}
+                  </option>
+
+                  <option value="Community">
+                    {t("Community")}
+                  </option>
+
                   <option value="Exhibitions">
                     {t("Exhibitions")}
                   </option>
-                  <option value="Family">{t("Family")}</option>
-                  <option value="Festival">{t("Festival")}</option>
-                  <option value="Music">{t("Music")}</option>
+
+                  <option value="Family">
+                    {t("Family")}
+                  </option>
+
+                  <option value="Festival">
+                    {t("Festival")}
+                  </option>
+
+                  <option value="Music">
+                    {t("Music")}
+                  </option>
+
                   <option value="Nightlife">
                     {t("Nightlife")}
                   </option>
-                  <option value="Retreat">{t("Retreat")}</option>
-                  <option value="Sport">{t("Sport")}</option>
-                  <option value="Theatre">{t("Theatre")}</option>
-                  <option value="Workshop">{t("Workshop")}</option>
+
+                  <option value="Retreat">
+                    {t("Retreat")}
+                  </option>
+
+                  <option value="Sport">
+                    {t("Sport")}
+                  </option>
+
+                  <option value="Theatre">
+                    {t("Theatre")}
+                  </option>
+
+                  <option value="Workshop">
+                    {t("Workshop")}
+                  </option>
                 </select>
               </div>
 
@@ -424,7 +387,7 @@ export default function AddEventPage() {
                   htmlFor="location"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("Venue / location")}
+                  {t("Venue / address")}
                 </label>
 
                 <input
@@ -439,7 +402,7 @@ export default function AddEventPage() {
 
                 <p className="mt-2 text-xs text-slate-500">
                   {t(
-                    "Please include the venue name and town so we can place the event accurately on the map."
+                    "Add the venue name or address if you have it."
                   )}
                 </p>
               </div>
