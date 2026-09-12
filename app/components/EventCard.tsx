@@ -261,7 +261,7 @@ export default function EventCard({
 
         </div>
 
-        {/* ADD TO CALENDAR */}
+        {/* ADD TO CALENDAR - GENERAL */}
         {onAddToCalendar && (
           <button
             type="button"
@@ -311,6 +311,17 @@ export default function EventCard({
               </button>
 
             </div>
+
+            {/* ADD TO CALENDAR - PLANNING */}
+            {onAddToCalendar && (
+              <button
+                type="button"
+                onClick={onAddToCalendar}
+                className="mt-2 w-full rounded-lg border border-slate-200 px-2 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-50 sm:rounded-xl sm:py-3 sm:text-sm"
+              >
+                Add to Calendar
+              </button>
+            )}
 
           </div>
         )}
