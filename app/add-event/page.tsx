@@ -205,20 +205,6 @@ export default function AddEventPage() {
           </p>
         </div>
 
-        {submitted && (
-          <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-            <p className="font-semibold text-emerald-800">
-              {t("Event submitted")}
-            </p>
-
-            <p className="mt-1 text-sm text-emerald-700">
-              {t(
-                "Thank you. We'll review your event before it appears on Lokly."
-              )}
-            </p>
-          </div>
-        )}
-
         {errorMessage && (
           <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4">
             <p className="text-sm font-medium text-red-700">
@@ -612,6 +598,20 @@ export default function AddEventPage() {
               ? t("Submitting...")
               : t("Submit event")}
           </button>
+
+          {submitted && (
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-center">
+              <p className="font-semibold text-emerald-800">
+                {t("Event submitted")}
+              </p>
+
+              <p className="mt-1 text-sm text-emerald-700">
+                {t(
+                  "Thank you. We'll review your event before it appears on Lokly."
+                )}
+              </p>
+            </div>
+          )}
         </form>
       </main>
 
