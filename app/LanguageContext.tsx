@@ -56,6 +56,14 @@ const translations: Record<string, string> = {
   "Nothing to see here… yet!": "Nada para ver aqui… ainda!",
   "Try changing your filters.": "Tente alterar os seus filtros.",
 
+  // Event Card
+  "TODAY": "HOJE",
+  "Directions": "Como chegar",
+  "Details": "Detalhes",
+  "Planning to go?": "Está a pensar ir?",
+  "Yes": "Sim",
+  "Maybe": "Talvez",
+
   // Common
   "Loading...": "A carregar...",
   "Save": "Guardar",
@@ -66,10 +74,50 @@ const translations: Record<string, string> = {
   "Submit": "Enviar",
   "Email us": "Envie-nos um email",
 
+  // Past Events
+  "Events you may have missed.":
+    "Eventos que pode ter perdido.",
+  "Loading past events...":
+    "A carregar eventos anteriores...",
+  "No past events":
+    "Não existem eventos anteriores",
+  "Past events will appear here automatically.":
+    "Os eventos anteriores aparecerão aqui automaticamente.",
+  "Past Event":
+    "Evento anterior",
+  "Thank you for your feedback":
+    "Obrigado pelo seu feedback",
+  "Give Feedback":
+    "Dar feedback",
+  "Thank you!":
+    "Obrigado!",
+  "Your feedback has been submitted.":
+    "O seu feedback foi enviado.",
+  "How was this event?":
+    "Como foi este evento?",
+  "Close feedback":
+    "Fechar feedback",
+  "star":
+    "estrela",
+  "stars":
+    "estrelas",
+  "Anything you'd like to tell us? (optional)":
+    "Gostaria de nos dizer alguma coisa? (opcional)",
+  "Submitting...":
+    "A enviar...",
+  "Submit Feedback":
+    "Enviar feedback",
+  "Please sign in to leave feedback.":
+    "Inicie sessão para deixar feedback.",
+  "Sorry, we couldn't submit your feedback.":
+    "Desculpe, não foi possível enviar o seu feedback.",
+
   // Categories
   "Music": "Música",
   "Festival": "Festival",
+  "Festivals": "Festivais",
   "Market": "Mercado",
+  "Markets & Shopping": "Mercados e compras",
   "Food & Drink": "Comida e bebida",
   "Sport": "Desporto",
   "Family": "Família",
@@ -78,10 +126,15 @@ const translations: Record<string, string> = {
   "Comedy": "Comédia",
   "Theatre": "Teatro",
   "Exhibitions": "Exposições",
+  "Exhibition": "Exposição",
   "Workshop": "Workshop",
+  "Workshops": "Workshops",
   "Charity": "Caridade",
   "Community": "Comunidade",
   "Retreat": "Retiro",
+  "Retreats": "Retiros",
+  "Wellbeing": "Bem-estar",
+  "Outdoor": "Ao ar livre",
 
   // Profile
   "Manage your Lokly account and preferences.":
@@ -103,7 +156,8 @@ const translations: Record<string, string> = {
     "Os seus eventos favoritos, todos num só lugar.",
   "Loading your saved events...":
     "A carregar os seus eventos guardados...",
-  "No saved events yet": "Ainda não tem eventos guardados",
+  "No saved events yet":
+    "Ainda não tem eventos guardados",
   "Tap the heart on an event to save it here.":
     "Toque no coração de um evento para o guardar aqui.",
 
@@ -118,7 +172,6 @@ const translations: Record<string, string> = {
   "Events near you": "Eventos perto de si",
 
   // General
-  "Yes": "Sim",
   "No": "Não",
   "OK": "OK",
 };

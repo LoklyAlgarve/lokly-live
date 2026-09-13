@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import SaveButton from "./SaveButton";
+import { useLanguage } from "../LanguageContext";
 
 type GoingStatus = "yes" | "maybe" | null;
 
@@ -110,6 +111,8 @@ export default function EventCard({
   onGoingStatusChange,
   onSavedChange,
 }: EventCardProps) {
+  const { t } = useLanguage();
+
   const directionsUrl =
     `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
 
@@ -140,7 +143,7 @@ export default function EventCard({
 
         {isToday(date) && (
           <div className="absolute left-2 top-2 rounded-full bg-white px-2 py-1 text-[9px] font-bold text-[#149EAF] shadow sm:left-4 sm:top-4 sm:px-3 sm:text-xs">
-            TODAY
+            {t("TODAY")}
           </div>
         )}
 
@@ -164,7 +167,7 @@ export default function EventCard({
 
           {category && (
             <span className="max-w-full truncate rounded-full bg-[#149EAF]/10 px-2 py-1 text-[9px] font-bold uppercase text-[#149EAF] sm:px-3 sm:text-xs">
-              {category}
+              {t(category)}
             </span>
           )}
 
@@ -252,7 +255,7 @@ export default function EventCard({
             rel="noopener noreferrer"
             className="flex items-center justify-center rounded-lg border border-[#149EAF] py-2 text-[10px] font-bold text-[#149EAF] transition hover:bg-[#149EAF]/10 sm:rounded-xl sm:py-3 sm:text-sm"
           >
-            Directions
+            {t("Directions")}
           </a>
 
           {/* DETAILS */}
@@ -260,7 +263,7 @@ export default function EventCard({
             href={`/events/${id}`}
             className="flex items-center justify-center rounded-lg bg-[#149EAF] py-2 text-[10px] font-bold text-white transition hover:bg-[#117F8E] sm:rounded-xl sm:py-3 sm:text-sm"
           >
-            Details
+            {t("Details")}
           </Link>
 
         </div>
@@ -270,7 +273,7 @@ export default function EventCard({
           <div className="border-t border-slate-200 pt-3 sm:pt-4">
 
             <p className="text-xs font-bold text-slate-900">
-              Planning to go?
+              {t("Planning to go?")}
             </p>
 
             <div className="mt-2 grid grid-cols-2 gap-2">
@@ -286,7 +289,7 @@ export default function EventCard({
                     : "bg-slate-100 text-slate-700"
                 }`}
               >
-                Yes
+                {t("Yes")}
               </button>
 
               <button
@@ -300,7 +303,7 @@ export default function EventCard({
                     : "bg-slate-100 text-slate-700"
                 }`}
               >
-                Maybe
+                {t("Maybe")}
               </button>
 
             </div>
