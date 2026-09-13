@@ -22,6 +22,8 @@ type EventCardProps = {
     status: GoingStatus
   ) => void;
 
+  onAddToCalendar?: () => void;
+
   onSavedChange?: (
     eventId: number,
     saved: boolean
@@ -29,15 +31,13 @@ type EventCardProps = {
 };
 
 function formatEventDate(date: string) {
-  const [datePart, timePart] =
-    date.split(" • ");
+  const [datePart, timePart] = date.split(" • ");
 
   const parts = datePart.split("-");
 
   if (parts.length !== 3) return date;
 
-  const [year, month, day] =
-    parts.map(Number);
+  const [year, month, day] = parts.map(Number);
 
   if (!year || !month || !day) {
     return date;
@@ -59,15 +59,13 @@ function formatEventDate(date: string) {
 }
 
 function isToday(date: string) {
-  const datePart =
-    date.split(" • ")[0];
+  const datePart = date.split(" • ")[0];
 
   const parts = datePart.split("-");
 
   if (parts.length !== 3) return false;
 
-  const [year, month, day] =
-    parts.map(Number);
+  const [year, month, day] = parts.map(Number);
 
   if (!year || !month || !day) {
     return false;
@@ -109,6 +107,7 @@ export default function EventCard({
   longitude,
   goingStatus = null,
   onGoingStatusChange,
+  onAddToCalendar,
   onSavedChange,
 }: EventCardProps) {
   const { t } = useLanguage();
@@ -116,16 +115,12 @@ export default function EventCard({
   const directionsUrl =
     `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
 
-  function handleStatus(
-    status: GoingStatus
-  ) {
+  function handleStatus(status: GoingStatus) {
     if (!onGoingStatusChange) return;
 
     onGoingStatusChange(
       id,
-      goingStatus === status
-        ? null
-        : status
+      goingStatus === status ? null : status
     );
   }
 
@@ -134,7 +129,6 @@ export default function EventCard({
 
       {/* IMAGE */}
       <div className="relative">
-
         <img
           src={getImageUrl(image)}
           alt={title}
@@ -150,13 +144,9 @@ export default function EventCard({
         <SaveButton
           eventId={id}
           onSavedChange={(saved) =>
-            onSavedChange?.(
-              id,
-              saved
-            )
+            onSavedChange?.(id, saved)
           }
         />
-
       </div>
 
       {/* CONTENT */}
@@ -164,13 +154,11 @@ export default function EventCard({
 
         {/* CATEGORY */}
         <div className="flex items-center gap-1.5">
-
           {category && (
             <span className="max-w-full truncate rounded-full bg-[#149EAF]/10 px-2 py-1 text-[9px] font-bold uppercase text-[#149EAF] sm:px-3 sm:text-xs">
               {t(category)}
             </span>
           )}
-
         </div>
 
         {/* TITLE */}
@@ -183,7 +171,6 @@ export default function EventCard({
 
           {/* LOCATION */}
           <div className="flex items-start gap-1.5 text-[11px] leading-tight text-slate-600 sm:gap-2 sm:text-sm">
-
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="mt-0.5 h-3.5 w-3.5 shrink-0 sm:h-5 sm:w-5"
@@ -197,7 +184,6 @@ export default function EventCard({
                 strokeLinejoin="round"
                 d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1116 0z"
               />
-
               <circle
                 cx="12"
                 cy="10"
@@ -208,12 +194,10 @@ export default function EventCard({
             <span className="line-clamp-1">
               {location}
             </span>
-
           </div>
 
           {/* DATE */}
           <div className="flex items-start gap-1.5 text-[11px] leading-tight text-slate-600 sm:gap-2 sm:text-sm">
-
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="mt-0.5 h-3.5 w-3.5 shrink-0 sm:h-5 sm:w-5"
@@ -229,7 +213,6 @@ export default function EventCard({
                 height="17"
                 rx="2"
               />
-
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -240,9 +223,7 @@ export default function EventCard({
             <span className="line-clamp-1">
               {formatEventDate(date)}
             </span>
-
           </div>
-
         </div>
 
         {/* MAIN BUTTONS */}
@@ -265,8 +246,18 @@ export default function EventCard({
           >
             {t("Details")}
           </Link>
-
         </div>
+
+        {/* ADD TO CALENDAR - SAVED PAGE ONLY */}
+        {onAddToCalendar && (
+          <button
+            type="button"
+            onClick={onAddToCalendar}
+            className="flex w-full items-center justify-center rounded-lg border border-[#149EAF] bg-white py-2 text-[10px] font-bold text-[#149EAF] transition hover:bg-[#149EAF]/10 sm:rounded-xl sm:py-3 sm:text-sm"
+          >
+            {t("Add to Calendar")}
+          </button>
+        )}
 
         {/* PLANNING */}
         {onGoingStatusChange && (
@@ -280,9 +271,7 @@ export default function EventCard({
 
               <button
                 type="button"
-                onClick={() =>
-                  handleStatus("yes")
-                }
+                onClick={() => handleStatus("yes")}
                 className={`rounded-lg px-2 py-2 text-xs font-bold ${
                   goingStatus === "yes"
                     ? "bg-[#149EAF] text-white"
@@ -294,9 +283,7 @@ export default function EventCard({
 
               <button
                 type="button"
-                onClick={() =>
-                  handleStatus("maybe")
-                }
+                onClick={() => handleStatus("maybe")}
                 className={`rounded-lg px-2 py-2 text-xs font-bold ${
                   goingStatus === "maybe"
                     ? "bg-[#149EAF] text-white"
@@ -307,12 +294,10 @@ export default function EventCard({
               </button>
 
             </div>
-
           </div>
         )}
 
       </div>
-
     </article>
   );
 }
