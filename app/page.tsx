@@ -22,36 +22,25 @@ type CategoryIconName =
 
 type Category = {
   label: string;
+  filter: string;
   icon: CategoryIconName;
   color: string;
 };
 
 const mainCategories: Category[] = [
-  { label: "Music", icon: "music", color: "#E53935" },
-  { label: "Food & Drink", icon: "food", color: "#F59E0B" },
-  { label: "Arts & Culture", icon: "arts", color: "#8B5CF6" },
-  {
-    label: "Markets & Shopping",
-    icon: "markets",
-    color: "#F97316",
-  },
-  { label: "Wellbeing", icon: "wellbeing", color: "#22C55E" },
-  { label: "Family", icon: "family", color: "#A855F7" },
-  { label: "Sport", icon: "sport", color: "#3B82F6" },
-  { label: "Festivals", icon: "festival", color: "#EC4899" },
-  {
-    label: "Exhibitions",
-    icon: "exhibitions",
-    color: "#9333EA",
-  },
-  { label: "Workshops", icon: "workshop", color: "#A16207" },
+  { label: "Music", filter: "Music", icon: "music", color: "#E53935" },
+  { label: "Food & Drink", filter: "Food & Drink", icon: "food", color: "#F59E0B" },
+  { label: "Arts & Culture", filter: "Arts & Culture", icon: "arts", color: "#8B5CF6" },
+  { label: "Wellbeing", filter: "Wellbeing", icon: "wellbeing", color: "#22C55E" },
+  { label: "Family", filter: "Family", icon: "family", color: "#A855F7" },
+  { label: "Markets & Shopping", filter: "Markets & Shopping", icon: "markets", color: "#F97316" },
+  { label: "Sport", filter: "Sport", icon: "sport", color: "#3B82F6" },
+  { label: "Festivals", filter: "Festival", icon: "festival", color: "#EC4899" },
+  { label: "Exhibitions", filter: "Exhibitions", icon: "exhibitions", color: "#9333EA" },
+  { label: "Workshops", filter: "Workshop", icon: "workshop", color: "#A16207" },
 ];
 
-function CategoryIcon({
-  name,
-}: {
-  name: CategoryIconName;
-}) {
+function CategoryIcon({ name }: { name: CategoryIconName }) {
   const common = {
     xmlns: "http://www.w3.org/2000/svg",
     viewBox: "0 0 24 24",
@@ -171,11 +160,71 @@ function CategoryIcon({
   }
 }
 
+function addToCalendar(
+  title: string,
+  date: string,
+  location: string
+) {
+  const [datePart, timePart] = date.split(" • ");
+  const parts = datePart.split("-");
+
+  if (parts.length !== 3) return;
+
+  const [year, month, day] = parts.map(Number);
+
+  let hours = 0;
+  let minutes = 0;
+
+  if (timePart) {
+    const match = timePart.match(
+      /(\d{1,2}):(\d{2})/
+    );
+
+    if (match) {
+      hours = Number(match[1]);
+      minutes = Number(match[2]);
+    }
+  }
+
+  const start = new Date(
+    year,
+    month - 1,
+    day,
+    hours,
+    minutes
+  );
+
+  const end = new Date(start);
+  end.setHours(end.getHours() + 2);
+
+  const formatDate = (value: Date) =>
+    value.getFullYear().toString() +
+    String(value.getMonth() + 1).padStart(2, "0") +
+    String(value.getDate()).padStart(2, "0") +
+    "T" +
+    String(value.getHours()).padStart(2, "0") +
+    String(value.getMinutes()).padStart(2, "0") +
+    "00";
+
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: title,
+    dates: `${formatDate(start)}/${formatDate(end)}`,
+    location,
+  });
+
+  window.open(
+    `https://calendar.google.com/calendar/render?${params.toString()}`,
+    "_blank"
+  );
+}
+
 export default function HomePage() {
   const { t } = useLanguage();
 
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     async function loadEvents() {
@@ -192,6 +241,16 @@ export default function HomePage() {
     loadEvents();
   }, []);
 
+  const filteredEvents = selectedCategory
+    ? events.filter(
+        (event) =>
+          String(event.category ?? "")
+            .trim()
+            .toLowerCase() ===
+          selectedCategory.toLowerCase()
+      )
+    : events;
+
   return (
     <main className="min-h-screen bg-white pb-24">
       <Header />
@@ -207,27 +266,49 @@ export default function HomePage() {
               WebkitOverflowScrolling: "touch",
             }}
           >
-            {mainCategories.map((category) => (
-              <div
-                key={category.label}
-                className="flex w-[68px] shrink-0 flex-col items-center gap-1.5 text-center"
-              >
-                <span
-                  className="flex h-12 w-12 items-center justify-center rounded-full"
-                  style={{
-                    backgroundColor: category.color,
-                  }}
-                >
-                  <span className="h-6 w-6 text-white">
-                    <CategoryIcon name={category.icon} />
-                  </span>
-                </span>
+            {mainCategories.map((category) => {
+              const active =
+                selectedCategory.toLowerCase() ===
+                category.filter.toLowerCase();
 
-                <span className="whitespace-nowrap text-[10px] font-bold leading-tight text-[#102F56]">
-                  {t(category.label)}
-                </span>
-              </div>
-            ))}
+              return (
+                <button
+                  key={category.label}
+                  type="button"
+                  onClick={() =>
+                    setSelectedCategory(
+                      active ? "" : category.filter
+                    )
+                  }
+                  className="flex w-[68px] shrink-0 flex-col items-center gap-1.5 text-center"
+                >
+                  <span
+                    className={`flex h-12 w-12 items-center justify-center rounded-full transition-all duration-150 ${
+                      active
+                        ? "translate-y-1 scale-95 shadow-inner ring-4 ring-[#149EAF]/20"
+                        : "shadow-md"
+                    }`}
+                    style={{
+                      backgroundColor: category.color,
+                    }}
+                  >
+                    <span className="h-6 w-6 text-white">
+                      <CategoryIcon name={category.icon} />
+                    </span>
+                  </span>
+
+                  <span
+                    className={`whitespace-nowrap text-[10px] font-bold leading-tight transition-all ${
+                      active
+                        ? "translate-y-0.5 text-[#149EAF]"
+                        : "text-[#102F56]"
+                    }`}
+                  >
+                    {t(category.label)}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -243,13 +324,20 @@ export default function HomePage() {
 
           <div className="mb-2.5 sm:mb-4">
             <h2 className="text-xl font-black tracking-tight text-[#102F56] sm:text-2xl">
-              {t("Events")}
+              {selectedCategory
+                ? selectedCategory === "Festival"
+                  ? t("Festivals")
+                  : selectedCategory === "Workshop"
+                    ? t("Workshops")
+                    : t(selectedCategory)
+                : t("Events")}
             </h2>
 
             <p className="mt-0.5 text-xs text-slate-500 sm:mt-1 sm:text-sm">
-              {t(
-                "Discover what's happening across the Algarve"
-              )}
+              {filteredEvents.length}{" "}
+              {filteredEvents.length === 1
+                ? "event"
+                : "events"}
             </p>
           </div>
 
@@ -259,74 +347,21 @@ export default function HomePage() {
               {t("Loading events...")}
             </div>
 
-          ) : events.length === 0 ? (
+          ) : filteredEvents.length === 0 ? (
 
             <div className="rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center shadow-sm">
 
-              <div className="mb-3 flex justify-center">
-                <svg
-                  width="58"
-                  height="34"
-                  viewBox="0 0 58 34"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <ellipse
-                    cx="18"
-                    cy="18"
-                    rx="12"
-                    ry="14"
-                    stroke="#102F56"
-                    strokeWidth="3"
-                  />
-
-                  <ellipse
-                    cx="40"
-                    cy="18"
-                    rx="12"
-                    ry="14"
-                    stroke="#102F56"
-                    strokeWidth="3"
-                  />
-
-                  <circle
-                    cx="20"
-                    cy="19"
-                    r="5"
-                    fill="#149EAF"
-                  />
-
-                  <circle
-                    cx="38"
-                    cy="19"
-                    r="5"
-                    fill="#149EAF"
-                  />
-
-                  <circle
-                    cx="21.5"
-                    cy="17.5"
-                    r="1.5"
-                    fill="white"
-                  />
-
-                  <circle
-                    cx="39.5"
-                    cy="17.5"
-                    r="1.5"
-                    fill="white"
-                  />
-                </svg>
-              </div>
-
               <p className="font-semibold text-slate-700">
-                {t("Nothing to see here… yet!")}
+                {t("No events found")}
               </p>
 
-              <p className="mt-1 text-sm text-slate-500">
-                {t("There are currently no approved events.")}
-              </p>
+              <button
+                type="button"
+                onClick={() => setSelectedCategory("")}
+                className="mt-4 rounded-xl bg-[#149EAF] px-5 py-2.5 text-sm font-bold text-white"
+              >
+                {t("Show all events")}
+              </button>
 
             </div>
 
@@ -334,7 +369,7 @@ export default function HomePage() {
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
 
-              {events.map((event) => (
+              {filteredEvents.map((event) => (
                 <EventCard
                   key={event.id}
                   id={event.id}
@@ -345,6 +380,13 @@ export default function HomePage() {
                   image={event.image ?? ""}
                   latitude={Number(event.latitude ?? 0)}
                   longitude={Number(event.longitude ?? 0)}
+                  onAddToCalendar={() =>
+                    addToCalendar(
+                      event.title,
+                      event.date ?? "",
+                      event.location ?? "Algarve"
+                    )
+                  }
                 />
               ))}
 

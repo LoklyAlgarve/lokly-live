@@ -20,7 +20,6 @@ type EventCardProps = {
     eventId: number,
     status: GoingStatus
   ) => void;
-  onAddToCalendar?: () => void;
 
   onSavedChange?: (
     eventId: number,
@@ -109,7 +108,6 @@ export default function EventCard({
   longitude,
   goingStatus = null,
   onGoingStatusChange,
-  onAddToCalendar,
   onSavedChange,
 }: EventCardProps) {
   const directionsUrl =
@@ -180,6 +178,7 @@ export default function EventCard({
         {/* DETAILS */}
         <div className="space-y-1.5">
 
+          {/* LOCATION */}
           <div className="flex items-start gap-1.5 text-[11px] leading-tight text-slate-600 sm:gap-2 sm:text-sm">
 
             <svg
@@ -195,6 +194,7 @@ export default function EventCard({
                 strokeLinejoin="round"
                 d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1116 0z"
               />
+
               <circle
                 cx="12"
                 cy="10"
@@ -208,6 +208,7 @@ export default function EventCard({
 
           </div>
 
+          {/* DATE */}
           <div className="flex items-start gap-1.5 text-[11px] leading-tight text-slate-600 sm:gap-2 sm:text-sm">
 
             <svg
@@ -225,6 +226,7 @@ export default function EventCard({
                 height="17"
                 rx="2"
               />
+
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -243,6 +245,7 @@ export default function EventCard({
         {/* MAIN BUTTONS */}
         <div className="grid grid-cols-2 gap-1.5 pt-1 sm:gap-3 sm:pt-2">
 
+          {/* DIRECTIONS */}
           <a
             href={directionsUrl}
             target="_blank"
@@ -252,6 +255,7 @@ export default function EventCard({
             Directions
           </a>
 
+          {/* DETAILS */}
           <Link
             href={`/events/${id}`}
             className="flex items-center justify-center rounded-lg bg-[#149EAF] py-2 text-[10px] font-bold text-white transition hover:bg-[#117F8E] sm:rounded-xl sm:py-3 sm:text-sm"
@@ -260,17 +264,6 @@ export default function EventCard({
           </Link>
 
         </div>
-
-        {/* ADD TO CALENDAR - GENERAL */}
-        {onAddToCalendar && (
-          <button
-            type="button"
-            onClick={onAddToCalendar}
-            className="w-full rounded-lg border border-slate-200 px-2 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-50 sm:rounded-xl sm:py-3 sm:text-sm"
-          >
-            Add to Calendar
-          </button>
-        )}
 
         {/* PLANNING */}
         {onGoingStatusChange && (
@@ -311,17 +304,6 @@ export default function EventCard({
               </button>
 
             </div>
-
-            {/* ADD TO CALENDAR - PLANNING */}
-            {onAddToCalendar && (
-              <button
-                type="button"
-                onClick={onAddToCalendar}
-                className="mt-2 w-full rounded-lg border border-slate-200 px-2 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-50 sm:rounded-xl sm:py-3 sm:text-sm"
-              >
-                Add to Calendar
-              </button>
-            )}
 
           </div>
         )}
