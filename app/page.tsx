@@ -160,65 +160,6 @@ function CategoryIcon({ name }: { name: CategoryIconName }) {
   }
 }
 
-function addToCalendar(
-  title: string,
-  date: string,
-  location: string
-) {
-  const [datePart, timePart] = date.split(" • ");
-  const parts = datePart.split("-");
-
-  if (parts.length !== 3) return;
-
-  const [year, month, day] = parts.map(Number);
-
-  let hours = 0;
-  let minutes = 0;
-
-  if (timePart) {
-    const match = timePart.match(
-      /(\d{1,2}):(\d{2})/
-    );
-
-    if (match) {
-      hours = Number(match[1]);
-      minutes = Number(match[2]);
-    }
-  }
-
-  const start = new Date(
-    year,
-    month - 1,
-    day,
-    hours,
-    minutes
-  );
-
-  const end = new Date(start);
-  end.setHours(end.getHours() + 2);
-
-  const formatDate = (value: Date) =>
-    value.getFullYear().toString() +
-    String(value.getMonth() + 1).padStart(2, "0") +
-    String(value.getDate()).padStart(2, "0") +
-    "T" +
-    String(value.getHours()).padStart(2, "0") +
-    String(value.getMinutes()).padStart(2, "0") +
-    "00";
-
-  const params = new URLSearchParams({
-    action: "TEMPLATE",
-    text: title,
-    dates: `${formatDate(start)}/${formatDate(end)}`,
-    location,
-  });
-
-  window.open(
-    `https://calendar.google.com/calendar/render?${params.toString()}`,
-    "_blank"
-  );
-}
-
 export default function HomePage() {
   const { t } = useLanguage();
 
@@ -246,8 +187,7 @@ export default function HomePage() {
         (event) =>
           String(event.category ?? "")
             .trim()
-            .toLowerCase() ===
-          selectedCategory.toLowerCase()
+            .toLowerCase() === selectedCategory.toLowerCase()
       )
     : events;
 
@@ -258,7 +198,6 @@ export default function HomePage() {
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* CATEGORIES */}
-
         <div className="mt-3 overflow-hidden sm:mt-4">
           <div
             className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide"
@@ -313,13 +252,11 @@ export default function HomePage() {
         </div>
 
         {/* SEARCH */}
-
         <div className="mt-3 sm:mt-4">
           <SearchBar />
         </div>
 
         {/* EVENTS */}
-
         <section className="mt-5 sm:mt-7">
 
           <div className="mb-2.5 sm:mb-4">
@@ -336,21 +273,17 @@ export default function HomePage() {
             <p className="mt-0.5 text-xs text-slate-500 sm:mt-1 sm:text-sm">
               {filteredEvents.length}{" "}
               {filteredEvents.length === 1
-                ? "event"
-                : "events"}
+                ? t("event")
+                : t("events")}
             </p>
           </div>
 
           {loading ? (
-
             <div className="py-10 text-center text-sm text-slate-500">
               {t("Loading events...")}
             </div>
-
           ) : filteredEvents.length === 0 ? (
-
             <div className="rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center shadow-sm">
-
               <p className="font-semibold text-slate-700">
                 {t("No events found")}
               </p>
@@ -362,13 +295,9 @@ export default function HomePage() {
               >
                 {t("Show all events")}
               </button>
-
             </div>
-
           ) : (
-
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
-
               {filteredEvents.map((event) => (
                 <EventCard
                   key={event.id}
@@ -380,22 +309,11 @@ export default function HomePage() {
                   image={event.image ?? ""}
                   latitude={Number(event.latitude ?? 0)}
                   longitude={Number(event.longitude ?? 0)}
-                  onAddToCalendar={() =>
-                    addToCalendar(
-                      event.title,
-                      event.date ?? "",
-                      event.location ?? "Algarve"
-                    )
-                  }
                 />
               ))}
-
             </div>
-
           )}
-
         </section>
-
       </div>
 
       <BottomNavigation />
