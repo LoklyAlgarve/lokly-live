@@ -3,8 +3,11 @@
 import Link from "next/link";
 import Header from "../components/Header";
 import BottomNavigation from "../components/BottomNavigation";
+import { useLanguage } from "../LanguageContext";
 
 export default function LoklyAppPage() {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-slate-50">
       <Header />
@@ -32,30 +35,32 @@ export default function LoklyAppPage() {
           </div>
 
           <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.2em] text-[#149EAF] sm:text-sm">
-            Lokly App
+            {t("Lokly App")}
           </p>
 
           <h1 className="mt-3 text-[28px] font-black leading-tight tracking-tight text-slate-900 sm:text-4xl">
-            We’d love to have our own app one day.
+            {t("We’d love to have our own app one day.")}
           </h1>
 
           <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-[#149EAF]" />
 
           <div className="mx-auto mt-6 max-w-2xl space-y-4 text-base leading-relaxed text-slate-600 sm:text-lg">
             <p>
-              We’re a small, independent business and, for now, building a
-              native app is beyond our reach.
+              {t(
+                "We’re a small, independent business and, for now, building a native app is beyond our reach."
+              )}
             </p>
 
             <p className="font-semibold text-slate-900">
-              The good news? You can make Lokly feel just like an app on your
-              phone.
+              {t(
+                "The good news? You can make Lokly feel just like an app on your phone."
+              )}
             </p>
 
             <p>
-              Add Lokly to your home screen and it’ll be there whenever
-              you’re wondering <strong>what’s on.</strong> It’s free, takes
-              less than a minute, and there’s nothing to download.
+              {t(
+                "Add Lokly to your home screen and it’ll be there whenever you’re wondering what’s on. It’s free, takes less than a minute, and there’s nothing to download."
+              )}
             </p>
           </div>
 
@@ -89,12 +94,13 @@ export default function LoklyAppPage() {
             </div>
 
             <h2 className="mt-5 text-2xl font-black text-slate-900 sm:text-3xl">
-              Want Lokly one tap away?
+              {t("Want Lokly one tap away?")}
             </h2>
 
             <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-              Add Lokly to your phone&apos;s home screen and it&apos;ll be
-              there whenever you&apos;re wondering what&apos;s on.
+              {t(
+                "Add Lokly to your phone's home screen and it'll be there whenever you're wondering what's on."
+              )}
             </p>
 
           </div>
@@ -105,29 +111,29 @@ export default function LoklyAppPage() {
             <div className="rounded-3xl bg-[#E4F5F7] px-6 py-7 sm:px-8 sm:py-8">
 
               <h3 className="text-2xl font-black text-slate-900">
-                iPhone &amp; iPad
+                {t("iPhone & iPad")}
               </h3>
 
               <ol className="mt-7 space-y-5 text-base leading-relaxed text-slate-600 sm:text-lg">
 
                 <li className="flex gap-3">
                   <span className="font-bold text-slate-900">1.</span>
-                  <span>Open lokly.live in Safari.</span>
+                  <span>{t("Open lokly.live in Safari.")}</span>
                 </li>
 
                 <li className="flex gap-3">
                   <span className="font-bold text-slate-900">2.</span>
-                  <span>Tap the Share button.</span>
+                  <span>{t("Tap the Share button.")}</span>
                 </li>
 
                 <li className="flex gap-3">
                   <span className="font-bold text-slate-900">3.</span>
-                  <span>Tap Add to Home Screen.</span>
+                  <span>{t("Tap Add to Home Screen.")}</span>
                 </li>
 
                 <li className="flex gap-3">
                   <span className="font-bold text-slate-900">4.</span>
-                  <span>Tap Add.</span>
+                  <span>{t("Tap Add.")}</span>
                 </li>
 
               </ol>
@@ -138,31 +144,31 @@ export default function LoklyAppPage() {
             <div className="rounded-3xl bg-slate-100 px-6 py-7 sm:px-8 sm:py-8">
 
               <h3 className="text-2xl font-black text-slate-900">
-                Android
+                {t("Android")}
               </h3>
 
               <ol className="mt-7 space-y-5 text-base leading-relaxed text-slate-600 sm:text-lg">
 
                 <li className="flex gap-3">
                   <span className="font-bold text-slate-900">1.</span>
-                  <span>Open lokly.live in Chrome.</span>
+                  <span>{t("Open lokly.live in Chrome.")}</span>
                 </li>
 
                 <li className="flex gap-3">
                   <span className="font-bold text-slate-900">2.</span>
-                  <span>Tap the ⋮ menu.</span>
+                  <span>{t("Tap the ⋮ menu.")}</span>
                 </li>
 
                 <li className="flex gap-3">
                   <span className="font-bold text-slate-900">3.</span>
                   <span>
-                    Tap Add to Home screen or Install app.
+                    {t("Tap Add to Home screen or Install app.")}
                   </span>
                 </li>
 
                 <li className="flex gap-3">
                   <span className="font-bold text-slate-900">4.</span>
-                  <span>Tap Add or Install.</span>
+                  <span>{t("Tap Add or Install.")}</span>
                 </li>
 
               </ol>
@@ -177,24 +183,24 @@ export default function LoklyAppPage() {
         <section className="mt-6 rounded-3xl bg-white px-6 py-10 text-center shadow-sm sm:px-10 sm:py-12">
 
           <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
-            Help us make it happen
+            {t("Help us make it happen")}
           </h2>
 
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-            Share Lokly with your friends and help us grow. The more people
-            who use Lokly, the closer we get to creating the app we’d love
-            to have.
+            {t(
+              "Share Lokly with your friends and help us grow. The more people who use Lokly, the closer we get to creating the app we’d love to have."
+            )}
           </p>
 
           <Link
             href="/tell-a-friend"
             className="mt-7 inline-flex items-center justify-center rounded-2xl bg-[#149EAF] px-7 py-3.5 font-bold text-white shadow-sm transition hover:bg-[#118b9b] active:scale-[0.98]"
           >
-            Tell a Friend
+            {t("Tell a Friend")}
           </Link>
 
           <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
-            Thanks for being part of Lokly.
+            {t("Thanks for being part of Lokly.")}
           </p>
 
         </section>

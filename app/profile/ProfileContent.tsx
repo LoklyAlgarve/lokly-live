@@ -23,7 +23,7 @@ export default function ProfileContent({
       </h1>
 
       <p className="mt-2 text-slate-500">
-        {t("Manage your Lokly account and preferences.")}
+        {t("Manage your Lokly account and location.")}
       </p>
 
       <div className="mt-8 overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100">
@@ -100,25 +100,6 @@ export default function ProfileContent({
               {t("Preferences")}
             </h3>
           </div>
-
-          <a
-            href="/profile/notifications"
-            className="flex min-h-16 w-full items-center justify-between border-t border-slate-100 px-6 text-left transition hover:bg-slate-50 sm:px-8"
-          >
-            <div>
-              <p className="font-semibold text-slate-900">
-                {t("Notifications")}
-              </p>
-
-              <p className="text-sm text-slate-500">
-                {t("Manage event notifications")}
-              </p>
-            </div>
-
-            <span className="text-xl text-slate-400">
-              ›
-            </span>
-          </a>
 
           <a
             href="/profile/location"
