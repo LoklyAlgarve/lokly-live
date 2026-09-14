@@ -33,6 +33,14 @@ type EventCardProps = {
 function formatEventDate(date: string) {
   const [datePart, timePart] = date.split(" • ");
 
+  // Already formatted date range, e.g.
+  // 24/09/2026 - 05/10/2026
+  if (datePart.includes(" - ")) {
+    return timePart
+      ? `${datePart} • ${timePart}`
+      : datePart;
+  }
+
   const parts = datePart.split("-");
 
   if (parts.length !== 3) return date;
@@ -61,7 +69,27 @@ function formatEventDate(date: string) {
 function isToday(date: string) {
   const datePart = date.split(" • ")[0];
 
-  const parts = datePart.split("-");
+  // For a date range, check the first date
+  const firstDate = datePart.split(" - ")[0];
+
+  // Already formatted DD/MM/YYYY
+  if (firstDate.includes("/")) {
+    const [day, month, year] = firstDate
+      .split("/")
+      .map(Number);
+
+    if (!day || !month || !year) return false;
+
+    const today = new Date();
+
+    return (
+      year === today.getFullYear() &&
+      month === today.getMonth() + 1 &&
+      day === today.getDate()
+    );
+  }
+
+  const parts = firstDate.split("-");
 
   if (parts.length !== 3) return false;
 
@@ -125,10 +153,10 @@ export default function EventCard({
   }
 
   return (
-    <article className="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:rounded-3xl">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:rounded-3xl">
 
       {/* IMAGE */}
-      <div className="relative">
+      <div className="relative shrink-0">
         <img
           src={getImageUrl(image)}
           alt={title}
@@ -150,10 +178,10 @@ export default function EventCard({
       </div>
 
       {/* CONTENT */}
-      <div className="space-y-2.5 p-3 sm:space-y-4 sm:p-6">
+      <div className="flex flex-1 flex-col p-3 sm:p-6">
 
         {/* CATEGORY */}
-        <div className="flex items-center gap-1.5">
+        <div className="mb-2.5 flex min-h-[22px] items-center gap-1.5 sm:mb-4 sm:min-h-[28px]">
           {category && (
             <span className="max-w-full truncate rounded-full bg-[#149EAF]/10 px-2 py-1 text-[9px] font-bold uppercase text-[#149EAF] sm:px-3 sm:text-xs">
               {t(category)}
@@ -162,12 +190,12 @@ export default function EventCard({
         </div>
 
         {/* TITLE */}
-        <h3 className="line-clamp-2 text-base font-bold leading-tight text-slate-900 sm:text-2xl">
+        <h3 className="min-h-[40px] line-clamp-2 text-base font-bold leading-tight text-slate-900 sm:min-h-[58px] sm:text-2xl">
           {title}
         </h3>
 
         {/* DETAILS */}
-        <div className="space-y-1.5">
+        <div className="mt-2.5 min-h-[38px] space-y-1.5 sm:mt-4 sm:min-h-[48px]">
 
           {/* LOCATION */}
           <div className="flex items-start gap-1.5 text-[11px] leading-tight text-slate-600 sm:gap-2 sm:text-sm">
@@ -227,7 +255,7 @@ export default function EventCard({
         </div>
 
         {/* MAIN BUTTONS */}
-        <div className="grid grid-cols-2 gap-1.5 pt-1 sm:gap-3 sm:pt-2">
+        <div className="mt-auto grid grid-cols-2 gap-1.5 pt-4 sm:gap-3 sm:pt-6">
 
           {/* DIRECTIONS */}
           <a
@@ -253,7 +281,7 @@ export default function EventCard({
           <button
             type="button"
             onClick={onAddToCalendar}
-            className="flex w-full items-center justify-center rounded-lg border border-[#149EAF] bg-white py-2 text-[10px] font-bold text-[#149EAF] transition hover:bg-[#149EAF]/10 sm:rounded-xl sm:py-3 sm:text-sm"
+            className="mt-2 flex w-full items-center justify-center rounded-lg border border-[#149EAF] bg-white py-2 text-[10px] font-bold text-[#149EAF] transition hover:bg-[#149EAF]/10 sm:mt-3 sm:rounded-xl sm:py-3 sm:text-sm"
           >
             {t("Add to Calendar")}
           </button>
@@ -261,7 +289,7 @@ export default function EventCard({
 
         {/* PLANNING */}
         {onGoingStatusChange && (
-          <div className="border-t border-slate-200 pt-3 sm:pt-4">
+          <div className="mt-3 border-t border-slate-200 pt-3 sm:mt-4 sm:pt-4">
 
             <p className="text-xs font-bold text-slate-900">
               {t("Planning to go?")}
