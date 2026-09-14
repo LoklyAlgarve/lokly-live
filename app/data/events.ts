@@ -19,8 +19,36 @@ export type Event = {
   petFriendly: string;
 };
 
-const CACHE_KEY = "lokly-events-v6";
+const CACHE_KEY = "lokly-events-v7";
 const CACHE_TIME = 5 * 60 * 1000;
+
+function formatEventDate(startDate: string, endDate?: string) {
+  if (!startDate) return "";
+
+  function formatDate(value: string) {
+    const trimmed = String(value).trim();
+
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(trimmed)) {
+      return trimmed;
+    }
+
+    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+      const [year, month, day] = trimmed.split("-");
+      return `${day}/${month}/${year}`;
+    }
+
+    return trimmed;
+  }
+
+  const start = formatDate(startDate);
+  const end = endDate ? formatDate(endDate) : "";
+
+  if (!end || end === start) {
+    return start;
+  }
+
+  return `${start} - ${end}`;
+}
 
 export async function getEvents(): Promise<Event[]> {
   try {
@@ -42,6 +70,7 @@ export async function getEvents(): Promise<Event[]> {
                 id: event.id,
                 title: event.title,
                 concelho: event.concelho,
+                date: event.date,
               }))
             );
 
@@ -72,6 +101,8 @@ export async function getEvents(): Promise<Event[]> {
         title: item.title,
         location: item.location,
         concelho: item.concelho,
+        date: item.date,
+        end_date: item.end_date,
       }))
     );
 
@@ -80,7 +111,12 @@ export async function getEvents(): Promise<Event[]> {
       title: item.title || "Untitled Event",
       location: item.location || "Algarve",
       concelho: String(item.concelho ?? "").trim(),
-      date: item.date || "",
+
+      date: formatEventDate(
+        item.date || "",
+        item.end_date || ""
+      ),
+
       time: item.time || "",
       category: item.category || "",
       price: item.price || "Free",
@@ -105,6 +141,7 @@ export async function getEvents(): Promise<Event[]> {
         title: event.title,
         location: event.location,
         concelho: event.concelho,
+        date: event.date,
       }))
     );
 
