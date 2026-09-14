@@ -481,7 +481,7 @@ export default function EventPage({ params }: PageProps) {
                       Date
                     </p>
 
-                    <p className="mt-1 truncate text-sm font-semibold text-slate-800 sm:text-base">
+                    <p className="mt-1 whitespace-normal break-words text-sm font-semibold leading-snug text-slate-800 sm:text-base">
                       {event.date}
                     </p>
                   </div>
