@@ -21,7 +21,7 @@ export default function Header() {
             type="button"
             onClick={() => setMenuOpen(true)}
             aria-label={pt ? "Abrir menu" : "Open menu"}
-            className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 transition hover:bg-slate-200 active:scale-95 sm:h-12 sm:w-12"
+            className="flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-2xl bg-slate-100 transition hover:bg-slate-200 active:scale-95 sm:h-16 sm:w-16"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -37,6 +37,10 @@ export default function Header() {
                 d="M4 7h16M4 12h16M4 17h16"
               />
             </svg>
+
+            <span className="text-[11px] font-bold leading-none text-[#149EAF] sm:text-xs">
+              {pt ? "Menu" : "Menu"}
+            </span>
           </button>
 
           {/* Logo */}

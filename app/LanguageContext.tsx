@@ -217,39 +217,56 @@ const translations: Record<string, string> = {
     "Toque no coração de um evento para o guardar aqui.",
 
   // Map
-  "Loading map...": "A carregar o mapa...",
-  "Event Map": "Mapa de eventos",
+  "Loading map...":
+    "A carregar o mapa...",
+  "Event Map":
+    "Mapa de eventos",
   "Discover events happening across the Algarve.":
     "Descubra os eventos que acontecem por todo o Algarve.",
-  "Finding you...": "A encontrar...",
-  "All Categories": "Todas as categorias",
-  "All Areas": "Todas as áreas",
-  "Events near you": "Eventos perto de si",
+  "Finding you...":
+    "A encontrar...",
+  "All Categories":
+    "Todas as categorias",
+  "All Areas":
+    "Todas as áreas",
+  "Events near you":
+    "Eventos perto de si",
 
   // Tell a Friend
-  "SPREAD THE WORD": "ESPALHE A PALAVRA",
-  "Tell a friend about Lokly": "Fale do Lokly a um amigo",
+  "SPREAD THE WORD":
+    "ESPALHE A PALAVRA",
+  "Tell a friend about Lokly":
+    "Fale do Lokly a um amigo",
   "Know someone who'd love to know what's happening in the Algarve? Send them Lokly and help them discover what's going on.":
     "Conhece alguém que gostaria de saber o que está a acontecer no Algarve? Envie-lhe o Lokly e ajude-o a descobrir o que se passa.",
-  "Share Lokly": "Partilhe o Lokly",
+  "Share Lokly":
+    "Partilhe o Lokly",
   "Markets, music, festivals, food, family events and plenty more - there might be something your friends don't know about yet.":
     "Mercados, música, festivais, comida, eventos para toda a família e muito mais - pode haver algo que os seus amigos ainda não conhecem.",
-  "Share on WhatsApp": "Partilhar no WhatsApp",
-  "Share by Email": "Partilhar por email",
-  "Copy Link": "Copiar link",
-  "Lokly link copied!": "Link do Lokly copiado!",
+  "Share on WhatsApp":
+    "Partilhar no WhatsApp",
+  "Share by Email":
+    "Partilhar por email",
+  "Copy Link":
+    "Copiar link",
+  "Lokly link copied!":
+    "Link do Lokly copiado!",
   "Copying the link wasn't available on this device.":
     "Não foi possível copiar o link neste dispositivo.",
   "Have you found Lokly yet? It's a great way to discover what's happening in the Algarve: https://www.lokly.live":
     "Já descobriu o Lokly? É uma ótima forma de descobrir o que está a acontecer no Algarve: https://www.lokly.live",
-  "Have you found Lokly?": "Já descobriu o Lokly?",
-  "Because nobody wants to hear...": "Porque ninguém quer ouvir...",
+  "Have you found Lokly?":
+    "Já descobriu o Lokly?",
+  "Because nobody wants to hear...":
+    "Porque ninguém quer ouvir...",
   "\"Oh, you should have gone - it was brilliant.\"":
     "\"Oh, devia ter ido - foi fantástico.\"",
 
   // About Lokly
-  "ABOUT LOKLY": "SOBRE O LOKLY",
-  "So, what’s on?": "Então, o que há para fazer?",
+  "ABOUT LOKLY":
+    "SOBRE O LOKLY",
+  "So, what’s on?":
+    "Então, o que há para fazer?",
   "There’s always something happening across the Algarve, the tricky part is finding out about it.":
     "Há sempre alguma coisa a acontecer por todo o Algarve. A parte difícil é saber o que se passa.",
   "“If only I’d known about that, I would have gone.”":
@@ -304,6 +321,20 @@ const translations: Record<string, string> = {
     "Ao mesmo tempo, o Lokly pretende dar aos negócios locais e organizadores outra forma de dar a conhecer os seus eventos.",
   "Discover. Support. Enjoy the Algarve.":
     "Descubra. Apoie. Desfrute do Algarve.",
+
+  // Add to Home Screen
+  "A little Lokly tip":
+    "Uma pequena dica do Lokly",
+  "Want Lokly as an app?":
+    "Quer ter o Lokly como uma app?",
+  "Add Lokly to your home screen for quick, one-tap access to everything happening in the Algarve.":
+    "Adicione o Lokly ao ecrã inicial para ter acesso rápido, com um só toque, a tudo o que está a acontecer no Algarve.",
+  "Your Algarve, one tap away.":
+    "O seu Algarve, à distância de um toque.",
+  "Maybe later":
+    "Talvez mais tarde",
+  "Open the Menu and tap Lokly App for simple instructions.":
+    "Abra o Menu e toque em Lokly App para obter instruções simples.",
 
   // General
   "No": "Não",

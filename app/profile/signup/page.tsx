@@ -244,6 +244,29 @@ export default function SignUpPage() {
               )}
             </p>
 
+            {/* Home screen tip */}
+            <div className="mt-8 rounded-3xl bg-[#E4F5F7] p-5 text-left">
+              <p className="text-sm font-bold uppercase tracking-wide text-[#149EAF]">
+                {t("A little Lokly tip")}
+              </p>
+
+              <h2 className="mt-2 text-xl font-black text-slate-900">
+                {t("Want Lokly as an app?")}
+              </h2>
+
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {t(
+                  "Add Lokly to your home screen for quick, one-tap access to everything happening in the Algarve."
+                )}
+              </p>
+
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                {t(
+                  "Open the More menu and tap Lokly App for simple instructions."
+                )}
+              </p>
+            </div>
+
             <div className="mt-8">
               <button
                 type="button"
