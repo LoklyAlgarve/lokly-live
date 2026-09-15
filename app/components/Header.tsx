@@ -6,9 +6,18 @@ import { useLanguage } from "../LanguageContext";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const { language, setLanguage } = useLanguage();
 
   const pt = language === "pt";
+
+  function handleRefresh() {
+    if (refreshing) return;
+
+    setRefreshing(true);
+
+    window.location.reload();
+  }
 
   return (
     <>
@@ -16,32 +25,67 @@ export default function Header() {
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
         <div className="mx-auto flex h-[125px] max-w-7xl items-center justify-between px-5 sm:h-[145px] sm:px-6">
 
-          {/* Menu */}
-          <button
-            type="button"
-            onClick={() => setMenuOpen(true)}
-            aria-label={pt ? "Abrir menu" : "Open menu"}
-            className="flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-2xl bg-slate-100 transition hover:bg-slate-200 active:scale-95 sm:h-16 sm:w-16"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-slate-700 sm:h-6 sm:w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 7h16M4 12h16M4 17h16"
-              />
-            </svg>
+          {/* LEFT SIDE - REFRESH + MENU */}
+          <div className="flex items-center gap-2 sm:gap-3">
 
-            <span className="text-[11px] font-bold leading-none text-[#149EAF] sm:text-xs">
-              {pt ? "Menu" : "Menu"}
-            </span>
-          </button>
+            {/* Refresh */}
+            <button
+              type="button"
+              onClick={handleRefresh}
+              disabled={refreshing}
+              aria-label={pt ? "Atualizar" : "Refresh"}
+              className="flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-2xl bg-slate-100 transition hover:bg-slate-200 active:scale-95 disabled:opacity-70 sm:h-16 sm:w-16"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-5 w-5 text-slate-700 sm:h-6 sm:w-6 ${
+                  refreshing ? "animate-spin" : ""
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M20 11a8.1 8.1 0 0 0-15.5-3M4 4v4h4M4 13a8.1 8.1 0 0 0 15.5 3M20 20v-4h-4"
+                />
+              </svg>
+
+              <span className="text-[11px] font-bold leading-none text-[#149EAF] sm:text-xs">
+                {pt ? "Atualizar" : "Refresh"}
+              </span>
+            </button>
+
+            {/* Menu */}
+            <button
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              aria-label={pt ? "Abrir menu" : "Open menu"}
+              className="flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-2xl bg-slate-100 transition hover:bg-slate-200 active:scale-95 sm:h-16 sm:w-16"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-slate-700 sm:h-6 sm:w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 7h16M4 12h16M4 17h16"
+                />
+              </svg>
+
+              <span className="text-[11px] font-bold leading-none text-[#149EAF] sm:text-xs">
+                Menu
+              </span>
+            </button>
+
+          </div>
 
           {/* Logo */}
           <div className="flex flex-col items-center justify-center">
