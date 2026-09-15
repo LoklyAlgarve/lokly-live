@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
 import SaveButton from "../../components/SaveButton";
 import { getEvents } from "../../data/events";
+import { useLanguage } from "../../LanguageContext";
 
 type Event = {
   id: number;
@@ -330,6 +331,7 @@ function addToCalendar(event: Event) {
 
 export default function EventPage({ params }: PageProps) {
   const { id } = use(params);
+  const { t } = useLanguage();
 
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
@@ -356,7 +358,7 @@ export default function EventPage({ params }: PageProps) {
 
         <section className="mx-auto max-w-3xl px-6 py-16 text-center">
           <p className="font-semibold text-slate-500">
-            Loading event...
+            {t("Loading event...")}
           </p>
         </section>
 
@@ -372,18 +374,18 @@ export default function EventPage({ params }: PageProps) {
 
         <section className="mx-auto max-w-3xl px-6 py-16 text-center">
           <h1 className="text-3xl font-black text-slate-900">
-            Event not found
+            {t("Event not found")}
           </h1>
 
           <p className="mt-3 text-slate-500">
-            We couldn't find this event.
+            {t("We couldn't find this event.")}
           </p>
 
           <Link
             href="/"
             className="mt-8 inline-flex rounded-2xl bg-[#149EAF] px-6 py-3 font-bold text-white transition hover:bg-[#117F8E]"
           >
-            Back to Events
+            {t("Back to Events")}
           </Link>
         </section>
 
@@ -428,7 +430,7 @@ export default function EventPage({ params }: PageProps) {
             />
           </svg>
 
-          All Events
+          {t("All Events")}
         </Link>
 
         <article className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100">
@@ -444,7 +446,7 @@ export default function EventPage({ params }: PageProps) {
             <div className="flex flex-col gap-6">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#149EAF]">
-                  {event.category}
+                  {t(event.category)}
                 </p>
 
                 <h1 className="mt-2 text-3xl font-black leading-tight text-slate-900 sm:text-4xl">
@@ -478,7 +480,7 @@ export default function EventPage({ params }: PageProps) {
 
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
-                      Date
+                      {t("Date")}
                     </p>
 
                     <p className="mt-1 whitespace-normal break-words text-sm font-semibold leading-snug text-slate-800 sm:text-base">
@@ -506,11 +508,11 @@ export default function EventPage({ params }: PageProps) {
 
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
-                      Time
+                      {t("Time")}
                     </p>
 
                     <p className="mt-1 truncate text-sm font-semibold text-slate-800 sm:text-base">
-                      {event.time || "Not specified"}
+                      {event.time || t("Not specified")}
                     </p>
                   </div>
                 </div>
@@ -532,7 +534,7 @@ export default function EventPage({ params }: PageProps) {
 
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
-                      Location
+                      {t("Location")}
                     </p>
 
                     <p className="mt-1 break-words text-sm font-semibold leading-6 text-slate-800 sm:text-base">
@@ -548,11 +550,11 @@ export default function EventPage({ params }: PageProps) {
 
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
-                      Price
+                      {t("Price")}
                     </p>
 
                     <p className="mt-1 truncate text-sm font-semibold text-slate-800 sm:text-base">
-                      {event.price}
+                      {t(event.price)}
                     </p>
                   </div>
                 </div>
@@ -564,7 +566,7 @@ export default function EventPage({ params }: PageProps) {
 
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
-                      Wheelchair Friendly
+                      {t("Wheelchair Friendly")}
                     </p>
 
                     <span
@@ -572,7 +574,7 @@ export default function EventPage({ params }: PageProps) {
                         wheelchairFriendly
                       )}`}
                     >
-                      {wheelchairFriendly}
+                      {t(wheelchairFriendly)}
                     </span>
                   </div>
                 </div>
@@ -584,7 +586,7 @@ export default function EventPage({ params }: PageProps) {
 
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 sm:text-xs">
-                      Pet Friendly
+                      {t("Pet Friendly")}
                     </p>
 
                     <span
@@ -592,7 +594,7 @@ export default function EventPage({ params }: PageProps) {
                         petFriendly
                       )}`}
                     >
-                      {petFriendly}
+                      {t(petFriendly)}
                     </span>
                   </div>
                 </div>
@@ -601,7 +603,7 @@ export default function EventPage({ params }: PageProps) {
               {event.description && (
                 <div>
                   <h2 className="text-xl font-black text-slate-900">
-                    About this event
+                    {t("About this event")}
                   </h2>
 
                   <p className="mt-3 whitespace-pre-line leading-7 text-slate-600">
@@ -623,7 +625,7 @@ export default function EventPage({ params }: PageProps) {
                     rel="noopener noreferrer"
                     className="flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#149EAF] px-5 text-base font-bold text-white transition hover:bg-[#117F8E]"
                   >
-                    Directions
+                    {t("Directions")}
                   </a>
 
                   <button
@@ -660,7 +662,7 @@ export default function EventPage({ params }: PageProps) {
                       />
                     </svg>
 
-                    Add to Calendar
+                    {t("Add to Calendar")}
                   </button>
 
                   {event.website && (
@@ -670,7 +672,7 @@ export default function EventPage({ params }: PageProps) {
                       rel="noopener noreferrer"
                       className="flex min-h-14 w-full items-center justify-center rounded-2xl border-2 border-[#149EAF] px-5 text-base font-bold text-[#149EAF] transition hover:bg-[#149EAF] hover:text-white"
                     >
-                      Event Website
+                      {t("Event Website")}
                     </a>
                   )}
                 </div>

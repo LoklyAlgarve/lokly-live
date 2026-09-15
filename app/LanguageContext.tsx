@@ -22,6 +22,7 @@ const translations: Record<string, string> = {
   "Search": "Pesquisar",
   "Map": "Mapa",
   "Saved Events": "Eventos guardados",
+  "My Saved": "Os meus eventos guardados",
   "Past Events": "Eventos anteriores",
   "My Profile": "O meu perfil",
   "My Location": "A minha localização",
@@ -64,15 +65,47 @@ const translations: Record<string, string> = {
   "Yes": "Sim",
   "Maybe": "Talvez",
 
+  // Save / Planning Popup
+  "Save": "Guardar",
+  "Save Event": "Guardar evento",
+  "Save event": "Guardar evento",
+  "Saved": "Guardado",
+  "Saved Event": "Evento guardado",
+  "Remove from saved events": "Remover dos eventos guardados",
+  "Saving...": "A guardar...",
+  "Support local": "Apoie a comunidade local",
+  "Are you planning to go?": "Está a pensar ir?",
+  "Your answer helps us understand which events people are interested in.":
+    "A sua resposta ajuda-nos a perceber quais os eventos que despertam mais interesse.",
+  "You can change your answer later.":
+    "Pode alterar a sua resposta mais tarde.",
+  "Not now": "Agora não",
+
   // Common
   "Loading...": "A carregar...",
-  "Save": "Guardar",
-  "Saved": "Guardado",
   "Back": "Voltar",
   "Close": "Fechar",
   "Cancel": "Cancelar",
   "Submit": "Enviar",
   "Email us": "Envie-nos um email",
+
+  // Event Details
+  "All Events": "Todos os eventos",
+  "Loading event...": "A carregar evento...",
+  "Event not found": "Evento não encontrado",
+  "We couldn't find this event.":
+    "Não foi possível encontrar este evento.",
+  "Back to Events": "Voltar aos eventos",
+  "Date": "Data",
+  "Time": "Hora",
+  "Not specified": "Não especificado",
+  "Location": "Localização",
+  "Price": "Preço",
+  "Wheelchair Friendly": "Acessível a cadeiras de rodas",
+  "Pet Friendly": "Aceita animais",
+  "Unknown": "Desconhecido",
+  "About this event": "Sobre este evento",
+  "Event Website": "Site do evento",
 
   // Past Events
   "Events you may have missed.":
@@ -145,28 +178,42 @@ const translations: Record<string, string> = {
     "Utilizador convidado",
   "Sign in to save your favourite events.":
     "Inicie sessão para guardar os seus eventos favoritos.",
-  "Sign In": "Iniciar sessão",
-  "Create Account": "Criar conta",
-  "You're signed in": "Sessão iniciada",
+  "Sign In":
+    "Iniciar sessão",
+  "Create Account":
+    "Criar conta",
+  "You're signed in":
+    "Sessão iniciada",
   "Your favourite events can now be saved to your account.":
     "Agora pode guardar os seus eventos favoritos na sua conta.",
-  "Sign Out": "Terminar sessão",
-  "Preferences": "Preferências",
-  "Manage event notifications": "Gerir notificações de eventos",
-  "Location": "Localização",
+  "Sign Out":
+    "Terminar sessão",
+  "Preferences":
+    "Preferências",
+  "Manage event notifications":
+    "Gerir notificações de eventos",
+  "Location":
+    "Localização",
 
   // Location
-  "Back to Profile": "Voltar ao perfil",
-  "Your Location": "A sua localização",
+  "Back to Profile":
+    "Voltar ao perfil",
+  "Your Location":
+    "A sua localização",
   "Choose the Algarve town you would like Lokly to use for nearby events.":
     "Escolha a localidade do Algarve que pretende que o Lokly utilize para os eventos perto de si.",
-  "Where are you based?": "Onde está localizado?",
-  "Save Location": "Guardar localização",
-  "Location saved": "Localização guardada",
-  "Algarve": "Algarve",
+  "Where are you based?":
+    "Onde está localizado?",
+  "Save Location":
+    "Guardar localização",
+  "Location saved":
+    "Localização guardada",
+  "Algarve":
+    "Algarve",
 
   // Lokly App
-  "Lokly App": "App Lokly",
+  "Lokly App":
+    "App Lokly",
   "We’d love to have our own app one day.":
     "Adoraríamos ter a nossa própria app um dia.",
   "We’re a small, independent business and, for now, building a native app is beyond our reach.":
@@ -337,8 +384,10 @@ const translations: Record<string, string> = {
     "Abra o Menu e toque em Lokly App para obter instruções simples.",
 
   // General
-  "No": "Não",
-  "OK": "OK",
+  "No":
+    "Não",
+  "OK":
+    "OK",
 };
 
 const LanguageContext = createContext<

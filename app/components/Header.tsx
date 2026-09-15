@@ -25,14 +25,14 @@ export default function Header() {
         <div className="relative mx-auto flex h-[125px] max-w-7xl items-center justify-between px-5 sm:h-[145px] sm:px-6">
 
           {/* LEFT SIDE - MENU + REFRESH */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
 
             {/* Menu */}
             <button
               type="button"
               onClick={() => setMenuOpen(true)}
               aria-label={pt ? "Abrir menu" : "Open menu"}
-              className="flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-2xl bg-slate-100 transition hover:bg-slate-200 active:scale-95 sm:h-16 sm:w-16"
+              className="flex h-10 w-10 flex-col items-center justify-center gap-0.5 rounded-2xl bg-slate-100 transition hover:bg-slate-200 active:scale-95 sm:h-12 sm:w-12"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -60,11 +60,11 @@ export default function Header() {
               onClick={handleRefresh}
               disabled={refreshing}
               aria-label={pt ? "Atualizar" : "Refresh"}
-              className="flex h-12 w-9 items-center justify-center text-[#149EAF] transition hover:text-[#117F8E] active:scale-95 disabled:opacity-60 sm:h-14 sm:w-10"
+              className="flex h-10 w-9 items-center justify-center text-[#149EAF]/65 transition-all duration-200 hover:text-[#149EAF]/85 active:scale-75 disabled:opacity-50 sm:h-12 sm:w-10"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`h-6 w-6 sm:h-7 sm:w-7 ${
+                className={`h-6 w-6 sm:h-7 sm:w-7 transition-transform duration-200 ${
                   refreshing ? "animate-spin" : ""
                 }`}
                 fill="none"
@@ -213,6 +213,34 @@ export default function Header() {
                 </span>
               </Link>
 
+              {/* SEARCH */}
+              <Link
+                href="/search"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
+              >
+                <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={1.8}
+                  >
+                    <circle cx="10.8" cy="10.8" r="6.2" />
+                    <path
+                      strokeLinecap="round"
+                      d="m16 16 5 5"
+                    />
+                  </svg>
+                </span>
+
+                <span className="font-semibold">
+                  {pt ? "Pesquisar" : "Search"}
+                </span>
+              </Link>
+
               {/* MAP */}
               <Link
                 href="/map"
@@ -322,6 +350,21 @@ export default function Header() {
                   {pt ? "Mais" : "More"}
                 </p>
 
+                {/* NOTIFICATIONS */}
+                <Link
+                  href="/profile/notifications"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
+                >
+                  <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
+                    ♢
+                  </span>
+
+                  <span className="font-semibold">
+                    {pt ? "Notificações" : "Notifications"}
+                  </span>
+                </Link>
+
                 {/* LOKLY APP */}
                 <Link
                   href="/lokly-app"
@@ -356,21 +399,6 @@ export default function Header() {
                   </span>
                 </Link>
 
-                {/* TELL A FRIEND */}
-                <Link
-                  href="/tell-a-friend"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
-                >
-                  <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
-                    ♧
-                  </span>
-
-                  <span className="font-semibold">
-                    {pt ? "Diga a um amigo" : "Tell a Friend"}
-                  </span>
-                </Link>
-
                 {/* ABOUT LOKLY */}
                 <Link
                   href="/about"
@@ -386,18 +414,18 @@ export default function Header() {
                   </span>
                 </Link>
 
-                {/* NOTIFICATIONS */}
+                {/* TELL A FRIEND */}
                 <Link
-                  href="/profile/notifications"
+                  href="/tell-a-friend"
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
                 >
                   <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
-                    ♢
+                    ♧
                   </span>
 
                   <span className="font-semibold">
-                    {pt ? "Notificações" : "Notifications"}
+                    {pt ? "Diga a um amigo" : "Tell a Friend"}
                   </span>
                 </Link>
 
@@ -418,43 +446,6 @@ export default function Header() {
                     {pt ? "Contacte-nos" : "Contact Us"}
                   </span>
                 </button>
-
-              </div>
-
-              {/* BUSINESS */}
-              <div className="mt-8">
-
-                <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
-                  {pt ? "Negócios" : "Business"}
-                </p>
-
-                {/* ADD YOUR EVENT */}
-                <Link
-                  href="/add-event"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
-                >
-                  <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1.7}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 5v14M5 12h14"
-                      />
-                    </svg>
-                  </span>
-
-                  <span className="font-semibold">
-                    {pt ? "Adicionar um evento" : "Add your event"}
-                  </span>
-                </Link>
 
               </div>
 

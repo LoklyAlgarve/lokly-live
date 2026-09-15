@@ -220,7 +220,7 @@ export default function PastEventsPage() {
             </p>
           </div>
         ) : (
-          <div className="mt-10 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-10 grid items-start gap-7 md:grid-cols-2 xl:grid-cols-3">
             {events.map((event) => {
               const alreadySubmitted =
                 submitted.includes(Number(event.id));
