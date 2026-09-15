@@ -22,7 +22,7 @@ const translations: Record<string, string> = {
   "Search": "Pesquisar",
   "Map": "Mapa",
   "Saved Events": "Eventos guardados",
-  "My Saved": "Os meus eventos guardados",
+  "My Saved": "Meus guardados",
   "Past Events": "Eventos anteriores",
   "My Profile": "O meu perfil",
   "My Location": "A minha localização",

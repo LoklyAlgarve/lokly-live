@@ -49,7 +49,7 @@ export default function Header() {
                 />
               </svg>
 
-              <span className="text-[11px] font-bold leading-none text-[#149EAF] sm:text-xs">
+              <span className="text-[10px] font-bold leading-none text-[#149EAF] sm:text-xs">
                 Menu
               </span>
             </button>
