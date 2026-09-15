@@ -21,7 +21,7 @@ export default function BottomNavigation() {
     },
     {
       href: "/saved",
-      label: t("Saved"),
+      label: t("My Saved"),
       icon: "heart",
     },
   ];

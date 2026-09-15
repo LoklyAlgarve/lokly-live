@@ -15,7 +15,6 @@ export default function Header() {
     if (refreshing) return;
 
     setRefreshing(true);
-
     window.location.reload();
   }
 
@@ -23,40 +22,10 @@ export default function Header() {
     <>
       {/* MAIN HEADER */}
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
-        <div className="mx-auto flex h-[125px] max-w-7xl items-center justify-between px-5 sm:h-[145px] sm:px-6">
+        <div className="relative mx-auto flex h-[125px] max-w-7xl items-center justify-between px-5 sm:h-[145px] sm:px-6">
 
-          {/* LEFT SIDE - REFRESH + MENU */}
-          <div className="flex items-center gap-2 sm:gap-3">
-
-            {/* Refresh */}
-            <button
-              type="button"
-              onClick={handleRefresh}
-              disabled={refreshing}
-              aria-label={pt ? "Atualizar" : "Refresh"}
-              className="flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-2xl bg-slate-100 transition hover:bg-slate-200 active:scale-95 disabled:opacity-70 sm:h-16 sm:w-16"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`h-5 w-5 text-slate-700 sm:h-6 sm:w-6 ${
-                  refreshing ? "animate-spin" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M20 11a8.1 8.1 0 0 0-15.5-3M4 4v4h4M4 13a8.1 8.1 0 0 0 15.5 3M20 20v-4h-4"
-                />
-              </svg>
-
-              <span className="text-[11px] font-bold leading-none text-[#149EAF] sm:text-xs">
-                {pt ? "Atualizar" : "Refresh"}
-              </span>
-            </button>
+          {/* LEFT SIDE - MENU + REFRESH */}
+          <div className="flex items-center gap-2">
 
             {/* Menu */}
             <button
@@ -85,17 +54,43 @@ export default function Header() {
               </span>
             </button>
 
+            {/* Refresh */}
+            <button
+              type="button"
+              onClick={handleRefresh}
+              disabled={refreshing}
+              aria-label={pt ? "Atualizar" : "Refresh"}
+              className="flex h-12 w-9 items-center justify-center text-[#149EAF] transition hover:text-[#117F8E] active:scale-95 disabled:opacity-60 sm:h-14 sm:w-10"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-6 w-6 sm:h-7 sm:w-7 ${
+                  refreshing ? "animate-spin" : ""
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M20 11a8.1 8.1 0 0 0-15.5-3M4 4v4h4M4 13a8.1 8.1 0 0 0 15.5 3M20 20v-4h-4"
+                />
+              </svg>
+            </button>
+
           </div>
 
-          {/* Logo */}
-          <div className="flex flex-col items-center justify-center">
+          {/* Logo - TRUE CENTRE */}
+          <div className="absolute left-1/2 flex -translate-x-1/2 flex-col items-center justify-center">
             <img
               src="/images/lokly-logo.png"
               alt="Lokly"
               className="h-[58px] w-[120px] object-contain sm:h-[72px] sm:w-[145px]"
             />
 
-            <p className="-mt-1 text-[11px] font-medium leading-none text-[#149EAF] sm:text-sm">
+            <p className="-mt-1 whitespace-nowrap text-[11px] font-medium leading-none text-[#149EAF] sm:text-sm">
               {pt
                 ? "Descobrir • Explorar • Desfrutar"
                 : "Discover • Explore • Enjoy"}

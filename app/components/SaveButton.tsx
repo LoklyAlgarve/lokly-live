@@ -91,9 +91,9 @@ export default function SaveButton({
         setSaved(true);
         onSavedChange?.(true);
 
-        if (large) {
-          setShowPlanningPopup(true);
-        }
+        // Show the planning popup after saving
+        // from either the Save Event button or the heart button.
+        setShowPlanningPopup(true);
       }
     }
 
@@ -244,26 +244,103 @@ export default function SaveButton({
   }
 
   return (
-    <button
-      type="button"
-      onClick={toggleSave}
-      disabled={loading}
-      className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl shadow-lg transition hover:scale-105 disabled:opacity-60"
-      aria-label={
-        saved
-          ? t("Remove from saved events")
-          : t("Save event")
-      }
-    >
-      <span
-        className={
+    <>
+      <button
+        type="button"
+        onClick={toggleSave}
+        disabled={loading}
+        className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl shadow-lg transition hover:scale-105 disabled:opacity-60"
+        aria-label={
           saved
-            ? "text-[#FF6F61]"
-            : "text-slate-700"
+            ? t("Remove from saved events")
+            : t("Save event")
         }
       >
-        {saved ? "♥" : "♡"}
-      </span>
-    </button>
+        <span
+          className={
+            saved
+              ? "text-[#FF6F61]"
+              : "text-slate-700"
+          }
+        >
+          {saved ? "♥" : "♡"}
+        </span>
+      </button>
+
+      {showPlanningPopup && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 px-5"
+          onClick={closePlanningPopup}
+        >
+          <div
+            className="relative w-full max-w-sm rounded-3xl bg-white p-7 text-center shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={closePlanningPopup}
+              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-xl text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+              aria-label={t("Close")}
+            >
+              ×
+            </button>
+
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FF6F61]/10">
+              <span className="text-4xl text-[#FF6F61] animate-[heartbeat_1.8s_ease-in-out_infinite]">
+                ♥
+              </span>
+            </div>
+
+            <h2 className="mt-5 text-2xl font-black text-slate-900">
+              {t("Support local")}
+            </h2>
+
+            <p className="mt-3 text-lg font-semibold text-slate-700">
+              {t("Are you planning to go?")}
+            </p>
+
+            <p className="mt-2 text-sm leading-6 text-slate-500">
+              {t(
+                "Your answer helps us understand which events people are interested in."
+              )}
+            </p>
+
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() =>
+                  handlePlanningStatus("yes")
+                }
+                className="flex min-h-12 items-center justify-center rounded-2xl bg-[#149EAF] px-4 font-bold text-white transition hover:bg-[#117F8E]"
+              >
+                {t("Yes")}
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  handlePlanningStatus("maybe")
+                }
+                className="flex min-h-12 items-center justify-center rounded-2xl border-2 border-[#149EAF] bg-white px-4 font-bold text-[#149EAF] transition hover:bg-[#149EAF]/10"
+              >
+                {t("Maybe")}
+              </button>
+            </div>
+
+            <p className="mt-5 text-xs text-slate-400">
+              {t("You can change your answer later.")}
+            </p>
+
+            <button
+              type="button"
+              onClick={closePlanningPopup}
+              className="mt-3 text-sm font-semibold text-slate-400 transition hover:text-slate-600"
+            >
+              {t("Not now")}
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
