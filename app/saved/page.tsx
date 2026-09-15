@@ -458,7 +458,7 @@ export default function SavedPage() {
             </p>
           </div>
         ) : (
-          <div className="mt-10 grid gap-7 sm:grid-cols-2">
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-5">
             {savedEvents.map((event) => {
               const status =
                 goingStatuses[
