@@ -99,7 +99,6 @@ const translations: Record<string, string> = {
   "Date": "Data",
   "Time": "Hora",
   "Not specified": "Não especificado",
-  "Location": "Localização",
   "Price": "Preço",
   "Wheelchair Friendly": "Acessível a cadeiras de rodas",
   "Pet Friendly": "Aceita animais",
