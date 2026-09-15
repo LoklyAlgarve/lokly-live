@@ -32,10 +32,10 @@ export default function Header() {
               type="button"
               onClick={() => setMenuOpen(true)}
               aria-label={pt ? "Abrir menu" : "Open menu"}
-              className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 transition hover:bg-slate-200 active:scale-95 sm:h-12 sm:w-12"
+              className="flex h-10 w-10 items-center justify-center rounded-2xl border-[3px] border-[#67C5D2] bg-slate-100 transition hover:bg-slate-200 active:scale-95 sm:h-12 sm:w-12"
             >
               <span className="text-[10px] font-bold leading-none text-[#149EAF] sm:text-xs">
-                {pt ? "Menu" : "Menu"}
+                Menu
               </span>
             </button>
 
