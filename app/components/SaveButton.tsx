@@ -9,6 +9,9 @@ type SaveButtonProps = {
   eventId: number;
   large?: boolean;
   onSavedChange?: (saved: boolean) => void;
+  onGoingStatusChange?: (
+    status: "yes" | "maybe" | null
+  ) => void;
 };
 
 type GoingStatus = "yes" | "maybe" | null;
@@ -17,6 +20,7 @@ export default function SaveButton({
   eventId,
   large = false,
   onSavedChange,
+  onGoingStatusChange,
 }: SaveButtonProps) {
   const router = useRouter();
   const { t } = useLanguage();
@@ -41,7 +45,7 @@ export default function SaveButton({
 
       const { data } = await supabase
         .from("saved_events")
-        .select("id")
+        .select("id, going_status")
         .eq("user_id", user.id)
         .eq("event_id", eventId)
         .maybeSingle();
@@ -78,6 +82,10 @@ export default function SaveButton({
       if (!error) {
         setSaved(false);
         onSavedChange?.(false);
+
+        // Removing the saved event also removes
+        // the user's Going/Maybe response.
+        onGoingStatusChange?.(null);
       }
     } else {
       const { error } = await supabase
@@ -100,34 +108,38 @@ export default function SaveButton({
     setLoading(false);
   }
 
-  function handlePlanningStatus(status: GoingStatus) {
+  async function handlePlanningStatus(status: GoingStatus) {
     if (status) {
-      try {
-        const storedStatuses =
-          localStorage.getItem("lokly_going_statuses");
+      const supabase = createClient();
 
-        const currentStatuses: Record<
-          number,
-          GoingStatus
-        > = storedStatuses
-          ? JSON.parse(storedStatuses)
-          : {};
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-        const updatedStatuses = {
-          ...currentStatuses,
-          [eventId]: status,
-        };
+      if (!user) {
+        setShowPlanningPopup(false);
+        router.push("/profile/signin");
+        return;
+      }
 
-        localStorage.setItem(
-          "lokly_going_statuses",
-          JSON.stringify(updatedStatuses)
-        );
-      } catch (error) {
+      const { error } = await supabase
+        .from("saved_events")
+        .update({
+          going_status: status,
+        })
+        .eq("user_id", user.id)
+        .eq("event_id", eventId);
+
+      if (error) {
         console.error(
           "Lokly: Could not save planning status",
           error
         );
+        return;
       }
+
+      // Tell the event page that the user's response changed.
+      onGoingStatusChange?.(status);
     }
 
     setShowPlanningPopup(false);

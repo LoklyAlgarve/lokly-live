@@ -37,7 +37,7 @@ export default function SavedPage() {
 
       const { data, error } = await supabase
         .from("saved_events")
-        .select("event_id")
+        .select("event_id, going_status")
         .eq("user_id", user.id);
 
       if (error) {
@@ -48,58 +48,77 @@ export default function SavedPage() {
         return;
       }
 
-      const ids = (data || []).map((item) => Number(item.event_id));
+      const rows = data || [];
+
+      const ids = rows.map((item) => Number(item.event_id));
+
+      const statuses: Record<number, GoingStatus> = {};
+
+      rows.forEach((item) => {
+        const eventId = Number(item.event_id);
+
+        if (
+          item.going_status === "yes" ||
+          item.going_status === "maybe"
+        ) {
+          statuses[eventId] = item.going_status;
+        } else {
+          statuses[eventId] = null;
+        }
+      });
 
       setSavedIds(ids);
+      setGoingStatuses(statuses);
 
       if (ids.length === 0) {
-        loadGoingStatuses();
         setEvents([]);
         setLoading(false);
         return;
       }
 
-      const [allEvents] = await Promise.all([
-        getEvents(),
-        Promise.resolve(loadGoingStatuses()),
-      ]);
+      const allEvents = await getEvents();
 
       setEvents(allEvents);
       setLoading(false);
     }
 
-    function loadGoingStatuses() {
-      const storedStatuses = localStorage.getItem(
-        "lokly_going_statuses"
-      );
-
-      if (storedStatuses) {
-        try {
-          setGoingStatuses(JSON.parse(storedStatuses));
-        } catch {
-          setGoingStatuses({});
-        }
-      }
-    }
-
     loadSavedEvents();
   }, []);
 
-  function handleGoingStatus(
+  async function handleGoingStatus(
     eventId: number,
     status: GoingStatus
   ) {
-    const updatedStatuses = {
-      ...goingStatuses,
+    const supabase = createClient();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return;
+    }
+
+    const { error } = await supabase
+      .from("saved_events")
+      .update({
+        going_status: status,
+      })
+      .eq("user_id", user.id)
+      .eq("event_id", eventId);
+
+    if (error) {
+      console.error(
+        "Lokly: Could not update going status",
+        error
+      );
+      return;
+    }
+
+    setGoingStatuses((currentStatuses) => ({
+      ...currentStatuses,
       [eventId]: status,
-    };
-
-    setGoingStatuses(updatedStatuses);
-
-    localStorage.setItem(
-      "lokly_going_statuses",
-      JSON.stringify(updatedStatuses)
-    );
+    }));
   }
 
   function handleSavedChange(
@@ -110,6 +129,12 @@ export default function SavedPage() {
       setSavedIds((currentIds) =>
         currentIds.filter((id) => id !== eventId)
       );
+
+      setGoingStatuses((currentStatuses) => {
+        const updated = { ...currentStatuses };
+        delete updated[eventId];
+        return updated;
+      });
     }
   }
 

@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
 import SaveButton from "../../components/SaveButton";
 import { getEvents } from "../../data/events";
+import { createClient } from "../../../utils/supabase/client";
 import { useLanguage } from "../../LanguageContext";
 
 type Event = {
@@ -336,6 +337,9 @@ export default function EventPage({ params }: PageProps) {
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const [goingCount, setGoingCount] = useState(0);
+  const [maybeCount, setMaybeCount] = useState(0);
+
   useEffect(() => {
     async function loadEvent() {
       const events = await getEvents();
@@ -350,6 +354,69 @@ export default function EventPage({ params }: PageProps) {
 
     loadEvent();
   }, [id]);
+
+  useEffect(() => {
+    async function loadGoingCounts() {
+      const supabase = createClient();
+
+      const { data, error } = await supabase
+        .from("saved_events")
+        .select("going_status")
+        .eq("event_id", Number(id));
+
+      if (error) {
+        console.error(
+          "Lokly: Could not load going counts",
+          error
+        );
+        return;
+      }
+
+      const rows = data || [];
+
+      setGoingCount(
+        rows.filter(
+          (row) => row.going_status === "yes"
+        ).length
+      );
+
+      setMaybeCount(
+        rows.filter(
+          (row) => row.going_status === "maybe"
+        ).length
+      );
+    }
+
+    loadGoingCounts();
+  }, [id]);
+
+  function handleGoingStatus(
+    status: "yes" | "maybe" | null
+  ) {
+    if (status === "yes") {
+      setGoingCount((current) => current + 1);
+
+      if (maybeCount > 0) {
+        setMaybeCount((current) => current - 1);
+      }
+    }
+
+    if (status === "maybe") {
+      setMaybeCount((current) => current + 1);
+
+      if (goingCount > 0) {
+        setGoingCount((current) => current - 1);
+      }
+    }
+
+    if (status === null) {
+      if (goingCount > 0) {
+        setGoingCount((current) => current - 1);
+      } else if (maybeCount > 0) {
+        setMaybeCount((current) => current - 1);
+      }
+    }
+  }
 
   if (loading) {
     return (
@@ -526,9 +593,7 @@ export default function EventPage({ params }: PageProps) {
                     stroke="currentColor"
                     strokeWidth={2}
                   >
-                    <path
-                      d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1116 0z"
-                    />
+                    <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1116 0z" />
                     <circle cx="12" cy="10" r="2.5" />
                   </svg>
 
@@ -612,11 +677,37 @@ export default function EventPage({ params }: PageProps) {
                 </div>
               )}
 
+              {/* Going / Maybe tally */}
+              <div className="flex items-center justify-center gap-6 border-t border-slate-100 pt-5">
+                <div className="text-center">
+                  <p className="text-2xl font-black text-[#149EAF]">
+                    {goingCount}
+                  </p>
+                  <p className="text-xs font-bold text-slate-500">
+                    {t("Going")}
+                  </p>
+                </div>
+
+                <div className="h-8 w-px bg-slate-200" />
+
+                <div className="text-center">
+                  <p className="text-2xl font-black text-slate-500">
+                    {maybeCount}
+                  </p>
+                  <p className="text-xs font-bold text-slate-500">
+                    {t("Maybe")}
+                  </p>
+                </div>
+              </div>
+
               <div className="border-t border-slate-100 pt-6">
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <SaveButton
                     eventId={event.id}
                     large
+                    onGoingStatusChange={
+                      handleGoingStatus
+                    }
                   />
 
                   <a
