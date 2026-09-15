@@ -27,31 +27,96 @@ export default function PastEventsPage() {
 
   useEffect(() => {
     async function loadEvents() {
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setEvents([]);
+        setLoading(false);
+        return;
+      }
+
+      const { data: savedData, error: savedError } =
+        await supabase
+          .from("saved_events")
+          .select("event_id")
+          .eq("user_id", user.id);
+
+      if (savedError) {
+        console.error(
+          "Error loading saved events:",
+          savedError
+        );
+
+        setEvents([]);
+        setLoading(false);
+        return;
+      }
+
+      const savedIds = (savedData || []).map(
+        (item) => Number(item.event_id)
+      );
+
+      if (savedIds.length === 0) {
+        setEvents([]);
+        setLoading(false);
+        return;
+      }
+
       const allEvents = await getEvents();
-      setEvents(allEvents);
+
+      const savedPastEvents = allEvents.filter(
+        (event) =>
+          savedIds.includes(Number(event.id)) &&
+          isPastEvent(event)
+      );
+
+      setEvents(savedPastEvents);
       setLoading(false);
     }
 
     loadEvents();
   }, []);
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  function isPastEvent(event: any) {
+    const endDate = String(event.endDate || "").trim();
 
-  const pastEvents = events.filter((event) => {
-    if (!event.date) return false;
+    if (!endDate) {
+      return false;
+    }
 
-    const [year, month, day] = event.date.split("-").map(Number);
+    const match = endDate.match(
+      /^(\d{4})-(\d{1,2})-(\d{1,2})/
+    );
 
-    if (!year || !month || !day) return false;
+    if (!match) {
+      return false;
+    }
 
-    const eventDate = new Date(year, month - 1, day);
-    eventDate.setHours(0, 0, 0, 0);
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
 
-    return eventDate < today;
-  });
+    const end = new Date(
+      year,
+      month - 1,
+      day,
+      23,
+      59,
+      59,
+      999
+    );
 
-  function openFeedback(eventId: number, eventTitle: string) {
+    return end < new Date();
+  }
+
+  function openFeedback(
+    eventId: number,
+    eventTitle: string
+  ) {
     setFeedback({
       eventId,
       eventTitle,
@@ -87,23 +152,34 @@ export default function PastEventsPage() {
       return;
     }
 
-    const { error } = await supabase.from("event_feedback").insert({
-      event_id: feedback.eventId,
-      event_title: feedback.eventTitle,
-      rating,
-      comment: comment.trim() || null,
-      user_id: user.id,
-    });
+    const { error } = await supabase
+      .from("event_feedback")
+      .insert({
+        event_id: feedback.eventId,
+        event_title: feedback.eventTitle,
+        rating,
+        comment: comment.trim() || null,
+        user_id: user.id,
+      });
 
     if (error) {
-      console.error("Error submitting feedback:", error);
+      console.error(
+        "Error submitting feedback:",
+        error
+      );
 
-      alert(t("Sorry, we couldn't submit your feedback."));
+      alert(
+        t("Sorry, we couldn't submit your feedback.")
+      );
+
       setSubmitting(false);
       return;
     }
 
-    setSubmitted((current) => [...current, feedback.eventId]);
+    setSubmitted((current) => [
+      ...current,
+      feedback.eventId,
+    ]);
 
     setSubmitting(false);
   }
@@ -127,25 +203,33 @@ export default function PastEventsPage() {
               {t("Loading past events...")}
             </p>
           </div>
-        ) : pastEvents.length === 0 ? (
+        ) : events.length === 0 ? (
           <div className="mt-10 rounded-3xl bg-white p-10 text-center shadow-sm">
-            <div className="text-4xl text-slate-300">◷</div>
+            <div className="text-4xl text-slate-300">
+              ◷
+            </div>
 
             <h2 className="mt-4 text-xl font-bold text-slate-900">
               {t("No past events")}
             </h2>
 
             <p className="mt-2 text-slate-500">
-              {t("Past events will appear here automatically.")}
+              {t(
+                "Past events will appear here automatically."
+              )}
             </p>
           </div>
         ) : (
           <div className="mt-10 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
-            {pastEvents.map((event) => {
-              const alreadySubmitted = submitted.includes(Number(event.id));
+            {events.map((event) => {
+              const alreadySubmitted =
+                submitted.includes(Number(event.id));
 
               return (
-                <div key={event.id} className="relative">
+                <div
+                  key={event.id}
+                  className="relative"
+                >
                   <div className="absolute left-4 top-4 z-10 rounded-full bg-slate-900/80 px-3 py-1 text-xs font-semibold text-white">
                     {t("Past Event")}
                   </div>
@@ -163,13 +247,18 @@ export default function PastEventsPage() {
 
                   {alreadySubmitted ? (
                     <div className="mt-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-sm font-semibold text-slate-500">
-                      {t("Thank you for your feedback")}
+                      {t(
+                        "Thank you for your feedback"
+                      )}
                     </div>
                   ) : (
                     <button
                       type="button"
                       onClick={() =>
-                        openFeedback(Number(event.id), event.title)
+                        openFeedback(
+                          Number(event.id),
+                          event.title
+                        )
                       }
                       className="mt-3 flex w-full items-center justify-center rounded-xl border border-[#149EAF] bg-white px-4 py-3 font-semibold text-[#149EAF] transition hover:bg-[#149EAF]/10"
                     >
@@ -177,16 +266,21 @@ export default function PastEventsPage() {
                     </button>
                   )}
 
-                  {feedback?.eventId === Number(event.id) && (
+                  {feedback?.eventId ===
+                    Number(event.id) && (
                     <div className="mt-3 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-                      {submitted.includes(Number(event.id)) ? (
+                      {submitted.includes(
+                        Number(event.id)
+                      ) ? (
                         <div className="text-center">
                           <h3 className="font-bold text-slate-900">
                             {t("Thank you!")}
                           </h3>
 
                           <p className="mt-1 text-sm text-slate-500">
-                            {t("Your feedback has been submitted.")}
+                            {t(
+                              "Your feedback has been submitted."
+                            )}
                           </p>
 
                           <button
@@ -201,42 +295,56 @@ export default function PastEventsPage() {
                         <>
                           <div className="flex items-center justify-between">
                             <h3 className="font-bold text-slate-900">
-                              {t("How was this event?")}
+                              {t(
+                                "How was this event?"
+                              )}
                             </h3>
 
                             <button
                               type="button"
                               onClick={closeFeedback}
                               className="text-xl text-slate-400"
-                              aria-label={t("Close feedback")}
+                              aria-label={t(
+                                "Close feedback"
+                              )}
                             >
                               ×
                             </button>
                           </div>
 
                           <div className="mt-4 flex justify-center gap-2">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                              <button
-                                key={star}
-                                type="button"
-                                onClick={() => setRating(star)}
-                                aria-label={`${star} ${
-                                  star === 1 ? t("star") : t("stars")
-                                }`}
-                                className={`text-3xl transition ${
-                                  star <= rating
-                                    ? "text-[#149EAF]"
-                                    : "text-slate-300"
-                                }`}
-                              >
-                                ★
-                              </button>
-                            ))}
+                            {[1, 2, 3, 4, 5].map(
+                              (star) => (
+                                <button
+                                  key={star}
+                                  type="button"
+                                  onClick={() =>
+                                    setRating(star)
+                                  }
+                                  aria-label={`${star} ${
+                                    star === 1
+                                      ? t("star")
+                                      : t("stars")
+                                  }`}
+                                  className={`text-3xl transition ${
+                                    star <= rating
+                                      ? "text-[#149EAF]"
+                                      : "text-slate-300"
+                                  }`}
+                                >
+                                  ★
+                                </button>
+                              )
+                            )}
                           </div>
 
                           <textarea
                             value={comment}
-                            onChange={(e) => setComment(e.target.value)}
+                            onChange={(e) =>
+                              setComment(
+                                e.target.value
+                              )
+                            }
                             placeholder={t(
                               "Anything you'd like to tell us? (optional)"
                             )}
@@ -247,12 +355,17 @@ export default function PastEventsPage() {
                           <button
                             type="button"
                             onClick={submitFeedback}
-                            disabled={rating === 0 || submitting}
+                            disabled={
+                              rating === 0 ||
+                              submitting
+                            }
                             className="mt-3 flex w-full items-center justify-center rounded-xl bg-[#149EAF] px-4 py-3 font-semibold text-white transition hover:bg-[#117F8E] disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             {submitting
                               ? t("Submitting...")
-                              : t("Submit Feedback")}
+                              : t(
+                                  "Submit Feedback"
+                                )}
                           </button>
                         </>
                       )}

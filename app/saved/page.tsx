@@ -128,11 +128,6 @@ export default function SavedPage() {
     let month: number;
     let day: number;
 
-    /*
-     * Handle YYYY-MM-DD and ISO date strings such as:
-     * 2026-09-12
-     * 2026-09-12T00:00:00
-     */
     const isoMatch = date.match(
       /^(\d{4})-(\d{1,2})-(\d{1,2})/
     );
@@ -142,9 +137,6 @@ export default function SavedPage() {
       month = Number(isoMatch[2]);
       day = Number(isoMatch[3]);
     } else {
-      /*
-       * Handle DD/MM/YYYY
-       */
       const slashMatch = date.match(
         /^(\d{1,2})\/(\d{1,2})\/(\d{4})/
       );
@@ -154,9 +146,6 @@ export default function SavedPage() {
         month = Number(slashMatch[2]);
         year = Number(slashMatch[3]);
       } else {
-        /*
-         * Handle DD-MM-YYYY as a fallback.
-         */
         const dashMatch = date.match(
           /^(\d{1,2})-(\d{1,2})-(\d{4})/
         );
@@ -166,9 +155,6 @@ export default function SavedPage() {
           month = Number(dashMatch[2]);
           year = Number(dashMatch[3]);
         } else {
-          /*
-           * Final fallback for dates JavaScript understands.
-           */
           const parsed = new Date(date);
 
           if (!Number.isNaN(parsed.getTime())) {
@@ -194,13 +180,6 @@ export default function SavedPage() {
       return null;
     }
 
-    /*
-     * Handle times such as:
-     * 19:30
-     * 19:30:00
-     * 7:30 PM
-     * 7 PM
-     */
     let hour = 0;
     let minute = 0;
 
@@ -223,9 +202,6 @@ export default function SavedPage() {
           hour = 0;
         }
       } else {
-        /*
-         * Try to extract a normal HH:MM time from the value.
-         */
         const simpleTimeMatch = time.match(
           /(\d{1,2}):(\d{2})/
         );
@@ -277,7 +253,7 @@ export default function SavedPage() {
     );
 
     const start = parseEventDateTime(
-      event.date,
+      event.startDate,
       event.time
     );
 
@@ -287,7 +263,7 @@ export default function SavedPage() {
         {
           eventId: event.id,
           eventTitle: event.title,
-          date: event.date,
+          date: event.startDate,
           time: event.time,
         }
       );
@@ -295,10 +271,6 @@ export default function SavedPage() {
       return;
     }
 
-    /*
-     * Events without an end time are given a default
-     * two-hour duration.
-     */
     const end = new Date(
       start.getTime() +
         2 * 60 * 60 * 1000
@@ -408,8 +380,42 @@ export default function SavedPage() {
     }
   }
 
-  const savedEvents = events.filter((event) =>
-    savedIds.includes(Number(event.id))
+  function isPastEvent(event: any) {
+    const endDate = String(event.endDate || "").trim();
+
+    if (!endDate) {
+      return false;
+    }
+
+    const match = endDate.match(
+      /^(\d{4})-(\d{1,2})-(\d{1,2})/
+    );
+
+    if (!match) {
+      return false;
+    }
+
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+
+    const end = new Date(
+      year,
+      month - 1,
+      day,
+      23,
+      59,
+      59,
+      999
+    );
+
+    return end < new Date();
+  }
+
+  const savedEvents = events.filter(
+    (event) =>
+      savedIds.includes(Number(event.id)) &&
+      !isPastEvent(event)
   );
 
   return (

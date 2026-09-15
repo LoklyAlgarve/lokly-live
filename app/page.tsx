@@ -192,7 +192,7 @@ export default function HomePage() {
     : events;
 
   return (
-    <main className="min-h-screen bg-white pb-24">
+    <main className="min-h-screen bg-white pb-24 overscroll-y-auto">
       <Header />
 
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">

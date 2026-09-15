@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "../../utils/supabase/client";
+import { useLanguage } from "../LanguageContext";
 
 type SaveButtonProps = {
   eventId: number;
@@ -10,14 +11,20 @@ type SaveButtonProps = {
   onSavedChange?: (saved: boolean) => void;
 };
 
+type GoingStatus = "yes" | "maybe" | null;
+
 export default function SaveButton({
   eventId,
   large = false,
   onSavedChange,
 }: SaveButtonProps) {
   const router = useRouter();
+  const { t } = useLanguage();
+
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showPlanningPopup, setShowPlanningPopup] =
+    useState(false);
 
   useEffect(() => {
     async function checkSaved() {
@@ -83,34 +90,156 @@ export default function SaveButton({
       if (!error) {
         setSaved(true);
         onSavedChange?.(true);
+
+        if (large) {
+          setShowPlanningPopup(true);
+        }
       }
     }
 
     setLoading(false);
   }
 
+  function handlePlanningStatus(status: GoingStatus) {
+    if (status) {
+      try {
+        const storedStatuses =
+          localStorage.getItem("lokly_going_statuses");
+
+        const currentStatuses: Record<
+          number,
+          GoingStatus
+        > = storedStatuses
+          ? JSON.parse(storedStatuses)
+          : {};
+
+        const updatedStatuses = {
+          ...currentStatuses,
+          [eventId]: status,
+        };
+
+        localStorage.setItem(
+          "lokly_going_statuses",
+          JSON.stringify(updatedStatuses)
+        );
+      } catch (error) {
+        console.error(
+          "Lokly: Could not save planning status",
+          error
+        );
+      }
+    }
+
+    setShowPlanningPopup(false);
+  }
+
+  function closePlanningPopup() {
+    setShowPlanningPopup(false);
+  }
+
   if (large) {
     return (
-      <button
-        type="button"
-        onClick={toggleSave}
-        disabled={loading}
-        className="flex min-h-14 w-full items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 text-base font-bold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {loading ? (
-          "Saving..."
-        ) : saved ? (
-          <>
-            <span className="mr-2 text-xl text-[#149EAF]">♥</span>
-            Saved Event
-          </>
-        ) : (
-          <>
-            <span className="mr-2 text-xl text-slate-700">♡</span>
-            Save Event
-          </>
+      <>
+        <button
+          type="button"
+          onClick={toggleSave}
+          disabled={loading}
+          className="flex min-h-14 w-full items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 text-base font-bold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {loading ? (
+            t("Saving...")
+          ) : saved ? (
+            <>
+              <span className="mr-2 text-xl text-[#FF6F61]">
+                ♥
+              </span>
+              {t("Saved Event")}
+            </>
+          ) : (
+            <>
+              <span className="mr-2 text-xl text-slate-700">
+                ♡
+              </span>
+              {t("Save Event")}
+            </>
+          )}
+        </button>
+
+        {showPlanningPopup && (
+          <div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 px-5"
+            onClick={closePlanningPopup}
+          >
+            <div
+              className="relative w-full max-w-sm rounded-3xl bg-white p-7 text-center shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={closePlanningPopup}
+                className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-xl text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                aria-label={t("Close")}
+              >
+                ×
+              </button>
+
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FF6F61]/10">
+                <span className="text-4xl text-[#FF6F61] animate-[heartbeat_1.8s_ease-in-out_infinite]">
+                  ♥
+                </span>
+              </div>
+
+              <h2 className="mt-5 text-2xl font-black text-slate-900">
+                {t("Support local")}
+              </h2>
+
+              <p className="mt-3 text-lg font-semibold text-slate-700">
+                {t("Are you planning to go?")}
+              </p>
+
+              <p className="mt-2 text-sm leading-6 text-slate-500">
+                {t(
+                  "Your answer helps us understand which events people are interested in."
+                )}
+              </p>
+
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() =>
+                    handlePlanningStatus("yes")
+                  }
+                  className="flex min-h-12 items-center justify-center rounded-2xl bg-[#149EAF] px-4 font-bold text-white transition hover:bg-[#117F8E]"
+                >
+                  {t("Yes")}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    handlePlanningStatus("maybe")
+                  }
+                  className="flex min-h-12 items-center justify-center rounded-2xl border-2 border-[#149EAF] bg-white px-4 font-bold text-[#149EAF] transition hover:bg-[#149EAF]/10"
+                >
+                  {t("Maybe")}
+                </button>
+              </div>
+
+              <p className="mt-5 text-xs text-slate-400">
+                {t("You can change your answer later.")}
+              </p>
+
+              <button
+                type="button"
+                onClick={closePlanningPopup}
+                className="mt-3 text-sm font-semibold text-slate-400 transition hover:text-slate-600"
+              >
+                {t("Not now")}
+              </button>
+            </div>
+          </div>
         )}
-      </button>
+      </>
     );
   }
 
@@ -122,11 +251,17 @@ export default function SaveButton({
       className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl shadow-lg transition hover:scale-105 disabled:opacity-60"
       aria-label={
         saved
-          ? "Remove from saved events"
-          : "Save event"
+          ? t("Remove from saved events")
+          : t("Save event")
       }
     >
-      <span className={saved ? "text-[#149EAF]" : "text-slate-700"}>
+      <span
+        className={
+          saved
+            ? "text-[#FF6F61]"
+            : "text-slate-700"
+        }
+      >
         {saved ? "♥" : "♡"}
       </span>
     </button>
