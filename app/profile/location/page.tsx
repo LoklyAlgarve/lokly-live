@@ -44,10 +44,6 @@ export default function LocationPage() {
     document.cookie = `lokly_location=${encodeURIComponent(location)}; path=/; max-age=31536000; samesite=lax`;
 
     setSaved(true);
-
-    setTimeout(() => {
-      setSaved(false);
-    }, 2500);
   }
 
   return (
@@ -106,16 +102,8 @@ export default function LocationPage() {
               onClick={handleSave}
               className="mt-5 min-h-14 w-full rounded-2xl bg-[#149EAF] px-5 font-bold text-white shadow-sm transition hover:bg-[#117F8E] active:scale-[0.99]"
             >
-              {t("Save Location")}
+              {saved ? t("Saved") : t("Save Location")}
             </button>
-
-            {saved && (
-              <div className="mt-4 rounded-2xl bg-emerald-50 p-4 text-center">
-                <p className="text-sm font-bold text-emerald-700">
-                  {t("Location saved")}
-                </p>
-              </div>
-            )}
           </div>
         </div>
       </section>
