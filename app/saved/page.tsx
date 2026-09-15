@@ -48,9 +48,7 @@ export default function SavedPage() {
         return;
       }
 
-      const ids = (data || []).map((item) =>
-        Number(item.event_id)
-      );
+      const ids = (data || []).map((item) => Number(item.event_id));
 
       setSavedIds(ids);
 
@@ -454,7 +452,7 @@ export default function SavedPage() {
             </p>
           </div>
         ) : (
-          <div className="mt-10 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-10 grid gap-7 sm:grid-cols-2">
             {savedEvents.map((event) => {
               const status =
                 goingStatuses[
