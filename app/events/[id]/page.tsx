@@ -678,23 +678,25 @@ export default function EventPage({ params }: PageProps) {
               )}
 
               {/* Going / Maybe tally */}
-              <div className="flex items-center justify-center gap-6 border-t border-slate-100 pt-5">
+              <div className="flex items-center justify-center gap-5 border-t border-slate-100 pt-4">
                 <div className="text-center">
-                  <p className="text-2xl font-black text-[#149EAF]">
+                  <p className="text-xl font-black text-[#149EAF]">
                     {goingCount}
                   </p>
-                  <p className="text-xs font-bold text-slate-500">
+
+                  <p className="text-[11px] font-bold text-slate-500">
                     {t("Going")}
                   </p>
                 </div>
 
-                <div className="h-8 w-px bg-slate-200" />
+                <div className="h-7 w-px bg-slate-200" />
 
                 <div className="text-center">
-                  <p className="text-2xl font-black text-slate-500">
+                  <p className="text-xl font-black text-slate-500">
                     {maybeCount}
                   </p>
-                  <p className="text-xs font-bold text-slate-500">
+
+                  <p className="text-[11px] font-bold text-slate-500">
                     {t("Maybe")}
                   </p>
                 </div>
