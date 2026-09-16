@@ -22,10 +22,10 @@ export default function TellAFriendPage() {
   }
 
   const whatsappMessage = t(
-    "Have you found Lokly yet? It's a great way to discover what's happening in the Algarve: https://www.lokly.live"
+    "Have you heard about Lokly? https://www.lokly.live"
   );
 
-  const emailSubject = t("Have you found Lokly?");
+  const emailSubject = t("Have you heard about Lokly?");
 
   return (
     <main className="min-h-screen bg-slate-50 pb-32 sm:pb-40">
