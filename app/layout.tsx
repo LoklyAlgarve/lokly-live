@@ -16,9 +16,34 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Lokly",
   description: "Discover events across the Algarve",
+
   icons: {
     icon: "/icons/lokly-512.png",
     apple: "/icons/apple-touch-icon.png",
+  },
+
+  openGraph: {
+    title: "Lokly",
+    description: "Discover events across the Algarve",
+    url: "https://www.lokly.live",
+    siteName: "Lokly",
+    images: [
+      {
+        url: "https://www.lokly.live/icons/lokly-512.png",
+        width: 512,
+        height: 512,
+        alt: "Lokly",
+      },
+    ],
+    locale: "en_GB",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary",
+    title: "Lokly",
+    description: "Discover events across the Algarve",
+    images: ["https://www.lokly.live/icons/lokly-512.png"],
   },
 };
 
