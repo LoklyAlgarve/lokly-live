@@ -262,7 +262,7 @@ export default function SignUpPage() {
 
               <p className="mt-3 text-sm leading-6 text-slate-600">
                 {t(
-                  "Open the More menu and tap Lokly App for simple instructions."
+                  "Open the 'Menu' and tap Lokly App for simple instructions."
                 )}
               </p>
             </div>
