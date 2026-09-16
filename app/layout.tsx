@@ -29,10 +29,10 @@ export const metadata: Metadata = {
     siteName: "Lokly",
     images: [
       {
-        url: "https://www.lokly.live/icons/lokly-512.png",
-        width: 512,
-        height: 512,
-        alt: "Lokly",
+        url: "https://www.lokly.live/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Lokly - Discover events across the Algarve",
       },
     ],
     locale: "en_GB",
@@ -40,10 +40,10 @@ export const metadata: Metadata = {
   },
 
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Lokly",
     description: "Discover events across the Algarve",
-    images: ["https://www.lokly.live/icons/lokly-512.png"],
+    images: ["https://www.lokly.live/opengraph-image"],
   },
 };
 
