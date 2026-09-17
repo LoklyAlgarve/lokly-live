@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import SaveButton from "./SaveButton";
-import ShareEventButton from "./ShareEventButton";
 import { useLanguage } from "../LanguageContext";
 
 type GoingStatus = "yes" | "maybe" | null;
@@ -153,10 +152,52 @@ export default function EventCard({
     );
   }
 
-  const eventUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/events/${id}`
-      : `/events/${id}`;
+  async function handleShare() {
+    const url =
+      typeof window !== "undefined"
+        ? `${window.location.origin}/events/${id}`
+        : `/events/${id}`;
+
+    const message = `🌟 ${title}
+
+📅 ${formatEventDate(date)}
+📍 ${location}
+
+I found this event on Lokly and thought you might like it!
+
+👉 View the event on Lokly:
+${url}
+
+Don't have Lokly yet?
+Download Lokly and discover what's happening near you.`;
+
+    if (
+      typeof navigator !== "undefined" &&
+      navigator.share
+    ) {
+      try {
+        await navigator.share({
+          title,
+          text: message,
+          url,
+        });
+      } catch {
+        // User cancelled the share menu
+      }
+
+      return;
+    }
+
+    const whatsappUrl =
+      "https://wa.me/?text=" +
+      encodeURIComponent(message);
+
+    window.open(
+      whatsappUrl,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:rounded-3xl">
@@ -198,15 +239,47 @@ export default function EventCard({
             )}
           </div>
 
-          {/* SHARE ICON */}
-          <div className="shrink-0">
-            <ShareEventButton
-              title={title}
-              date={formatEventDate(date)}
-              location={location}
-              eventUrl={eventUrl}
-            />
-          </div>
+          {/* SMALL SHARE ICON */}
+          <button
+            type="button"
+            aria-label="Share Event"
+            title="Share Event"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleShare();
+            }}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-500 transition hover:bg-[#149EAF]/10 hover:text-[#149EAF] sm:h-9 sm:w-9"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-[18px] w-[18px]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle
+                cx="18"
+                cy="5"
+                r="3"
+              />
+              <circle
+                cx="6"
+                cy="12"
+                r="3"
+              />
+              <circle
+                cx="18"
+                cy="19"
+                r="3"
+              />
+              <path d="m8.6 13.5 6.8 4" />
+              <path d="m15.4 6.5-6.8 4" />
+            </svg>
+          </button>
 
         </div>
 
