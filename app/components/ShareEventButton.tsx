@@ -45,7 +45,6 @@ https://www.lokly.live`;
         await navigator.share({
           title: title,
           text: message,
-          url: url,
         });
 
         return;
@@ -110,7 +109,7 @@ https://www.lokly.live`;
 
         <path d="m8.6 13.5 6.8 4" />
 
-        <path d="m15.4 6.5-6.8 4" />
+        <path d="m15.4 6.5-6.8-4" />
       </svg>
 
       {!iconOnly && (
