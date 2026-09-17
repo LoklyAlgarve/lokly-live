@@ -66,6 +66,7 @@ function formatEventDate(date: string) {
 
 function isToday(date: string) {
   const datePart = date.split(" • ")[0];
+
   const firstDate = datePart.split(" - ")[0];
 
   if (firstDate.includes("/")) {
@@ -155,8 +156,10 @@ export default function EventCard({
 
     const message = `I found this event on Lokly and thought you might like it!
 
-▣ ${formatEventDate(date)}
-⌖ ${location}
+${title}
+
+Date: ${formatEventDate(date)}
+Location: ${location}
 
 ↗ View the event on Lokly:
 ${url}
