@@ -385,7 +385,7 @@ export default function SearchPage() {
           <SearchBar />
         </div>
 
-        {/* REFINE SEARCH */}
+        {/* SEARCH FILTERS */}
 
         <div className="mb-7 overflow-hidden rounded-3xl bg-white shadow-sm">
 
@@ -398,7 +398,7 @@ export default function SearchPage() {
           >
             <div>
               <h2 className="text-lg font-bold text-slate-900">
-                Refine Search
+                Search Filters
               </h2>
 
               {hasRefineFilters && (
