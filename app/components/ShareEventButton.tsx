@@ -5,6 +5,7 @@ type ShareEventButtonProps = {
   date: string;
   location: string;
   eventUrl?: string;
+  iconOnly?: boolean;
 };
 
 export default function ShareEventButton({
@@ -12,6 +13,7 @@ export default function ShareEventButton({
   date,
   location,
   eventUrl,
+  iconOnly = false,
 }: ShareEventButtonProps) {
   const handleShare = async () => {
     const url =
@@ -33,7 +35,6 @@ ${url}
 Don't have Lokly yet?
 Download Lokly and discover what's happening near you.`;
 
-    // Use the phone's normal share menu
     if (
       typeof navigator !== "undefined" &&
       navigator.share
@@ -45,13 +46,11 @@ Download Lokly and discover what's happening near you.`;
           url: url,
         });
         return;
-      } catch (error) {
-        // User cancelled the share menu
+      } catch {
         return;
       }
     }
 
-    // Fallback for browsers without native sharing
     const whatsappUrl =
       "https://wa.me/?text=" +
       encodeURIComponent(message);
@@ -67,12 +66,18 @@ Download Lokly and discover what's happening near you.`;
     <button
       type="button"
       onClick={handleShare}
-      className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-[#149EAF] hover:text-[#149EAF]"
+      aria-label="Share Event"
+      title="Share Event"
+      className={
+        iconOnly
+          ? "flex h-8 w-8 items-center justify-center rounded-full text-slate-500 transition hover:bg-[#149EAF]/10 hover:text-[#149EAF] sm:h-9 sm:w-9"
+          : "inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-[#149EAF] hover:text-[#149EAF]"
+      }
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="18"
-        height="18"
+        width={iconOnly ? "19" : "18"}
+        height={iconOnly ? "19" : "18"}
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -87,7 +92,9 @@ Download Lokly and discover what's happening near you.`;
         <path d="m15.4 6.5-6.8 4" />
       </svg>
 
-      <span>Share Event</span>
+      {!iconOnly && (
+        <span>Share Event</span>
+      )}
     </button>
   );
 }
