@@ -30,11 +30,7 @@ export default function ShareEventButton({
 I found this event on Lokly and thought you might like it!
 
 👉 View the event on Lokly:
-${eventLink}
-
-Don't have Lokly yet?
-Discover what's happening near you:
-https://www.lokly.live`;
+${eventLink}`;
 
     // Phone / tablet sharing
     if (
