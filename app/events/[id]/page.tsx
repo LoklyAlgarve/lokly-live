@@ -50,6 +50,22 @@ function getFriendlyBadgeClass(value: string) {
       : "bg-slate-100 text-slate-500";
 }
 
+function getImageUrl(image: string) {
+  if (!image) {
+    return "/images/lokly-logo.png";
+  }
+
+  if (
+    image.startsWith("http://") ||
+    image.startsWith("https://") ||
+    image.startsWith("/")
+  ) {
+    return image;
+  }
+
+  return `/${image}`;
+}
+
 /*
  * This is the same calendar system used on Saved Events.
  * It creates a real .ics calendar file.
@@ -503,7 +519,7 @@ export default function EventPage({ params }: PageProps) {
         <article className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100">
           <div className="relative aspect-[16/9] w-full bg-slate-100 sm:aspect-[2/1]">
             <img
-              src={event.image}
+              src={getImageUrl(event.image)}
               alt={event.title}
               className="h-full w-full object-cover"
             />
