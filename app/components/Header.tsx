@@ -231,6 +231,34 @@ export default function Header() {
                 </span>
               </Link>
 
+              {/* REFINE SEARCH */}
+              <Link
+                href="/search"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
+              >
+                <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={1.6}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 7h10M18 7h2M4 17h2M10 17h10M14 7v4M8 17v-4"
+                    />
+                  </svg>
+                </span>
+
+                <span className="font-semibold">
+                  {pt ? "Refinar pesquisa" : "Refine Search"}
+                </span>
+              </Link>
+
               {/* YOUR LOKLY */}
               <div className="mt-8">
 
