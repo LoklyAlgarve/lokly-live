@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import SaveButton from "./SaveButton";
+import ShareEventButton from "./ShareEventButton";
 import { useLanguage } from "../LanguageContext";
 
 type GoingStatus = "yes" | "maybe" | null;
@@ -152,6 +153,11 @@ export default function EventCard({
     );
   }
 
+  const eventUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/events/${id}`
+      : `/events/${id}`;
+
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:rounded-3xl">
 
@@ -180,13 +186,28 @@ export default function EventCard({
       {/* CONTENT */}
       <div className="flex flex-1 flex-col p-3 sm:p-6">
 
-        {/* CATEGORY */}
-        <div className="mb-2.5 flex min-h-[22px] items-center gap-1.5 sm:mb-4 sm:min-h-[28px]">
-          {category && (
-            <span className="max-w-full truncate rounded-full bg-[#149EAF]/10 px-2 py-1 text-[9px] font-bold uppercase text-[#149EAF] sm:px-3 sm:text-xs">
-              {t(category)}
-            </span>
-          )}
+        {/* CATEGORY + SHARE */}
+        <div className="mb-2.5 flex min-h-[22px] items-center justify-between gap-2 sm:mb-4 sm:min-h-[28px]">
+
+          {/* CATEGORY */}
+          <div className="min-w-0">
+            {category && (
+              <span className="inline-block max-w-full truncate rounded-full bg-[#149EAF]/10 px-2 py-1 text-[9px] font-bold uppercase text-[#149EAF] sm:px-3 sm:text-xs">
+                {t(category)}
+              </span>
+            )}
+          </div>
+
+          {/* SHARE ICON */}
+          <div className="shrink-0">
+            <ShareEventButton
+              title={title}
+              date={formatEventDate(date)}
+              location={location}
+              eventUrl={eventUrl}
+            />
+          </div>
+
         </div>
 
         {/* TITLE */}
