@@ -149,10 +149,8 @@ export default function EventCard({
   }
 
   async function handleShare() {
-    const url =
-      typeof window !== "undefined"
-        ? `${window.location.origin}/events/${id}`
-        : `/events/${id}`;
+    const eventUrl =
+      `https://www.lokly.live/events/${id}`;
 
     const message = `I found this event on Lokly and thought you might like it!
 
@@ -162,7 +160,7 @@ Date: ${formatEventDate(date)}
 Location: ${location}
 
 ↗ View the event on Lokly:
-${url}
+${eventUrl}
 
 Don't have Lokly yet?
 Discover what's happening near you:
@@ -226,7 +224,6 @@ https://www.lokly.live`;
         {/* CATEGORY + SHARE */}
         <div className="mb-2.5 flex min-h-[22px] items-center justify-between gap-2 sm:mb-4 sm:min-h-[28px]">
 
-          {/* CATEGORY */}
           <div className="min-w-0">
             {category && (
               <span className="inline-block max-w-full truncate rounded-full bg-[#149EAF]/10 px-2 py-1 text-[9px] font-bold uppercase text-[#149EAF] sm:px-3 sm:text-xs">
@@ -235,7 +232,6 @@ https://www.lokly.live`;
             )}
           </div>
 
-          {/* SHARE */}
           <button
             type="button"
             aria-label="Share Event"
@@ -348,7 +344,6 @@ https://www.lokly.live`;
         {/* MAIN BUTTONS */}
         <div className="mt-auto grid grid-cols-2 gap-1.5 pt-4 sm:gap-3 sm:pt-6">
 
-          {/* DIRECTIONS */}
           <a
             href={directionsUrl}
             target="_blank"
@@ -358,7 +353,6 @@ https://www.lokly.live`;
             {t("Directions")}
           </a>
 
-          {/* DETAILS */}
           <Link
             href={`/events/${id}`}
             className="flex items-center justify-center rounded-lg bg-[#149EAF] py-2 text-[10px] font-bold text-white transition hover:bg-[#117F8E] sm:rounded-xl sm:py-3 sm:text-sm"
