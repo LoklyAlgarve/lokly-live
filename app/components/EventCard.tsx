@@ -166,10 +166,7 @@ export default function EventCard({
 I found this event on Lokly and thought you might like it!
 
 👉 View the event on Lokly:
-${url}
-
-Don't have Lokly yet?
-Download Lokly and discover what's happening near you.`;
+${url}`;
 
     if (
       typeof navigator !== "undefined" &&
@@ -179,7 +176,6 @@ Download Lokly and discover what's happening near you.`;
         await navigator.share({
           title,
           text: message,
-          url,
         });
       } catch {
         // User cancelled the share menu
