@@ -16,7 +16,7 @@ export default function ShareEventButton({
   iconOnly = false,
 }: ShareEventButtonProps) {
   const handleShare = async () => {
-    const url =
+    const eventLink =
       eventUrl ||
       (typeof window !== "undefined"
         ? window.location.href
@@ -30,13 +30,13 @@ export default function ShareEventButton({
 I found this event on Lokly and thought you might like it!
 
 👉 View the event on Lokly:
-${url}
+${eventLink}
 
 Don't have Lokly yet?
 Discover what's happening near you:
 https://www.lokly.live`;
 
-    // Use the phone's normal share menu
+    // Phone / tablet sharing
     if (
       typeof navigator !== "undefined" &&
       navigator.share
@@ -54,7 +54,7 @@ https://www.lokly.live`;
       }
     }
 
-    // Fallback for browsers without native sharing
+    // Desktop fallback - WhatsApp
     const whatsappUrl =
       "https://wa.me/?text=" +
       encodeURIComponent(message);
@@ -109,7 +109,7 @@ https://www.lokly.live`;
 
         <path d="m8.6 13.5 6.8 4" />
 
-        <path d="m15.4 6.5-6.8-4" />
+        <path d="m15.4 6.5-6.8 4" />
       </svg>
 
       {!iconOnly && (
