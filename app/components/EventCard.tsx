@@ -33,8 +33,6 @@ type EventCardProps = {
 function formatEventDate(date: string) {
   const [datePart, timePart] = date.split(" • ");
 
-  // Already formatted date range, e.g.
-  // 24/09/2026 - 05/10/2026
   if (datePart.includes(" - ")) {
     return timePart
       ? `${datePart} • ${timePart}`
@@ -68,11 +66,8 @@ function formatEventDate(date: string) {
 
 function isToday(date: string) {
   const datePart = date.split(" • ")[0];
-
-  // For a date range, check the first date
   const firstDate = datePart.split(" - ")[0];
 
-  // Already formatted DD/MM/YYYY
   if (firstDate.includes("/")) {
     const [day, month, year] = firstDate
       .split("/")
@@ -158,14 +153,12 @@ export default function EventCard({
         ? `${window.location.origin}/events/${id}`
         : `/events/${id}`;
 
-    const message = `🌟 ${title}
+    const message = `I found this event on Lokly and thought you might like it!
 
-📅 ${formatEventDate(date)}
-📍 ${location}
+▣ ${formatEventDate(date)}
+⌖ ${location}
 
-I found this event on Lokly and thought you might like it!
-
-👉 View the event on Lokly:
+↗ View the event on Lokly:
 ${url}
 
 Don't have Lokly yet?
@@ -346,6 +339,7 @@ https://www.lokly.live`;
               {formatEventDate(date)}
             </span>
           </div>
+
         </div>
 
         {/* MAIN BUTTONS */}
@@ -368,6 +362,7 @@ https://www.lokly.live`;
           >
             {t("Details")}
           </Link>
+
         </div>
 
         {/* ADD TO CALENDAR - SAVED PAGE ONLY */}
