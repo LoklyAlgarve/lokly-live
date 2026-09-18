@@ -9,6 +9,19 @@ import { createClient } from "@/utils/supabase/client";
 const EVENT_IMAGE_BUCKET = "event-images";
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 
+const EVENT_CATEGORIES = [
+  "Music",
+  "Food & Drink",
+  "Arts & Culture",
+  "Wellbeing",
+  "Family",
+  "Markets & Shopping",
+  "Sport",
+  "Festivals",
+  "Exhibitions",
+  "Workshops",
+];
+
 const ALGARVE_CONCELHOS = [
   "Albufeira",
   "Alcoutim",
@@ -59,7 +72,14 @@ export default function AddEventPage() {
     const concelho = String(formData.get("concelho") || "").trim();
 
     const price = String(formData.get("price") || "").trim();
-    const description = String(formData.get("description") || "").trim();
+    const description = String(
+      formData.get("description") || ""
+    ).trim();
+
+    const additionalComments = String(
+      formData.get("additionalComments") || ""
+    ).trim();
+
     const website = String(formData.get("website") || "").trim();
 
     const businessName = String(
@@ -117,13 +137,14 @@ export default function AddEventPage() {
         const fileName = `${crypto.randomUUID()}.${extension}`;
         const filePath = `events/${fileName}`;
 
-        const { error: uploadError } = await supabase.storage
-          .from(EVENT_IMAGE_BUCKET)
-          .upload(filePath, imageFile, {
-            cacheControl: "3600",
-            contentType: imageFile.type,
-            upsert: false,
-          });
+        const { error: uploadError } =
+          await supabase.storage
+            .from(EVENT_IMAGE_BUCKET)
+            .upload(filePath, imageFile, {
+              cacheControl: "3600",
+              contentType: imageFile.type,
+              upsert: false,
+            });
 
         if (uploadError) {
           console.error(
@@ -140,9 +161,10 @@ export default function AddEventPage() {
           return;
         }
 
-        const { data: publicUrlData } = supabase.storage
-          .from(EVENT_IMAGE_BUCKET)
-          .getPublicUrl(filePath);
+        const { data: publicUrlData } =
+          supabase.storage
+            .from(EVENT_IMAGE_BUCKET)
+            .getPublicUrl(filePath);
 
         imageUrl = publicUrlData.publicUrl;
       } catch (error) {
@@ -161,35 +183,38 @@ export default function AddEventPage() {
       }
     }
 
-    const { error } = await supabase.from("events").insert({
-      title,
-      category,
+    const { error } = await supabase
+      .from("events")
+      .insert({
+        title,
+        category,
 
-      // START
-      date,
-      time,
+        date,
+        end_date: endDate,
 
-      // END
-      end_date: endDate,
-      end_time: endTime,
+        time,
+        end_time: endTime,
 
-      location,
-      concelho,
-      price,
-      description,
-      website,
-      image: imageUrl,
+        location,
+        concelho,
 
-      business_name: businessName,
-      contact_email: email,
-      contact_phone: phone,
+        price,
+        description,
+        additional_comments: additionalComments,
 
-      wheelchair_friendly: wheelchair,
-      pet_friendly: pets,
+        website,
+        image: imageUrl,
 
-      approved: false,
-      featured: false,
-    });
+        business_name: businessName,
+        contact_email: email,
+        contact_phone: phone,
+
+        wheelchair_friendly: wheelchair,
+        pet_friendly: pets,
+
+        approved: false,
+        featured: false,
+      });
 
     if (error) {
       console.error(
@@ -207,27 +232,31 @@ export default function AddEventPage() {
     }
 
     try {
-      const notificationResponse = await fetch("/api/events", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          category,
+      const notificationResponse = await fetch(
+        "/api/events",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title,
+            category,
 
-          date,
-          endDate,
+            date,
+            endDate,
 
-          time,
-          endTime,
+            time,
+            endTime,
 
-          location,
-          concelho,
-          businessName,
-          email,
-        }),
-      });
+            location,
+            concelho,
+
+            businessName,
+            email,
+          }),
+        }
+      );
 
       if (!notificationResponse.ok) {
         console.error(
@@ -251,22 +280,19 @@ export default function AddEventPage() {
     <div className="min-h-screen bg-slate-50 pb-24">
       <Header />
 
-      <main className="mx-auto w-full max-w-6xl px-4 pb-12 pt-7 sm:px-6 lg:px-8">
-
-        {/* PAGE INTRO */}
-        <div className="mb-7">
-          <h1 className="text-3xl font-bold tracking-tight text-[#051C3F] sm:text-4xl">
+      <main className="mx-auto w-full max-w-3xl px-4 pb-10 pt-6 sm:px-6">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
             {t("Add an event")}
           </h1>
 
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base">
+          <p className="mt-2 text-sm leading-6 text-slate-600">
             {t(
               "Share an event happening in the Algarve and help people discover what's going on."
             )}
           </p>
         </div>
 
-        {/* SUCCESS */}
         {submitted && (
           <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
             <p className="font-semibold text-emerald-800">
@@ -281,7 +307,6 @@ export default function AddEventPage() {
           </div>
         )}
 
-        {/* ERROR */}
         {errorMessage && (
           <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4">
             <p className="text-sm font-medium text-red-700">
@@ -292,125 +317,67 @@ export default function AddEventPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-5"
+          className="space-y-6"
         >
+          {/* YOUR EVENT */}
 
-          {/* =====================================================
-              1. YOUR EVENT
-          ====================================================== */}
-          <section className="rounded-3xl border border-[#149EAF]/70 bg-white p-5 shadow-sm sm:p-6">
+          <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
+            <h2 className="text-lg font-semibold text-slate-900">
+              {t("Your event")}
+            </h2>
 
-            <div className="mb-5 flex items-center gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#149EAF]/10 text-base font-bold text-[#149EAF]">
-                1
-              </div>
-
-              <div>
-                <h2 className="text-lg font-bold text-[#051C3F]">
-                  {t("Your event")}
-                </h2>
-
-                <p className="text-sm text-slate-500">
-                  {t("Tell us about your event.")}
-                </p>
-              </div>
-            </div>
-
-            <div className="grid gap-5 sm:grid-cols-2">
-
-              {/* EVENT NAME */}
+            <div className="mt-5 space-y-5">
               <div>
                 <label
                   htmlFor="eventName"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("Event name")} *
+                  {t("Event name")}
                 </label>
 
                 <input
                   id="eventName"
                   name="eventName"
                   type="text"
-                  required
                   placeholder={t(
                     "e.g. Summer Music Festival"
                   )}
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
               </div>
 
-              {/* CATEGORY */}
               <div>
                 <label
                   htmlFor="category"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("Category")} *
+                  {t("Category")}
                 </label>
 
                 <select
                   id="category"
                   name="category"
                   defaultValue=""
-                  required
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 >
                   <option value="">
                     {t("Select a category")}
                   </option>
 
-                  <option value="Arts & Culture">
-                    {t("Arts & Culture")}
-                  </option>
-
-                  <option value="Comedy">
-                    {t("Comedy")}
-                  </option>
-
-                  <option value="Community">
-                    {t("Community")}
-                  </option>
-
-                  <option value="Exhibitions">
-                    {t("Exhibitions")}
-                  </option>
-
-                  <option value="Family">
-                    {t("Family")}
-                  </option>
-
-                  <option value="Festival">
-                    {t("Festival")}
-                  </option>
-
-                  <option value="Music">
-                    {t("Music")}
-                  </option>
-
-                  <option value="Nightlife">
-                    {t("Nightlife")}
-                  </option>
-
-                  <option value="Retreat">
-                    {t("Retreat")}
-                  </option>
-
-                  <option value="Sport">
-                    {t("Sport")}
-                  </option>
-
-                  <option value="Theatre">
-                    {t("Theatre")}
-                  </option>
-
-                  <option value="Workshop">
-                    {t("Workshop")}
-                  </option>
+                  {EVENT_CATEGORIES.map(
+                    (categoryName) => (
+                      <option
+                        key={categoryName}
+                        value={categoryName}
+                      >
+                        {t(categoryName)}
+                      </option>
+                    )
+                  )}
                 </select>
               </div>
 
-              {/* DESCRIPTION */}
-              <div className="sm:col-span-2">
+              <div>
                 <label
                   htmlFor="description"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -425,152 +392,97 @@ export default function AddEventPage() {
                   placeholder={t(
                     "Tell people a little about the event..."
                   )}
-                  className="w-full resize-none rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full resize-none rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
               </div>
-
             </div>
           </section>
 
-          {/* =====================================================
-              2. WHEN & WHERE
-          ====================================================== */}
-          <section className="rounded-3xl border border-[#149EAF]/70 bg-white p-5 shadow-sm sm:p-6">
+          {/* WHEN & WHERE */}
 
-            <div className="mb-5 flex items-center gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#149EAF]/10 text-base font-bold text-[#149EAF]">
-                2
-              </div>
+          <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
+            <h2 className="text-lg font-semibold text-slate-900">
+              {t("When & where")}
+            </h2>
 
-              <div>
-                <h2 className="text-lg font-bold text-[#051C3F]">
-                  {t("When & where")}
-                </h2>
-
-                <p className="text-sm text-slate-500">
-                  {t(
-                    "Let people know when and where it's happening."
-                  )}
-                </p>
-              </div>
-            </div>
-
-            {/* DATES */}
-            <div className="grid gap-5 sm:grid-cols-2">
-
-              {/* START DATE */}
+            <div className="mt-5 grid gap-5 sm:grid-cols-2">
               <div>
                 <label
                   htmlFor="date"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("Start date")} *
+                  {t("Start date")}
                 </label>
 
                 <input
                   id="date"
                   name="date"
                   type="date"
-                  required
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
               </div>
 
-              {/* END DATE */}
               <div>
                 <label
                   htmlFor="endDate"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("End date")} *
+                  {t("End date")}
                 </label>
 
                 <input
                   id="endDate"
                   name="endDate"
                   type="date"
-                  required
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
               </div>
 
-              {/* START TIME */}
               <div>
                 <label
                   htmlFor="time"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("Start time")} *
+                  {t("Start time")}
                 </label>
 
                 <input
                   id="time"
                   name="time"
                   type="time"
-                  required
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
               </div>
 
-              {/* END TIME */}
               <div>
                 <label
                   htmlFor="endTime"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("End time")} *
+                  {t("End time")}
                 </label>
 
                 <input
                   id="endTime"
                   name="endTime"
                   type="time"
-                  required
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
               </div>
 
-            </div>
-
-            {/* LOCATION */}
-            <div className="mt-5 grid gap-5 sm:grid-cols-2">
-
-              {/* LOCATION */}
-              <div>
-                <label
-                  htmlFor="location"
-                  className="mb-2 block text-sm font-medium text-slate-700"
-                >
-                  {t("Venue / location")} *
-                </label>
-
-                <input
-                  id="location"
-                  name="location"
-                  type="text"
-                  required
-                  placeholder={t(
-                    "e.g. Mercado Municipal, Loulé"
-                  )}
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
-                />
-              </div>
-
-              {/* CONCELHO */}
-              <div>
+              <div className="sm:col-span-2">
                 <label
                   htmlFor="concelho"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("Concelho")} *
+                  {t("Concelho")}
                 </label>
 
                 <select
                   id="concelho"
                   name="concelho"
                   defaultValue=""
-                  required
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 >
                   <option value="">
                     {t("Select a concelho")}
@@ -589,40 +501,41 @@ export default function AddEventPage() {
                 </select>
               </div>
 
-            </div>
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="location"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
+                  {t("Venue / location")}
+                </label>
 
-            <p className="mt-3 text-xs text-slate-500">
-              {t("Enter the venue name or location.")}
-            </p>
+                <input
+                  id="location"
+                  name="location"
+                  type="text"
+                  placeholder={t(
+                    "e.g. Mercado Municipal, Loulé"
+                  )}
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
+                />
 
-          </section>
-
-          {/* =====================================================
-              3. EVENT DETAILS
-          ====================================================== */}
-          <section className="rounded-3xl border border-[#149EAF]/70 bg-white p-5 shadow-sm sm:p-6">
-
-            <div className="mb-5 flex items-center gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#149EAF]/10 text-base font-bold text-[#149EAF]">
-                3
-              </div>
-
-              <div>
-                <h2 className="text-lg font-bold text-[#051C3F]">
-                  {t("Event details")}
-                </h2>
-
-                <p className="text-sm text-slate-500">
+                <p className="mt-2 text-xs text-slate-500">
                   {t(
-                    "Add pricing, website and accessibility information."
+                    "Enter the venue name or location."
                   )}
                 </p>
               </div>
             </div>
+          </section>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {/* PRICE & BOOKING */}
 
-              {/* PRICE */}
+          <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
+            <h2 className="text-lg font-semibold text-slate-900">
+              {t("Price & booking")}
+            </h2>
+
+            <div className="mt-5 space-y-5">
               <div>
                 <label
                   htmlFor="price"
@@ -638,11 +551,10 @@ export default function AddEventPage() {
                   placeholder={t(
                     "e.g. Free, €10, From €15"
                   )}
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
               </div>
 
-              {/* WEBSITE */}
               <div>
                 <label
                   htmlFor="website"
@@ -656,203 +568,58 @@ export default function AddEventPage() {
                   name="website"
                   type="url"
                   placeholder="https://..."
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
               </div>
-
-              {/* IMAGE */}
-              <div className="lg:row-span-2">
-                <label
-                  htmlFor="image"
-                  className="mb-2 block text-sm font-medium text-slate-700"
-                >
-                  {t("Event image")}
-                </label>
-
-                <label
-                  htmlFor="image"
-                  className="flex min-h-[112px] cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[#149EAF]/50 bg-[#149EAF]/[0.02] px-4 py-4 text-center transition hover:bg-[#149EAF]/[0.05]"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="mb-2 h-8 w-8 text-[#149EAF]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                  >
-                    <rect
-                      x="3"
-                      y="4"
-                      width="18"
-                      height="16"
-                      rx="2"
-                    />
-
-                    <circle
-                      cx="8.5"
-                      cy="9"
-                      r="1.5"
-                    />
-
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m3 17 5-5 4 4 2-2 7 6"
-                    />
-                  </svg>
-
-                  <span className="text-sm font-medium text-[#051C3F]">
-                    {t("Upload an image")}
-                  </span>
-
-                  <span className="mt-1 text-xs text-slate-500">
-                    {t(
-                      "JPG, PNG or WebP - maximum 5 MB."
-                    )}
-                  </span>
-                </label>
-
-                <input
-                  id="image"
-                  name="image"
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  className="sr-only"
-                />
-              </div>
-
-              {/* WHEELCHAIR */}
-              <div>
-                <p className="mb-3 text-sm font-medium text-slate-700">
-                  {t("Wheelchair friendly?")}
-                </p>
-
-                <div className="flex flex-wrap gap-2">
-                  {["Yes", "No", "Not sure"].map(
-                    (option) => (
-                      <label
-                        key={option}
-                        className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#149EAF]/30 px-3 py-2.5 text-sm text-slate-700 transition hover:bg-[#149EAF]/5"
-                      >
-                        <input
-                          type="radio"
-                          name="wheelchair"
-                          value={option}
-                          defaultChecked={
-                            option === "Not sure"
-                          }
-                          className="h-4 w-4 accent-[#149EAF]"
-                        />
-
-                        {t(option)}
-                      </label>
-                    )
-                  )}
-                </div>
-              </div>
-
-              {/* PET FRIENDLY */}
-              <div>
-                <p className="mb-3 text-sm font-medium text-slate-700">
-                  {t("Pet friendly?")}
-                </p>
-
-                <div className="flex flex-wrap gap-2">
-                  {["Yes", "No", "Not sure"].map(
-                    (option) => (
-                      <label
-                        key={option}
-                        className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#149EAF]/30 px-3 py-2.5 text-sm text-slate-700 transition hover:bg-[#149EAF]/5"
-                      >
-                        <input
-                          type="radio"
-                          name="pets"
-                          value={option}
-                          defaultChecked={
-                            option === "Not sure"
-                          }
-                          className="h-4 w-4 accent-[#149EAF]"
-                        />
-
-                        {t(option)}
-                      </label>
-                    )
-                  )}
-                </div>
-              </div>
-
             </div>
           </section>
 
-          {/* =====================================================
-              4. BUSINESS DETAILS
-          ====================================================== */}
-          <section className="rounded-3xl border border-[#149EAF]/70 bg-white p-5 shadow-sm sm:p-6">
+          {/* CONTACT */}
 
-            <div className="mb-5 flex items-center gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#149EAF]/10 text-base font-bold text-[#149EAF]">
-                4
-              </div>
+          <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
+            <h2 className="text-lg font-semibold text-slate-900">
+              {t("Contact")}
+            </h2>
 
-              <div>
-                <h2 className="text-lg font-bold text-[#051C3F]">
-                  {t("Your business details")}
-                </h2>
-
-                <p className="text-sm text-slate-500">
-                  {t(
-                    "Let us know who is organising the event."
-                  )}
-                </p>
-              </div>
-            </div>
-
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-
-              {/* BUSINESS */}
+            <div className="mt-5 space-y-5">
               <div>
                 <label
                   htmlFor="businessName"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("Business / organiser name")} *
+                  {t("Business / organiser name")}
                 </label>
 
                 <input
                   id="businessName"
                   name="businessName"
                   type="text"
-                  required
                   placeholder={t(
                     "Your business or organisation"
                   )}
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
               </div>
 
-              {/* EMAIL */}
               <div>
                 <label
                   htmlFor="email"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("Email")} *
+                  {t("Email")}
                 </label>
 
                 <input
                   id="email"
                   name="email"
                   type="email"
-                  required
                   placeholder={t(
                     "Your email address"
                   )}
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
               </div>
 
-              {/* PHONE */}
               <div>
                 <label
                   htmlFor="phone"
@@ -868,34 +635,147 @@ export default function AddEventPage() {
                   placeholder={t(
                     "Your phone number"
                   )}
-                  className="w-full rounded-xl border border-[#149EAF]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/10"
+                  className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
               </div>
+            </div>
+          </section>
 
+          {/* MORE DETAILS */}
+
+          <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
+            <h2 className="text-lg font-semibold text-slate-900">
+              {t("A few more details")}
+            </h2>
+
+            <div className="mt-5 space-y-7">
+              {/* IMAGE */}
+
+              <div>
+                <label
+                  htmlFor="image"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
+                  {t("Event image")}
+                </label>
+
+                <input
+                  id="image"
+                  name="image"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  className="block w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-lg file:border-0 file:bg-teal-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-teal-700 hover:file:bg-teal-100"
+                />
+
+                <p className="mt-2 text-xs text-slate-500">
+                  {t(
+                    "JPG, PNG or WebP - maximum 5 MB."
+                  )}
+                </p>
+              </div>
+
+              {/* WHEELCHAIR */}
+
+              <div>
+                <p className="mb-3 text-sm font-medium text-slate-700">
+                  {t("Wheelchair friendly?")}
+                </p>
+
+                <div className="flex flex-wrap gap-3">
+                  {["Yes", "No", "Not sure"].map(
+                    (option) => (
+                      <label
+                        key={option}
+                        className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#051C3F]/30 px-4 py-3 text-sm text-slate-700"
+                      >
+                        <input
+                          type="radio"
+                          name="wheelchair"
+                          value={option}
+                          defaultChecked={
+                            option === "Not sure"
+                          }
+                          className="h-4 w-4 accent-teal-600"
+                        />
+
+                        {t(option)}
+                      </label>
+                    )
+                  )}
+                </div>
+              </div>
+
+              {/* PETS */}
+
+              <div>
+                <p className="mb-3 text-sm font-medium text-slate-700">
+                  {t("Pet friendly?")}
+                </p>
+
+                <div className="flex flex-wrap gap-3">
+                  {["Yes", "No", "Not sure"].map(
+                    (option) => (
+                      <label
+                        key={option}
+                        className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#051C3F]/30 px-4 py-3 text-sm text-slate-700"
+                      >
+                        <input
+                          type="radio"
+                          name="pets"
+                          value={option}
+                          defaultChecked={
+                            option === "Not sure"
+                          }
+                          className="h-4 w-4 accent-teal-600"
+                        />
+
+                        {t(option)}
+                      </label>
+                    )
+                  )}
+                </div>
+              </div>
+
+              {/* ADDITIONAL COMMENTS */}
+
+              <div>
+                <label
+                  htmlFor="additionalComments"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
+                  {t("Anything else we should know?")}
+                </label>
+
+                <p className="mb-3 text-xs text-slate-500">
+                  {t(
+                    "Optional — tell us anything that might help us understand or promote your event."
+                  )}
+                </p>
+
+                <textarea
+                  id="additionalComments"
+                  name="additionalComments"
+                  rows={4}
+                  placeholder={t(
+                    "Anything else you'd like to tell us?"
+                  )}
+                  className="w-full resize-none rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
+                />
+              </div>
             </div>
           </section>
 
           {/* SUBMIT */}
-          <div className="flex flex-col items-center gap-4 pt-2 sm:flex-row sm:justify-end">
 
-            <p className="text-center text-xs text-slate-500 sm:mr-auto sm:text-left">
-              {t(
-                "Your event will be reviewed before it goes live on Lokly."
-              )}
-            </p>
-
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full rounded-2xl bg-[#149EAF] px-8 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-[#0f8998] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:min-w-[190px]"
-            >
-              {submitting
-                ? t("Submitting...")
-                : t("Submit event")}
-            </button>
-
-          </div>
-
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full rounded-2xl bg-[#089997] px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-[#078583] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {submitting
+              ? t("Submitting...")
+              : t("Submit event")}
+          </button>
         </form>
       </main>
 
