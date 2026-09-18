@@ -1,6 +1,10 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import {
+  FormEvent,
+  useEffect,
+  useState,
+} from "react";
 import Header from "../components/Header";
 import BottomNavigation from "../components/BottomNavigation";
 import { useLanguage } from "../LanguageContext";
@@ -48,7 +52,72 @@ export default function AddEventPage() {
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const [selectedImagePreview, setSelectedImagePreview] =
+    useState<string | null>(null);
+
+  const [selectedImageName, setSelectedImageName] =
+    useState("");
+
+  useEffect(() => {
+    return () => {
+      if (selectedImagePreview) {
+        URL.revokeObjectURL(selectedImagePreview);
+      }
+    };
+  }, [selectedImagePreview]);
+
+  function handleImageChange(
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
+    const file = event.target.files?.[0];
+
+    setErrorMessage("");
+
+    if (!file) {
+      setSelectedImageName("");
+      setSelectedImagePreview(null);
+      return;
+    }
+
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      setSelectedImageName("");
+      setSelectedImagePreview(null);
+      setErrorMessage(
+        t("Please upload a JPG, PNG or WebP image.")
+      );
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_SIZE) {
+      setSelectedImageName("");
+      setSelectedImagePreview(null);
+      setErrorMessage(
+        t(
+          "Your image is too large. Please choose an image under 5 MB."
+        )
+      );
+      return;
+    }
+
+    setSelectedImageName(file.name);
+
+    if (selectedImagePreview) {
+      URL.revokeObjectURL(selectedImagePreview);
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+    setSelectedImagePreview(previewUrl);
+  }
+
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
     setSubmitting(true);
@@ -59,19 +128,47 @@ export default function AddEventPage() {
     const formData = new FormData(form);
     const supabase = createClient();
 
-    const title = String(formData.get("eventName") || "").trim();
-    const category = String(formData.get("category") || "").trim();
+    const title = String(
+      formData.get("eventName") || ""
+    ).trim();
 
-    const date = String(formData.get("date") || "").trim();
-    const endDate = String(formData.get("endDate") || "").trim();
+    const category = String(
+      formData.get("category") || ""
+    ).trim();
 
-    const time = String(formData.get("time") || "").trim();
-    const endTime = String(formData.get("endTime") || "").trim();
+    const date = String(
+      formData.get("date") || ""
+    ).trim();
 
-    const location = String(formData.get("location") || "").trim();
-    const concelho = String(formData.get("concelho") || "").trim();
+    const endDate = String(
+      formData.get("endDate") || ""
+    ).trim();
 
-    const price = String(formData.get("price") || "").trim();
+    const time = String(
+      formData.get("time") || ""
+    ).trim();
+
+    const endTime = String(
+      formData.get("endTime") || ""
+    ).trim();
+
+    const location = String(
+      formData.get("location") || ""
+    ).trim();
+
+    const concelhoValue = String(
+      formData.get("concelho") || ""
+    ).trim();
+
+    // Supabase expects either a valid concelho
+    // or NULL when the field is left blank.
+    const concelho =
+      concelhoValue === "" ? null : concelhoValue;
+
+    const price = String(
+      formData.get("price") || ""
+    ).trim();
+
     const description = String(
       formData.get("description") || ""
     ).trim();
@@ -80,14 +177,21 @@ export default function AddEventPage() {
       formData.get("additionalComments") || ""
     ).trim();
 
-    const website = String(formData.get("website") || "").trim();
+    const website = String(
+      formData.get("website") || ""
+    ).trim();
 
     const businessName = String(
       formData.get("businessName") || ""
     ).trim();
 
-    const email = String(formData.get("email") || "").trim();
-    const phone = String(formData.get("phone") || "").trim();
+    const email = String(
+      formData.get("email") || ""
+    ).trim();
+
+    const phone = String(
+      formData.get("phone") || ""
+    ).trim();
 
     const wheelchair = String(
       formData.get("wheelchair") || "Not sure"
@@ -101,7 +205,14 @@ export default function AddEventPage() {
 
     const imageFile = formData.get("image");
 
-    if (imageFile instanceof File && imageFile.size > 0) {
+    /*
+     * IMAGE UPLOAD
+     */
+
+    if (
+      imageFile instanceof File &&
+      imageFile.size > 0
+    ) {
       const allowedTypes = [
         "image/jpeg",
         "image/png",
@@ -183,6 +294,10 @@ export default function AddEventPage() {
       }
     }
 
+    /*
+     * SAVE EVENT TO SUPABASE
+     */
+
     const { error } = await supabase
       .from("events")
       .insert({
@@ -223,13 +338,21 @@ export default function AddEventPage() {
       );
 
       setSubmitting(false);
+
+      // Keep the useful Supabase error in the console
+      // while showing a simple message to the user.
       setErrorMessage(
         t(
           "There was a problem submitting your event. Please try again."
         )
       );
+
       return;
     }
+
+    /*
+     * SEND EMAIL NOTIFICATION
+     */
 
     try {
       const notificationResponse = await fetch(
@@ -250,7 +373,7 @@ export default function AddEventPage() {
             endTime,
 
             location,
-            concelho,
+            concelho: concelhoValue,
 
             businessName,
             email,
@@ -274,6 +397,13 @@ export default function AddEventPage() {
     setSubmitted(true);
 
     form.reset();
+
+    if (selectedImagePreview) {
+      URL.revokeObjectURL(selectedImagePreview);
+    }
+
+    setSelectedImagePreview(null);
+    setSelectedImageName("");
   }
 
   return (
@@ -587,7 +717,9 @@ export default function AddEventPage() {
                   htmlFor="businessName"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("Business / organiser name")}
+                  {t(
+                    "Business / organiser name"
+                  )}
                 </label>
 
                 <input
@@ -664,6 +796,7 @@ export default function AddEventPage() {
                   name="image"
                   type="file"
                   accept="image/jpeg,image/png,image/webp"
+                  onChange={handleImageChange}
                   className="block w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-lg file:border-0 file:bg-teal-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-teal-700 hover:file:bg-teal-100"
                 />
 
@@ -672,6 +805,22 @@ export default function AddEventPage() {
                     "JPG, PNG or WebP - maximum 5 MB."
                   )}
                 </p>
+
+                {selectedImageName && (
+                  <p className="mt-2 text-sm font-medium text-[#051C3F]">
+                    {selectedImageName}
+                  </p>
+                )}
+
+                {selectedImagePreview && (
+                  <div className="mt-4 overflow-hidden rounded-2xl border border-[#051C3F]/20 bg-slate-50">
+                    <img
+                      src={selectedImagePreview}
+                      alt={t("Selected event image")}
+                      className="h-48 w-full object-cover"
+                    />
+                  </div>
+                )}
               </div>
 
               {/* WHEELCHAIR */}
@@ -682,26 +831,28 @@ export default function AddEventPage() {
                 </p>
 
                 <div className="flex flex-wrap gap-3">
-                  {["Yes", "No", "Not sure"].map(
-                    (option) => (
-                      <label
-                        key={option}
-                        className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#051C3F]/30 px-4 py-3 text-sm text-slate-700"
-                      >
-                        <input
-                          type="radio"
-                          name="wheelchair"
-                          value={option}
-                          defaultChecked={
-                            option === "Not sure"
-                          }
-                          className="h-4 w-4 accent-teal-600"
-                        />
+                  {[
+                    "Yes",
+                    "No",
+                    "Not sure",
+                  ].map((option) => (
+                    <label
+                      key={option}
+                      className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#051C3F]/30 px-4 py-3 text-sm text-slate-700"
+                    >
+                      <input
+                        type="radio"
+                        name="wheelchair"
+                        value={option}
+                        defaultChecked={
+                          option === "Not sure"
+                        }
+                        className="h-4 w-4 accent-teal-600"
+                      />
 
-                        {t(option)}
-                      </label>
-                    )
-                  )}
+                      {t(option)}
+                    </label>
+                  ))}
                 </div>
               </div>
 
@@ -713,26 +864,28 @@ export default function AddEventPage() {
                 </p>
 
                 <div className="flex flex-wrap gap-3">
-                  {["Yes", "No", "Not sure"].map(
-                    (option) => (
-                      <label
-                        key={option}
-                        className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#051C3F]/30 px-4 py-3 text-sm text-slate-700"
-                      >
-                        <input
-                          type="radio"
-                          name="pets"
-                          value={option}
-                          defaultChecked={
-                            option === "Not sure"
-                          }
-                          className="h-4 w-4 accent-teal-600"
-                        />
+                  {[
+                    "Yes",
+                    "No",
+                    "Not sure",
+                  ].map((option) => (
+                    <label
+                      key={option}
+                      className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#051C3F]/30 px-4 py-3 text-sm text-slate-700"
+                    >
+                      <input
+                        type="radio"
+                        name="pets"
+                        value={option}
+                        defaultChecked={
+                          option === "Not sure"
+                        }
+                        className="h-4 w-4 accent-teal-600"
+                      />
 
-                        {t(option)}
-                      </label>
-                    )
-                  )}
+                      {t(option)}
+                    </label>
+                  ))}
                 </div>
               </div>
 
@@ -743,7 +896,9 @@ export default function AddEventPage() {
                   htmlFor="additionalComments"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  {t("Anything else we should know?")}
+                  {t(
+                    "Anything else we should know?"
+                  )}
                 </label>
 
                 <p className="mb-3 text-xs text-slate-500">
