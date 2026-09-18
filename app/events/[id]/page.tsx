@@ -401,6 +401,13 @@ export default function EventPage({ params }: PageProps) {
       return;
     }
 
+    /*
+     * Keep a non-null reference for the asynchronous
+     * translation function. This also satisfies
+     * TypeScript's strict null checking.
+     */
+    const currentEvent = event;
+
     async function prepareTranslation() {
       setTranslationLoading(true);
       setTranslationError(false);
@@ -417,8 +424,9 @@ export default function EventPage({ params }: PageProps) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              title: event.title,
-              description: event.description || "",
+              title: currentEvent.title,
+              description:
+                currentEvent.description || "",
             }),
           }
         );
@@ -436,12 +444,13 @@ export default function EventPage({ params }: PageProps) {
         );
 
         setTranslatedTitle(
-          data.translatedTitle ?? event.title
+          data.translatedTitle ??
+            currentEvent.title
         );
 
         setTranslatedDescription(
           data.translatedDescription ??
-            event.description ??
+            currentEvent.description ??
             ""
         );
       } catch (error) {
@@ -651,6 +660,7 @@ export default function EventPage({ params }: PageProps) {
 
           <div className="p-5 sm:p-8">
             <div className="flex flex-col gap-6">
+
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#149EAF]">
                   {t(event.category)}
@@ -716,6 +726,8 @@ export default function EventPage({ params }: PageProps) {
               </div>
 
               <div className="grid grid-cols-2 gap-3">
+
+                {/* DATE */}
                 <div className="flex min-w-0 items-start gap-2.5 rounded-2xl bg-slate-50 p-3 sm:p-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -732,6 +744,7 @@ export default function EventPage({ params }: PageProps) {
                       height="17"
                       rx="2"
                     />
+
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -750,6 +763,7 @@ export default function EventPage({ params }: PageProps) {
                   </div>
                 </div>
 
+                {/* TIME */}
                 <div className="flex min-w-0 items-start gap-2.5 rounded-2xl bg-slate-50 p-3 sm:p-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -784,6 +798,7 @@ export default function EventPage({ params }: PageProps) {
                   </div>
                 </div>
 
+                {/* LOCATION */}
                 <div className="flex min-w-0 items-start gap-2.5 rounded-2xl bg-slate-50 p-3 sm:p-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -794,6 +809,7 @@ export default function EventPage({ params }: PageProps) {
                     strokeWidth={2}
                   >
                     <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1116 0z" />
+
                     <circle
                       cx="12"
                       cy="10"
@@ -812,6 +828,7 @@ export default function EventPage({ params }: PageProps) {
                   </div>
                 </div>
 
+                {/* PRICE */}
                 <div className="flex min-w-0 items-start gap-2.5 rounded-2xl bg-slate-50 p-3 sm:p-4">
                   <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center text-lg font-medium leading-none text-[#149EAF] sm:h-5 sm:w-5 sm:text-[22px]">
                     €
@@ -828,6 +845,7 @@ export default function EventPage({ params }: PageProps) {
                   </div>
                 </div>
 
+                {/* WHEELCHAIR */}
                 <div className="flex min-w-0 items-start gap-2.5 rounded-2xl bg-slate-50 p-3 sm:p-4">
                   <div className="mt-0.5 text-[#149EAF]">
                     ♿
@@ -848,6 +866,7 @@ export default function EventPage({ params }: PageProps) {
                   </div>
                 </div>
 
+                {/* PET FRIENDLY */}
                 <div className="flex min-w-0 items-start gap-2.5 rounded-2xl bg-slate-50 p-3 sm:p-4">
                   <div className="mt-0.5 text-[#149EAF]">
                     🐾
@@ -869,6 +888,7 @@ export default function EventPage({ params }: PageProps) {
                 </div>
               </div>
 
+              {/* DESCRIPTION */}
               {displayedDescription && (
                 <div>
                   <h2 className="text-xl font-black text-slate-900">
@@ -881,7 +901,7 @@ export default function EventPage({ params }: PageProps) {
                 </div>
               )}
 
-              {/* Going / Maybe tally */}
+              {/* GOING / MAYBE */}
               <div className="flex items-center justify-center gap-5 border-t border-slate-100 pt-4">
                 <div className="text-center">
                   <p className="text-xl font-black text-[#149EAF]">
@@ -906,8 +926,10 @@ export default function EventPage({ params }: PageProps) {
                 </div>
               </div>
 
+              {/* BUTTONS */}
               <div className="border-t border-slate-100 pt-6">
                 <div className="flex flex-col gap-3 sm:flex-row">
+
                   <SaveButton
                     eventId={event.id}
                     large
@@ -976,8 +998,10 @@ export default function EventPage({ params }: PageProps) {
                       {t("Event Website")}
                     </a>
                   )}
+
                 </div>
               </div>
+
             </div>
           </div>
         </article>
