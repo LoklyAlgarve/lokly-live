@@ -7,6 +7,7 @@ import { useLanguage } from "../LanguageContext";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [businessOpen, setBusinessOpen] = useState(false);
   const { language, setLanguage } = useLanguage();
 
   const pt = language === "pt";
@@ -431,6 +432,70 @@ export default function Header() {
                     {pt ? "Contacte-nos" : "Contact Us"}
                   </span>
                 </button>
+
+                {/* FOR BUSINESSES */}
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setBusinessOpen(!businessOpen)}
+                    className="flex w-full items-center rounded-2xl px-3 py-3.5 text-left text-slate-700 transition hover:bg-slate-50"
+                  >
+                    <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={1.6}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3 21h18M5 21V8h14v13M8 8V5h8v3M9 12h2M13 12h2M9 16h2M13 16h2"
+                        />
+                      </svg>
+                    </span>
+
+                    <span className="flex-1 font-semibold">
+                      {pt ? "Para Empresas" : "For Businesses"}
+                    </span>
+
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${
+                        businessOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m6 9 6 6 6-6"
+                      />
+                    </svg>
+                  </button>
+
+                  {/* BUSINESS SUBSECTION */}
+                  {businessOpen && (
+                    <div className="ml-11 border-l border-slate-200 pl-3">
+                      <Link
+                        href="/add-event"
+                        onClick={() => setMenuOpen(false)}
+                        className="flex items-center rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-[#149EAF]"
+                      >
+                        <span className="mr-3 text-[#149EAF]">
+                          +
+                        </span>
+
+                        {pt ? "Adicionar um evento" : "Add your event"}
+                      </Link>
+                    </div>
+                  )}
+                </div>
 
               </div>
 

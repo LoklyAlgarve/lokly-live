@@ -348,13 +348,32 @@ function addToCalendar(event: Event) {
 
 export default function EventPage({ params }: PageProps) {
   const { id } = use(params);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
 
   const [goingCount, setGoingCount] = useState(0);
   const [maybeCount, setMaybeCount] = useState(0);
+
+  const [eventLanguage, setEventLanguage] = useState<
+    "English" | "Portuguese" | "Other" | null
+  >(null);
+
+  const [translatedTitle, setTranslatedTitle] =
+    useState<string | null>(null);
+
+  const [translatedDescription, setTranslatedDescription] =
+    useState<string | null>(null);
+
+  const [translationLoading, setTranslationLoading] =
+    useState(false);
+
+  const [translationError, setTranslationError] =
+    useState(false);
+
+  const [showTranslation, setShowTranslation] =
+    useState(false);
 
   useEffect(() => {
     async function loadEvent() {
@@ -371,6 +390,76 @@ export default function EventPage({ params }: PageProps) {
     loadEvent();
   }, [id]);
 
+  /*
+   * Check the event language and prepare the
+   * translation when the event loads.
+   *
+   * The original Supabase event is never changed.
+   */
+  useEffect(() => {
+    if (!event) {
+      return;
+    }
+
+    async function prepareTranslation() {
+      setTranslationLoading(true);
+      setTranslationError(false);
+      setShowTranslation(false);
+      setTranslatedTitle(null);
+      setTranslatedDescription(null);
+
+      try {
+        const response = await fetch(
+          "/api/translate-event",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              title: event.title,
+              description: event.description || "",
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            "Translation request failed"
+          );
+        }
+
+        const data = await response.json();
+
+        setEventLanguage(
+          data.sourceLanguage || "Other"
+        );
+
+        setTranslatedTitle(
+          data.translatedTitle ?? event.title
+        );
+
+        setTranslatedDescription(
+          data.translatedDescription ??
+            event.description ??
+            ""
+        );
+      } catch (error) {
+        console.error(
+          "Lokly: Translation failed",
+          error
+        );
+
+        setTranslationError(true);
+        setEventLanguage(null);
+      } finally {
+        setTranslationLoading(false);
+      }
+    }
+
+    prepareTranslation();
+  }, [event]);
+
   useEffect(() => {
     async function loadGoingCounts() {
       const supabase = createClient();
@@ -385,6 +474,7 @@ export default function EventPage({ params }: PageProps) {
           "Lokly: Could not load going counts",
           error
         );
+
         return;
       }
 
@@ -413,7 +503,9 @@ export default function EventPage({ params }: PageProps) {
       setGoingCount((current) => current + 1);
 
       if (maybeCount > 0) {
-        setMaybeCount((current) => current - 1);
+        setMaybeCount(
+          (current) => current - 1
+        );
       }
     }
 
@@ -421,15 +513,21 @@ export default function EventPage({ params }: PageProps) {
       setMaybeCount((current) => current + 1);
 
       if (goingCount > 0) {
-        setGoingCount((current) => current - 1);
+        setGoingCount(
+          (current) => current - 1
+        );
       }
     }
 
     if (status === null) {
       if (goingCount > 0) {
-        setGoingCount((current) => current - 1);
+        setGoingCount(
+          (current) => current - 1
+        );
       } else if (maybeCount > 0) {
-        setMaybeCount((current) => current - 1);
+        setMaybeCount(
+          (current) => current - 1
+        );
       }
     }
   }
@@ -489,6 +587,32 @@ export default function EventPage({ params }: PageProps) {
     event.petFriendly
   );
 
+  const translatedVersionAvailable =
+    eventLanguage !== null &&
+    translatedTitle !== null &&
+    eventLanguage !== "Other";
+
+  const displayedTitle =
+    showTranslation && translatedTitle
+      ? translatedTitle
+      : event.title;
+
+  const displayedDescription =
+    showTranslation &&
+    translatedDescription !== null
+      ? translatedDescription
+      : event.description;
+
+  /*
+   * Calendar uses whatever version is currently
+   * displayed on screen.
+   */
+  const displayedCalendarEvent: Event = {
+    ...event,
+    title: displayedTitle,
+    description: displayedDescription,
+  };
+
   return (
     <main className="min-h-screen bg-slate-50 pb-32">
       <Header />
@@ -520,7 +644,7 @@ export default function EventPage({ params }: PageProps) {
           <div className="relative aspect-[16/9] w-full bg-slate-100 sm:aspect-[2/1]">
             <img
               src={getImageUrl(event.image)}
-              alt={event.title}
+              alt={displayedTitle}
               className="h-full w-full object-cover"
             />
           </div>
@@ -533,8 +657,62 @@ export default function EventPage({ params }: PageProps) {
                 </p>
 
                 <h1 className="mt-2 text-3xl font-black leading-tight text-slate-900 sm:text-4xl">
-                  {event.title}
+                  {displayedTitle}
                 </h1>
+
+                <div className="mt-4 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
+                  <span className="text-xs font-semibold text-slate-500">
+                    {translationLoading
+                      ? language === "pt"
+                        ? "A verificar o idioma do evento..."
+                        : "Checking event language..."
+                      : eventLanguage
+                        ? language === "pt"
+                          ? `Idioma do evento: ${
+                              eventLanguage ===
+                              "Portuguese"
+                                ? "Português"
+                                : eventLanguage ===
+                                    "English"
+                                  ? "Inglês"
+                                  : "Outro"
+                            }`
+                          : `Event language: ${eventLanguage}`
+                        : language === "pt"
+                          ? "Idioma do evento indisponível"
+                          : "Event language unavailable"}
+                  </span>
+
+                  {translatedVersionAvailable && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowTranslation(
+                          (current) => !current
+                        )
+                      }
+                      disabled={translationLoading}
+                      className="inline-flex items-center rounded-full border border-[#149EAF] bg-white px-3 py-1.5 text-xs font-bold text-[#149EAF] transition hover:bg-[#149EAF] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {showTranslation
+                        ? language === "pt"
+                          ? "Mostrar original"
+                          : "Show original"
+                        : eventLanguage ===
+                            "Portuguese"
+                          ? "Translate to English"
+                          : "Traduzir para português"}
+                    </button>
+                  )}
+
+                  {translationError && (
+                    <span className="text-xs font-medium text-red-500">
+                      {language === "pt"
+                        ? "Tradução indisponível"
+                        : "Translation unavailable"}
+                    </span>
+                  )}
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -581,7 +759,12 @@ export default function EventPage({ params }: PageProps) {
                     stroke="currentColor"
                     strokeWidth={2}
                   >
-                    <circle cx="12" cy="12" r="9" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="9"
+                    />
+
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -595,7 +778,8 @@ export default function EventPage({ params }: PageProps) {
                     </p>
 
                     <p className="mt-1 truncate text-sm font-semibold text-slate-800 sm:text-base">
-                      {event.time || t("Not specified")}
+                      {event.time ||
+                        t("Not specified")}
                     </p>
                   </div>
                 </div>
@@ -610,7 +794,11 @@ export default function EventPage({ params }: PageProps) {
                     strokeWidth={2}
                   >
                     <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1116 0z" />
-                    <circle cx="12" cy="10" r="2.5" />
+                    <circle
+                      cx="12"
+                      cy="10"
+                      r="2.5"
+                    />
                   </svg>
 
                   <div className="min-w-0">
@@ -681,14 +869,14 @@ export default function EventPage({ params }: PageProps) {
                 </div>
               </div>
 
-              {event.description && (
+              {displayedDescription && (
                 <div>
                   <h2 className="text-xl font-black text-slate-900">
                     {t("About this event")}
                   </h2>
 
                   <p className="mt-3 whitespace-pre-line leading-7 text-slate-600">
-                    {event.description}
+                    {displayedDescription}
                   </p>
                 </div>
               )}
@@ -739,7 +927,11 @@ export default function EventPage({ params }: PageProps) {
 
                   <button
                     type="button"
-                    onClick={() => addToCalendar(event)}
+                    onClick={() =>
+                      addToCalendar(
+                        displayedCalendarEvent
+                      )
+                    }
                     className="flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border-2 border-[#149EAF] bg-white px-5 text-base font-bold text-[#149EAF] transition hover:bg-[#149EAF] hover:text-white"
                   >
                     <svg
