@@ -46,7 +46,7 @@ const ALGARVE_CONCELHOS = [
 ];
 
 export default function AddEventPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -88,20 +88,24 @@ export default function AddEventPage() {
     if (!allowedTypes.includes(file.type)) {
       setSelectedImageName("");
       setSelectedImagePreview(null);
+
       setErrorMessage(
         t("Please upload a JPG, PNG or WebP image.")
       );
+
       return;
     }
 
     if (file.size > MAX_IMAGE_SIZE) {
       setSelectedImageName("");
       setSelectedImagePreview(null);
+
       setErrorMessage(
         t(
           "Your image is too large. Please choose an image under 5 MB."
         )
       );
+
       return;
     }
 
@@ -111,7 +115,9 @@ export default function AddEventPage() {
       URL.revokeObjectURL(selectedImagePreview);
     }
 
-    const previewUrl = URL.createObjectURL(file);
+    const previewUrl =
+      URL.createObjectURL(file);
+
     setSelectedImagePreview(previewUrl);
   }
 
@@ -160,10 +166,10 @@ export default function AddEventPage() {
       formData.get("concelho") || ""
     ).trim();
 
-    // Supabase expects either a valid concelho
-    // or NULL when the field is left blank.
     const concelho =
-      concelhoValue === "" ? null : concelhoValue;
+      concelhoValue === ""
+        ? null
+        : concelhoValue;
 
     const price = String(
       formData.get("price") || ""
@@ -221,19 +227,25 @@ export default function AddEventPage() {
 
       if (!allowedTypes.includes(imageFile.type)) {
         setSubmitting(false);
+
         setErrorMessage(
-          t("Please upload a JPG, PNG or WebP image.")
+          t(
+            "Please upload a JPG, PNG or WebP image."
+          )
         );
+
         return;
       }
 
       if (imageFile.size > MAX_IMAGE_SIZE) {
         setSubmitting(false);
+
         setErrorMessage(
           t(
             "Your image is too large. Please choose an image under 5 MB."
           )
         );
+
         return;
       }
 
@@ -242,20 +254,29 @@ export default function AddEventPage() {
           imageFile.type === "image/png"
             ? "png"
             : imageFile.type === "image/webp"
-            ? "webp"
-            : "jpg";
+              ? "webp"
+              : "jpg";
 
-        const fileName = `${crypto.randomUUID()}.${extension}`;
-        const filePath = `events/${fileName}`;
+        const fileName =
+          `${crypto.randomUUID()}.${extension}`;
 
-        const { error: uploadError } =
-          await supabase.storage
-            .from(EVENT_IMAGE_BUCKET)
-            .upload(filePath, imageFile, {
+        const filePath =
+          `events/${fileName}`;
+
+        const {
+          error: uploadError,
+        } = await supabase.storage
+          .from(EVENT_IMAGE_BUCKET)
+          .upload(
+            filePath,
+            imageFile,
+            {
               cacheControl: "3600",
-              contentType: imageFile.type,
+              contentType:
+                imageFile.type,
               upsert: false,
-            });
+            }
+          );
 
         if (uploadError) {
           console.error(
@@ -264,20 +285,24 @@ export default function AddEventPage() {
           );
 
           setSubmitting(false);
+
           setErrorMessage(
             t(
               "There was a problem uploading your image. Please try again."
             )
           );
+
           return;
         }
 
-        const { data: publicUrlData } =
-          supabase.storage
-            .from(EVENT_IMAGE_BUCKET)
-            .getPublicUrl(filePath);
+        const {
+          data: publicUrlData,
+        } = supabase.storage
+          .from(EVENT_IMAGE_BUCKET)
+          .getPublicUrl(filePath);
 
-        imageUrl = publicUrlData.publicUrl;
+        imageUrl =
+          publicUrlData.publicUrl;
       } catch (error) {
         console.error(
           "Could not upload event image:",
@@ -285,12 +310,80 @@ export default function AddEventPage() {
         );
 
         setSubmitting(false);
+
         setErrorMessage(
           t(
             "There was a problem uploading your image. Please try again."
           )
         );
+
         return;
+      }
+    }
+
+    /*
+     * DETECT EVENT LANGUAGE
+     *
+     * Lokly will translate event information for
+     * visitors who use another language.
+     *
+     * We therefore detect the language of the
+     * event when it is submitted and store it
+     * in Supabase.
+     *
+     * If detection fails, we use the current
+     * Lokly language as a fallback.
+     */
+
+    let eventLanguage =
+      language === "pt"
+        ? "Portuguese"
+        : "English";
+
+    if (title || description) {
+      try {
+        const languageResponse =
+          await fetch(
+            "/api/translate-event",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type":
+                  "application/json",
+              },
+              body: JSON.stringify({
+                action: "detect",
+                title,
+                description,
+              }),
+            }
+          );
+
+        if (languageResponse.ok) {
+          const languageData =
+            await languageResponse.json();
+
+          const detectedLanguage =
+            String(
+              languageData?.sourceLanguage ||
+                ""
+            ).trim();
+
+          if (
+            detectedLanguage ===
+              "English" ||
+            detectedLanguage ===
+              "Portuguese"
+          ) {
+            eventLanguage =
+              detectedLanguage;
+          }
+        }
+      } catch (languageError) {
+        console.error(
+          "Event language detection failed. Using current Lokly language instead:",
+          languageError
+        );
       }
     }
 
@@ -298,38 +391,45 @@ export default function AddEventPage() {
      * SAVE EVENT TO SUPABASE
      */
 
-    const { error } = await supabase
-      .from("events")
-      .insert({
-        title,
-        category,
+    const { error } =
+      await supabase
+        .from("events")
+        .insert({
+          title,
+          category,
 
-        date,
-        end_date: endDate,
+          event_language:
+            eventLanguage,
 
-        time,
-        end_time: endTime,
+          date,
+          end_date: endDate,
 
-        location,
-        concelho,
+          time,
+          end_time: endTime,
 
-        price,
-        description,
-        additional_comments: additionalComments,
+          location,
+          concelho,
 
-        website,
-        image: imageUrl,
+          price,
+          description,
+          additional_comments:
+            additionalComments,
 
-        business_name: businessName,
-        contact_email: email,
-        contact_phone: phone,
+          website,
+          image: imageUrl,
 
-        wheelchair_friendly: wheelchair,
-        pet_friendly: pets,
+          business_name:
+            businessName,
+          contact_email: email,
+          contact_phone: phone,
 
-        approved: false,
-        featured: false,
-      });
+          wheelchair_friendly:
+            wheelchair,
+          pet_friendly: pets,
+
+          approved: false,
+          featured: false,
+        });
 
     if (error) {
       console.error(
@@ -339,8 +439,6 @@ export default function AddEventPage() {
 
       setSubmitting(false);
 
-      // Keep the useful Supabase error in the console
-      // while showing a simple message to the user.
       setErrorMessage(
         t(
           "There was a problem submitting your event. Please try again."
@@ -355,31 +453,34 @@ export default function AddEventPage() {
      */
 
     try {
-      const notificationResponse = await fetch(
-        "/api/events",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title,
-            category,
+      const notificationResponse =
+        await fetch(
+          "/api/events",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+            body: JSON.stringify({
+              title,
+              category,
 
-            date,
-            endDate,
+              date,
+              endDate,
 
-            time,
-            endTime,
+              time,
+              endTime,
 
-            location,
-            concelho: concelhoValue,
+              location,
+              concelho:
+                concelhoValue,
 
-            businessName,
-            email,
-          }),
-        }
-      );
+              businessName,
+              email,
+            }),
+          }
+        );
 
       if (!notificationResponse.ok) {
         console.error(
@@ -399,7 +500,9 @@ export default function AddEventPage() {
     form.reset();
 
     if (selectedImagePreview) {
-      URL.revokeObjectURL(selectedImagePreview);
+      URL.revokeObjectURL(
+        selectedImagePreview
+      );
     }
 
     setSelectedImagePreview(null);
@@ -408,10 +511,13 @@ export default function AddEventPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
+
       <Header />
 
       <main className="mx-auto w-full max-w-3xl px-4 pb-10 pt-6 sm:px-6">
+
         <div className="mb-6">
+
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">
             {t("Add an event")}
           </h1>
@@ -421,10 +527,13 @@ export default function AddEventPage() {
               "Share an event happening in the Algarve and help people discover what's going on."
             )}
           </p>
+
         </div>
+
 
         {submitted && (
           <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+
             <p className="font-semibold text-emerald-800">
               {t("Event submitted")}
             </p>
@@ -434,30 +543,42 @@ export default function AddEventPage() {
                 "Thank you. We'll review your event before it appears on Lokly."
               )}
             </p>
+
           </div>
         )}
 
+
         {errorMessage && (
           <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4">
+
             <p className="text-sm font-medium text-red-700">
               {errorMessage}
             </p>
+
           </div>
         )}
+
 
         <form
           onSubmit={handleSubmit}
           className="space-y-6"
         >
+
           {/* YOUR EVENT */}
 
           <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
+
             <h2 className="text-lg font-semibold text-slate-900">
               {t("Your event")}
             </h2>
 
+
             <div className="mt-5 space-y-5">
+
+              {/* EVENT NAME */}
+
               <div>
+
                 <label
                   htmlFor="eventName"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -474,9 +595,20 @@ export default function AddEventPage() {
                   )}
                   className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
+
+                <p className="mt-2 text-xs leading-5 text-slate-500">
+                  {t(
+                    "Please use the official name of your event. Lokly may translate this for visitors in other languages."
+                  )}
+                </p>
+
               </div>
 
+
+              {/* CATEGORY */}
+
               <div>
+
                 <label
                   htmlFor="category"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -490,6 +622,7 @@ export default function AddEventPage() {
                   defaultValue=""
                   className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 >
+
                   <option value="">
                     {t("Select a category")}
                   </option>
@@ -504,10 +637,16 @@ export default function AddEventPage() {
                       </option>
                     )
                   )}
+
                 </select>
+
               </div>
 
+
+              {/* DESCRIPTION */}
+
               <div>
+
                 <label
                   htmlFor="description"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -524,19 +663,40 @@ export default function AddEventPage() {
                   )}
                   className="w-full resize-none rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
+
+                <p className="mt-2 text-xs leading-5 text-slate-500">
+                  {t(
+                    "Please write your description clearly and naturally. Lokly may automatically translate it, so avoid abbreviations or wording that could be confusing when translated."
+                  )}
+                </p>
+
+                <p className="mt-2 text-xs leading-5 text-slate-500">
+                  {t(
+                    "Tip: include the important details — what the event is, what's included, who it's for and anything visitors need to know."
+                  )}
+                </p>
+
               </div>
+
             </div>
+
           </section>
+
 
           {/* WHEN & WHERE */}
 
           <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
+
             <h2 className="text-lg font-semibold text-slate-900">
               {t("When & where")}
             </h2>
 
             <div className="mt-5 grid gap-5 sm:grid-cols-2">
+
+              {/* START DATE */}
+
               <div>
+
                 <label
                   htmlFor="date"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -550,9 +710,14 @@ export default function AddEventPage() {
                   type="date"
                   className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
+
               </div>
 
+
+              {/* END DATE */}
+
               <div>
+
                 <label
                   htmlFor="endDate"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -566,9 +731,14 @@ export default function AddEventPage() {
                   type="date"
                   className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
+
               </div>
 
+
+              {/* START TIME */}
+
               <div>
+
                 <label
                   htmlFor="time"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -582,9 +752,14 @@ export default function AddEventPage() {
                   type="time"
                   className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
+
               </div>
 
+
+              {/* END TIME */}
+
               <div>
+
                 <label
                   htmlFor="endTime"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -598,9 +773,14 @@ export default function AddEventPage() {
                   type="time"
                   className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
+
               </div>
 
+
+              {/* CONCELHO */}
+
               <div className="sm:col-span-2">
+
                 <label
                   htmlFor="concelho"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -614,6 +794,7 @@ export default function AddEventPage() {
                   defaultValue=""
                   className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 >
+
                   <option value="">
                     {t("Select a concelho")}
                   </option>
@@ -628,10 +809,16 @@ export default function AddEventPage() {
                       </option>
                     )
                   )}
+
                 </select>
+
               </div>
 
+
+              {/* LOCATION */}
+
               <div className="sm:col-span-2">
+
                 <label
                   htmlFor="location"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -654,19 +841,28 @@ export default function AddEventPage() {
                     "Enter the venue name or location."
                   )}
                 </p>
+
               </div>
+
             </div>
+
           </section>
+
 
           {/* PRICE & BOOKING */}
 
           <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
+
             <h2 className="text-lg font-semibold text-slate-900">
               {t("Price & booking")}
             </h2>
 
             <div className="mt-5 space-y-5">
+
+              {/* PRICE */}
+
               <div>
+
                 <label
                   htmlFor="price"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -683,9 +879,14 @@ export default function AddEventPage() {
                   )}
                   className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
+
               </div>
 
+
+              {/* WEBSITE */}
+
               <div>
+
                 <label
                   htmlFor="website"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -700,19 +901,28 @@ export default function AddEventPage() {
                   placeholder="https://..."
                   className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
+
               </div>
+
             </div>
+
           </section>
+
 
           {/* CONTACT */}
 
           <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
+
             <h2 className="text-lg font-semibold text-slate-900">
               {t("Contact")}
             </h2>
 
             <div className="mt-5 space-y-5">
+
+              {/* BUSINESS */}
+
               <div>
+
                 <label
                   htmlFor="businessName"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -731,9 +941,14 @@ export default function AddEventPage() {
                   )}
                   className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
+
               </div>
 
+
+              {/* EMAIL */}
+
               <div>
+
                 <label
                   htmlFor="email"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -750,9 +965,14 @@ export default function AddEventPage() {
                   )}
                   className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
+
               </div>
 
+
+              {/* PHONE */}
+
               <div>
+
                 <label
                   htmlFor="phone"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -769,21 +989,28 @@ export default function AddEventPage() {
                   )}
                   className="w-full rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
+
               </div>
+
             </div>
+
           </section>
+
 
           {/* MORE DETAILS */}
 
           <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
+
             <h2 className="text-lg font-semibold text-slate-900">
               {t("A few more details")}
             </h2>
 
             <div className="mt-5 space-y-7">
+
               {/* IMAGE */}
 
               <div>
+
                 <label
                   htmlFor="image"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -814,84 +1041,113 @@ export default function AddEventPage() {
 
                 {selectedImagePreview && (
                   <div className="mt-4 overflow-hidden rounded-2xl border border-[#051C3F]/20 bg-slate-50">
+
                     <img
                       src={selectedImagePreview}
-                      alt={t("Selected event image")}
+                      alt={t(
+                        "Selected event image"
+                      )}
                       className="h-48 w-full object-cover"
                     />
+
                   </div>
                 )}
+
               </div>
+
 
               {/* WHEELCHAIR */}
 
               <div>
+
                 <p className="mb-3 text-sm font-medium text-slate-700">
-                  {t("Wheelchair friendly?")}
+                  {t(
+                    "Wheelchair friendly?"
+                  )}
                 </p>
 
                 <div className="flex flex-wrap gap-3">
+
                   {[
                     "Yes",
                     "No",
                     "Not sure",
                   ].map((option) => (
+
                     <label
                       key={option}
                       className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#051C3F]/30 px-4 py-3 text-sm text-slate-700"
                     >
+
                       <input
                         type="radio"
                         name="wheelchair"
                         value={option}
                         defaultChecked={
-                          option === "Not sure"
+                          option ===
+                          "Not sure"
                         }
                         className="h-4 w-4 accent-teal-600"
                       />
 
                       {t(option)}
+
                     </label>
+
                   ))}
+
                 </div>
+
               </div>
+
 
               {/* PETS */}
 
               <div>
+
                 <p className="mb-3 text-sm font-medium text-slate-700">
                   {t("Pet friendly?")}
                 </p>
 
                 <div className="flex flex-wrap gap-3">
+
                   {[
                     "Yes",
                     "No",
                     "Not sure",
                   ].map((option) => (
+
                     <label
                       key={option}
                       className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#051C3F]/30 px-4 py-3 text-sm text-slate-700"
                     >
+
                       <input
                         type="radio"
                         name="pets"
                         value={option}
                         defaultChecked={
-                          option === "Not sure"
+                          option ===
+                          "Not sure"
                         }
                         className="h-4 w-4 accent-teal-600"
                       />
 
                       {t(option)}
+
                     </label>
+
                   ))}
+
                 </div>
+
               </div>
+
 
               {/* ADDITIONAL COMMENTS */}
 
               <div>
+
                 <label
                   htmlFor="additionalComments"
                   className="mb-2 block text-sm font-medium text-slate-700"
@@ -916,9 +1172,13 @@ export default function AddEventPage() {
                   )}
                   className="w-full resize-none rounded-xl border border-[#051C3F]/30 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#089997] focus:ring-2 focus:ring-[#089997]/10"
                 />
+
               </div>
+
             </div>
+
           </section>
+
 
           {/* SUBMIT */}
 
@@ -931,10 +1191,13 @@ export default function AddEventPage() {
               ? t("Submitting...")
               : t("Submit event")}
           </button>
+
         </form>
+
       </main>
 
       <BottomNavigation />
+
     </div>
   );
 }
