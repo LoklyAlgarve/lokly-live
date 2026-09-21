@@ -517,6 +517,7 @@ export default function EventPage({
       );
 
       const data = await response.json();
+      console.log("TRANSLATION RESULT:", data);
 
       if (!response.ok) {
         console.error(

@@ -13,6 +13,9 @@ export default function SignUpPage() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -23,6 +26,12 @@ export default function SignUpPage() {
     event.preventDefault();
 
     setMessage("");
+
+    if (password !== confirmPassword) {
+      setMessage(t("Passwords do not match."));
+      return;
+    }
+
     setLoading(true);
 
     const supabase = createClient();
@@ -157,17 +166,134 @@ export default function SignUpPage() {
                     {t("Password")}
                   </label>
 
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    required
-                    minLength={8}
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    className="h-14 w-full rounded-2xl border border-slate-300 px-4 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
-                    placeholder={t("At least 8 characters")}
-                  />
+                  <div className="relative">
+                    <input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      required
+                      minLength={8}
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      className="h-14 w-full rounded-2xl border border-slate-300 px-12 pl-4 pr-12 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
+                      placeholder={t("At least 8 characters")}
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((current) => !current)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-[#149EAF]"
+                      aria-label={
+                        showPassword
+                          ? t("Hide password")
+                          : t("Show password")
+                      }
+                    >
+                      {showPassword ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M3 3l18 18M10.58 10.58A2 2 0 0113.42 13.42M9.88 4.24A9.77 9.77 0 0112 4c5.05 0 8.27 4.4 9.5 8a13.6 13.6 0 01-2.05 3.73M6.61 6.61C4.72 7.89 3.43 9.77 2.5 12c1.23 3.6 4.45 8 9.5 8a9.77 9.77 0 004.12-.9"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M2.5 12S6 5 12 5s9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z"
+                          />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="confirmPassword"
+                    className="mb-2 block text-sm font-bold text-slate-700"
+                  >
+                    {t("Confirm password")}
+                  </label>
+
+                  <div className="relative">
+                    <input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      required
+                      minLength={8}
+                      value={confirmPassword}
+                      onChange={(event) =>
+                        setConfirmPassword(event.target.value)
+                      }
+                      className="h-14 w-full rounded-2xl border border-slate-300 px-4 pr-12 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
+                      placeholder={t("Enter your password again")}
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPassword((current) => !current)
+                      }
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-[#149EAF]"
+                      aria-label={
+                        showConfirmPassword
+                          ? t("Hide password")
+                          : t("Show password")
+                      }
+                    >
+                      {showConfirmPassword ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M3 3l18 18M10.58 10.58A2 2 0 0113.42 13.42M9.88 4.24A9.77 9.77 0 0112 4c5.05 0 8.27 4.4 9.5 8a13.6 13.6 0 01-2.05 3.73M6.61 6.61C4.72 7.89 3.43 9.77 2.5 12c1.23 3.6 4.45 8 9.5 8a9.77 9.77 0 004.12-.9"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M2.5 12S6 5 12 5s9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z"
+                          />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 <button
