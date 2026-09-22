@@ -12,6 +12,7 @@ export default function SignUpPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [residentStatus, setResidentStatus] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -32,6 +33,13 @@ export default function SignUpPage() {
       return;
     }
 
+    if (!residentStatus) {
+      setMessage(
+        t("Please select whether you are a Portuguese resident or a visitor.")
+      );
+      return;
+    }
+
     setLoading(true);
 
     const supabase = createClient();
@@ -44,6 +52,7 @@ export default function SignUpPage() {
         data: {
           first_name: firstName,
           last_name: lastName,
+          resident_status: residentStatus,
         },
       },
     });
@@ -156,6 +165,40 @@ export default function SignUpPage() {
                     className="h-14 w-full rounded-2xl border border-slate-300 px-4 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
                     placeholder={t("you@example.com")}
                   />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="residentStatus"
+                    className="mb-2 block text-sm font-bold text-slate-700"
+                  >
+                    {t("Are you a Portuguese resident or a visitor?")}
+                  </label>
+
+                  <p className="mb-3 text-sm leading-5 text-slate-500">
+                    {t(
+                      "We ask so we can understand our Lokly community and provide useful insights to local venues. Your personal details are never shared."
+                    )}
+                  </p>
+
+                  <select
+                    id="residentStatus"
+                    name="residentStatus"
+                    required
+                    value={residentStatus}
+                    onChange={(event) => setResidentStatus(event.target.value)}
+                    className="h-14 w-full rounded-2xl border border-slate-300 bg-white px-4 outline-none transition focus:border-[#149EAF] focus:ring-2 focus:ring-[#149EAF]/20"
+                  >
+                    <option value="">
+                      {t("Please select")}
+                    </option>
+                    <option value="Portuguese resident">
+                      {t("Portuguese resident")}
+                    </option>
+                    <option value="Visitor">
+                      {t("Visitor")}
+                    </option>
+                  </select>
                 </div>
 
                 <div>

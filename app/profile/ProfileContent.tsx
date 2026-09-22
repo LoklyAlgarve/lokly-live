@@ -111,7 +111,7 @@ export default function ProfileContent({
               </p>
 
               <p className="text-sm text-slate-500">
-                <LocationDisplay />
+                {isSignedIn ? <LocationDisplay /> : t("Not set")}
               </p>
             </div>
 

@@ -189,6 +189,8 @@ const translations: Record<string, string> = {
     "Terminar sessão",
   "Preferences":
     "Preferências",
+  "We ask so we can understand our Lokly community and provide useful insights to local venues. Your personal details are never shared.":
+    "Perguntamos isto para compreender a nossa comunidade Lokly e fornecer informações úteis aos locais. Os seus dados pessoais nunca são partilhados.",
   "Manage event notifications":
     "Gerir notificações de eventos",
   "Location":
