@@ -73,6 +73,9 @@ const translations: Record<string, string> = {
   "Saved Event": "Evento guardado",
   "Remove from saved events": "Remover dos eventos guardados",
   "Saving...": "A guardar...",
+  "Save your favourite events": "Guarde os seus eventos favoritos",
+  "You need an account to save events to your \"Saved Events\".":
+    "Precisa de uma conta para guardar eventos nos \"Eventos guardados\".",
   "Support local": "Apoie a comunidade local",
   "Are you planning to go?": "Está a pensar ir?",
   "Your answer helps us understand which events people are interested in.":
@@ -266,7 +269,7 @@ const translations: Record<string, string> = {
 
   // Map
   "Loading map...":
-    "A carregar o mapa...",
+    "A carregar o mapa.",
   "Event Map":
     "Mapa de eventos",
   "Discover events happening across the Algarve.":
@@ -279,6 +282,12 @@ const translations: Record<string, string> = {
     "Todas as áreas",
   "Events near you":
     "Eventos perto de si",
+  "event":
+    "evento",
+  "events":
+    "eventos",
+  "showing":
+    "a mostrar",
 
   // Tell a Friend
   "SPREAD THE WORD":
