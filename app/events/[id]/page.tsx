@@ -569,6 +569,32 @@ export default function EventPage({
   }
 
   useEffect(() => {
+    async function recordEventView() {
+      const supabase = createClient();
+
+      const { data: { user } } = await supabase.auth.getUser();
+
+      const { error } = await supabase
+        .from("event_views")
+        .insert({
+          event_id: Number(id),
+          user_id: user?.id ?? null,
+        });
+
+      if (error) {
+        console.error(
+          "Lokly: Could not record event view",
+          error
+        );
+      }
+    }
+
+    if (id) {
+      recordEventView();
+    }
+  }, [id]);
+
+  useEffect(() => {
     async function loadGoingCounts() {
       const supabase =
         createClient();
