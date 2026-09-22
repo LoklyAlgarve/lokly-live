@@ -29,6 +29,8 @@ export default function SaveButton({
   const [loading, setLoading] = useState(false);
   const [showPlanningPopup, setShowPlanningPopup] =
     useState(false);
+  const [showSignInPopup, setShowSignInPopup] =
+    useState(false);
 
   useEffect(() => {
     async function checkSaved() {
@@ -66,7 +68,7 @@ export default function SaveButton({
     } = await supabase.auth.getUser();
 
     if (!user) {
-      router.push("/profile/signin");
+      setShowSignInPopup(true);
       return;
     }
 
@@ -149,6 +151,10 @@ export default function SaveButton({
     setShowPlanningPopup(false);
   }
 
+  function closeSignInPopup() {
+    setShowSignInPopup(false);
+  }
+
   if (large) {
     return (
       <>
@@ -176,6 +182,69 @@ export default function SaveButton({
             </>
           )}
         </button>
+
+        {showSignInPopup && (
+          <div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 px-5"
+            onClick={closeSignInPopup}
+          >
+            <div
+              className="relative w-full max-w-sm rounded-3xl bg-white p-7 text-center shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={closeSignInPopup}
+                className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-xl text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                aria-label={t("Close")}
+              >
+                ×
+              </button>
+
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#149EAF]/10">
+                <span className="text-3xl text-[#149EAF]">
+                  ♥
+                </span>
+              </div>
+
+              <h2 className="mt-5 text-2xl font-black text-slate-900">
+                {t("Save your favourite events")}
+              </h2>
+
+              <p className="mt-3 text-sm leading-6 text-slate-500">
+                {t(
+                  "You need an account to save events to your 'Saved Events'."
+                )}
+              </p>
+
+              <div className="mt-6 grid gap-3">
+                <button
+                  type="button"
+                  onClick={() => router.push("/profile/signin")}
+                  className="flex min-h-12 items-center justify-center rounded-2xl bg-[#149EAF] px-4 font-bold text-white transition hover:bg-[#117F8E]"
+                >
+                  {t("Sign In")}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => router.push("/profile/signup")}
+                  className="flex min-h-12 items-center justify-center rounded-2xl border-2 border-[#149EAF] bg-white px-4 font-bold text-[#149EAF] transition hover:bg-[#149EAF]/10"
+                >
+                  {t("Create Account")}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={closeSignInPopup}
+                  className="mt-1 text-sm font-semibold text-slate-400 transition hover:text-slate-600"
+                >
+                  {t("Maybe later")}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {showPlanningPopup && (
           <div
@@ -278,6 +347,69 @@ export default function SaveButton({
           {saved ? "♥" : "♡"}
         </span>
       </button>
+
+      {showSignInPopup && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 px-5"
+          onClick={closeSignInPopup}
+        >
+          <div
+            className="relative w-full max-w-sm rounded-3xl bg-white p-7 text-center shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={closeSignInPopup}
+              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-xl text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+              aria-label={t("Close")}
+            >
+              ×
+            </button>
+
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#149EAF]/10">
+              <span className="text-3xl text-[#149EAF]">
+                ♥
+              </span>
+            </div>
+
+            <h2 className="mt-5 text-2xl font-black text-slate-900">
+              {t("Save your favourite events")}
+            </h2>
+
+            <p className="mt-3 text-sm leading-6 text-slate-500">
+              {t(
+                "You need an account to save events to your 'Saved Events'."
+              )}
+            </p>
+
+            <div className="mt-6 grid gap-3">
+              <button
+                type="button"
+                onClick={() => router.push("/profile/signin")}
+                className="flex min-h-12 items-center justify-center rounded-2xl bg-[#149EAF] px-4 font-bold text-white transition hover:bg-[#117F8E]"
+              >
+                {t("Sign In")}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => router.push("/profile/signup")}
+                className="flex min-h-12 items-center justify-center rounded-2xl border-2 border-[#149EAF] bg-white px-4 font-bold text-[#149EAF] transition hover:bg-[#149EAF]/10"
+              >
+                {t("Create Account")}
+              </button>
+
+              <button
+                type="button"
+                onClick={closeSignInPopup}
+                className="mt-1 text-sm font-semibold text-slate-400 transition hover:text-slate-600"
+              >
+                {t("Maybe later")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showPlanningPopup && (
         <div
