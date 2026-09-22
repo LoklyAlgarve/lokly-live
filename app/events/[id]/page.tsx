@@ -568,6 +568,55 @@ export default function EventPage({
     setShowTranslation(false);
   }
 
+  async function handleShare() {
+    if (!event) {
+      return;
+    }
+
+    const eventUrl =
+      `https://www.lokly.live/events/${event.id}`;
+
+    const message = `I found this event on Lokly and thought you might like it!
+
+${event.title}
+
+Date: ${event.date}${event.time ? ` • ${event.time}` : ""}
+Location: ${event.location}
+
+↗ View the event on Lokly:
+${eventUrl}
+
+Don't have Lokly yet?
+Discover what's happening near you:
+https://www.lokly.live`;
+
+    if (
+      typeof navigator !== "undefined" &&
+      navigator.share
+    ) {
+      try {
+        await navigator.share({
+          title: event.title,
+          text: message,
+        });
+      } catch {
+        // User cancelled the share menu
+      }
+
+      return;
+    }
+
+    const whatsappUrl =
+      "https://wa.me/?text=" +
+      encodeURIComponent(message);
+
+    window.open(
+      whatsappUrl,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
+
   useEffect(() => {
     async function recordEventView() {
       const supabase = createClient();
@@ -901,14 +950,44 @@ export default function EventPage({
             <div className="flex flex-col gap-6">
 
               {/* TITLE / CATEGORY / TRANSLATION */}
-              <div>
-                <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#149EAF]">
-                  {displayedCategory}
-                </p>
+              <div className="relative">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#149EAF]">
+                      {displayedCategory}
+                    </p>
 
-                <h1 className="mt-2 text-3xl font-black leading-tight text-slate-900 sm:text-4xl">
-                  {displayedTitle}
-                </h1>
+                    <h1 className="mt-2 text-3xl font-black leading-tight text-slate-900 sm:text-4xl">
+                      {displayedTitle}
+                    </h1>
+                  </div>
+
+                  <button
+                    type="button"
+                    aria-label="Share Event"
+                    title="Share Event"
+                    onClick={handleShare}
+                    className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-[#149EAF]/10 hover:text-[#149EAF]"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <circle cx="18" cy="5" r="3" />
+                      <circle cx="6" cy="12" r="3" />
+                      <circle cx="18" cy="19" r="3" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49"
+                      />
+                    </svg>
+                  </button>
+                </div>
 
                 <div className="mt-4 flex flex-wrap items-center gap-3">
                   {translatedVersionAvailable && (
