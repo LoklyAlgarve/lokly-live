@@ -25,6 +25,7 @@ type Event = {
   longitude: number;
   wheelchairFriendly: string;
   petFriendly: string;
+  additionalImages?: string[];
 };
 
 type PageProps = {
@@ -364,6 +365,12 @@ export default function EventPage({
   const [maybeCount, setMaybeCount] =
     useState(0);
 
+  const [additionalImages, setAdditionalImages] =
+    useState<string[]>([]);
+
+  const [selectedPhoto, setSelectedPhoto] =
+    useState<string | null>(null);
+
   const [eventLanguage, setEventLanguage] =
     useState<
       "English" | "Portuguese" | "Other" | null
@@ -400,6 +407,43 @@ export default function EventPage({
 
     loadEvent();
   }, [id]);
+
+  useEffect(() => {
+    async function loadAdditionalImages() {
+      if (!event) {
+        setAdditionalImages([]);
+        return;
+      }
+
+      const supabase = createClient();
+
+      const { data, error } = await supabase
+        .from("events")
+        .select("additional_images")
+        .eq("id", event.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error(
+          "Lokly: Could not load additional event images",
+          error
+        );
+        setAdditionalImages([]);
+        return;
+      }
+
+      const images = Array.isArray(data?.additional_images)
+        ? data.additional_images.filter(
+            (image: unknown): image is string =>
+              typeof image === "string" && image.trim().length > 0
+          )
+        : [];
+
+      setAdditionalImages(images.slice(0, 5));
+    }
+
+    loadAdditionalImages();
+  }, [event]);
 
   /*
    * Detect the event language using the existing
@@ -936,7 +980,7 @@ https://www.lokly.live`;
         </Link>
 
         <article className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100">
-          <div className="relative aspect-[16/9] w-full bg-slate-100 sm:aspect-[2/1]">
+          <div className="relative aspect-[16/9] w-full bg-slate-100">
             <img
               src={getImageUrl(
                 event.image
@@ -1231,6 +1275,40 @@ https://www.lokly.live`;
                 </div>
               )}
 
+              {/* ADDITIONAL PHOTOS */}
+              {additionalImages.length > 0 && (
+                <section>
+                  <h2 className="text-xl font-black text-slate-900">
+                    {detailText("Photos", "Fotos")}
+                  </h2>
+
+                  <div className="mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3">
+                    {additionalImages.map((photo, index) => (
+                      <button
+                        key={`${photo}-${index}`}
+                        type="button"
+                        onClick={() => setSelectedPhoto(photo)}
+                        className="w-[82%] shrink-0 snap-start overflow-hidden rounded-2xl bg-slate-100 text-left shadow-sm ring-1 ring-slate-100 sm:w-[300px]"
+                        aria-label={`${detailText(
+                          "Open photo",
+                          "Abrir foto"
+                        )} ${index + 1}`}
+                      >
+                        <img
+                          src={getImageUrl(photo)}
+                          alt={`${displayedTitle} ${detailText(
+                            "photo",
+                            "foto"
+                          )} ${index + 1}`}
+                          className="aspect-[4/3] h-full w-full object-cover"
+                          loading="lazy"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              )}
+
               {/* GOING / MAYBE */}
               <div className="flex items-center justify-center gap-5 border-t border-slate-100 pt-4">
                 <div className="text-center">
@@ -1349,6 +1427,41 @@ https://www.lokly.live`;
           </div>
         </article>
       </section>
+
+      {selectedPhoto && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={detailText(
+            "Photo viewer",
+            "Visualizador de fotos"
+          )}
+          onClick={() => setSelectedPhoto(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setSelectedPhoto(null)}
+            className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-2xl font-bold text-slate-900 shadow-lg transition hover:bg-white"
+            aria-label={detailText(
+              "Close photo",
+              "Fechar foto"
+            )}
+          >
+            ×
+          </button>
+
+          <img
+            src={getImageUrl(selectedPhoto)}
+            alt={`${displayedTitle} ${detailText(
+              "photo",
+              "foto"
+            )}`}
+            className="max-h-[92vh] max-w-[95vw] object-contain"
+            onClick={(event) => event.stopPropagation()}
+          />
+        </div>
+      )}
 
       <BottomNavigation />
     </main>
