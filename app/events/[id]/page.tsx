@@ -980,13 +980,13 @@ https://www.lokly.live`;
         </Link>
 
         <article className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100">
-          <div className="relative aspect-[16/9] w-full bg-slate-100">
+          <div className="relative w-full bg-slate-100">
             <img
               src={getImageUrl(
                 event.image
               )}
               alt={displayedTitle}
-              className="h-full w-full object-cover"
+              className="block h-auto w-full"
             />
           </div>
 
