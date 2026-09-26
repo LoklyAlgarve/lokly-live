@@ -84,7 +84,7 @@ export default function Header() {
           </div>
 
           {/* Profile + Language */}
-          <div className="flex flex-col items-center">
+          <div className="relative flex flex-col items-center">
 
             <Link
               href="/profile"
@@ -109,7 +109,7 @@ export default function Header() {
             </Link>
 
             {/* Small language toggle */}
-            <div className="mt-1 flex items-center gap-1 text-[10px] font-bold sm:text-[11px]">
+            <div className="absolute top-[48px] flex items-center gap-1 text-[10px] font-bold sm:top-[60px] sm:text-[11px]">
               <button
                 type="button"
                 onClick={() => setLanguage("en")}
