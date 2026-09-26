@@ -15,53 +15,57 @@ export default function LoklyAppPage() {
       <main className="mx-auto max-w-6xl px-5 pb-28 pt-8 sm:px-6 sm:pt-12">
 
         {/* INTRO */}
-        <section className="rounded-3xl bg-white px-6 py-10 text-center shadow-sm sm:px-12 sm:py-14">
+        <section className="rounded-3xl bg-white px-6 py-10 shadow-sm sm:px-12 sm:py-14">
 
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#149EAF]/10 text-[#149EAF]">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.7}
-            >
-              <rect x="7" y="2.5" width="10" height="19" rx="2" />
-              <path
-                strokeLinecap="round"
-                d="M10 5.5h4M11 18.5h2"
-              />
-            </svg>
-          </div>
+          <div>
 
-          <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.2em] text-[#149EAF] sm:text-sm">
-            {t("Lokly App")}
-          </p>
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#149EAF]/10 text-[#149EAF]">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-8 w-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.7}
+              >
+                <rect x="7" y="2.5" width="10" height="19" rx="2" />
+                <path
+                  strokeLinecap="round"
+                  d="M10 5.5h4M11 18.5h2"
+                />
+              </svg>
+            </div>
 
-          <h1 className="mt-3 text-[28px] font-black leading-tight tracking-tight text-slate-900 sm:text-4xl">
-            {t("We’d love to have our own app one day.")}
-          </h1>
-
-          <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-[#149EAF]" />
-
-          <div className="mx-auto mt-6 max-w-2xl space-y-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-            <p>
-              {t(
-                "We’re a small, independent business and, for now, building a native app is beyond our reach."
-              )}
+            <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.2em] text-[#149EAF] sm:text-sm">
+              {t("Lokly App")}
             </p>
 
-            <p className="font-semibold text-slate-900">
-              {t(
-                "The good news? You can make Lokly feel just like an app on your phone."
-              )}
-            </p>
+            <h1 className="mt-3 text-[28px] font-black leading-tight tracking-tight text-slate-900 sm:text-4xl">
+              {t("We’d love to have our own app one day.")}
+            </h1>
 
-            <p>
-              {t(
-                "Add Lokly to your home screen and it’ll be there whenever you’re wondering what’s on. It’s free, takes less than a minute, and there’s nothing to download."
-              )}
-            </p>
+            <div className="mt-5 h-1 w-16 rounded-full bg-[#149EAF]" />
+
+            <div className="mt-6 max-w-2xl space-y-4 text-base leading-relaxed text-slate-600 sm:text-lg">
+              <p>
+                {t(
+                  "We’re a small, independent business and, for now, building a native app is beyond our reach."
+                )}
+              </p>
+
+              <p className="font-semibold text-slate-900">
+                {t(
+                  "The good news? You can make Lokly feel just like an app on your phone."
+                )}
+              </p>
+
+              <p>
+                {t(
+                  "Add Lokly to your home screen and it’ll be there whenever you’re wondering what’s on. It’s free, takes less than a minute, and there’s nothing to download."
+                )}
+              </p>
+            </div>
+
           </div>
 
         </section>
@@ -69,9 +73,9 @@ export default function LoklyAppPage() {
         {/* HOME SCREEN INSTRUCTIONS */}
         <section className="mt-6 rounded-3xl bg-white px-6 py-10 shadow-sm sm:px-10 sm:py-12">
 
-          <div className="text-center">
+          <div>
 
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#149EAF]/10 text-[#149EAF]">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#149EAF]/10 text-[#149EAF]">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-7 w-7"
@@ -97,7 +101,7 @@ export default function LoklyAppPage() {
               {t("Want Lokly one tap away?")}
             </h2>
 
-            <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+            <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
               {t(
                 "Add Lokly to your phone's home screen and it'll be there whenever you're wondering what's on."
               )}
@@ -180,28 +184,32 @@ export default function LoklyAppPage() {
         </section>
 
         {/* HELP US MAKE IT HAPPEN */}
-        <section className="mt-6 rounded-3xl bg-white px-6 py-10 text-center shadow-sm sm:px-10 sm:py-12">
+        <section className="mt-6 rounded-3xl bg-white px-6 py-10 shadow-sm sm:px-10 sm:py-12">
 
-          <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
-            {t("Help us make it happen")}
-          </h2>
+          <div>
 
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-            {t(
-              "Share Lokly with your friends and help us grow. The more people who use Lokly, the closer we get to creating the app we’d love to have."
-            )}
-          </p>
+            <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
+              {t("Help us make it happen")}
+            </h2>
 
-          <Link
-            href="/tell-a-friend"
-            className="mt-7 inline-flex items-center justify-center rounded-2xl bg-[#149EAF] px-7 py-3.5 font-bold text-white shadow-sm transition hover:bg-[#118b9b] active:scale-[0.98]"
-          >
-            {t("Tell a Friend")}
-          </Link>
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+              {t(
+                "Share Lokly with your friends and help us grow. The more people who use Lokly, the closer we get to creating the app we’d love to have."
+              )}
+            </p>
 
-          <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
-            {t("Thanks for being part of Lokly.")}
-          </p>
+            <Link
+              href="/tell-a-friend"
+              className="mt-7 inline-flex items-center justify-center rounded-2xl bg-[#149EAF] px-7 py-3.5 font-bold text-white shadow-sm transition hover:bg-[#118b9b] active:scale-[0.98]"
+            >
+              {t("Tell a Friend")}
+            </Link>
+
+            <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
+              {t("Thanks for being part of Lokly.")}
+            </p>
+
+          </div>
 
         </section>
 

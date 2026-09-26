@@ -34,7 +34,7 @@ export default function TellAFriendPage() {
       <section className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
 
         {/* INTRO */}
-        <div className="text-center">
+        <div>
 
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#149EAF] sm:text-sm">
             {t("SPREAD THE WORD")}
@@ -44,9 +44,9 @@ export default function TellAFriendPage() {
             {t("Tell a friend about Lokly")}
           </h1>
 
-          <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-[#149EAF]" />
+          <div className="mt-5 h-1 w-16 rounded-full bg-[#149EAF]" />
 
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
             {t(
               "Know someone who'd love to know what's happening in the Algarve? Send them Lokly and help them discover what's going on."
             )}
