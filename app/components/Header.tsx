@@ -83,28 +83,61 @@ export default function Header() {
             </p>
           </div>
 
-          {/* Profile */}
-          <Link
-            href="/profile"
-            aria-label={pt ? "Perfil" : "Profile"}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#149EAF] to-cyan-500 text-white shadow-md transition hover:scale-105 sm:h-12 sm:w-12"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 sm:h-5 sm:w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
+          {/* Profile + Language */}
+          <div className="flex flex-col items-center">
+
+            <Link
+              href="/profile"
+              aria-label={pt ? "Perfil" : "Profile"}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#149EAF] to-cyan-500 text-white shadow-md transition hover:scale-105 sm:h-12 sm:w-12"
             >
-              <circle cx="12" cy="8" r="3.5" />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 20c2-3 5-4.5 7-4.5s5 1.5 7 4.5"
-              />
-            </svg>
-          </Link>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 sm:h-5 sm:w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <circle cx="12" cy="8" r="3.5" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 20c2-3 5-4.5 7-4.5s5 1.5 7 4.5"
+                />
+              </svg>
+            </Link>
+
+            {/* Small language toggle */}
+            <div className="mt-1 flex items-center gap-1 text-[10px] font-bold sm:text-[11px]">
+              <button
+                type="button"
+                onClick={() => setLanguage("en")}
+                className={
+                  language === "en"
+                    ? "text-[#149EAF]"
+                    : "text-slate-400 hover:text-slate-600"
+                }
+              >
+                EN
+              </button>
+
+              <span className="text-slate-300">|</span>
+
+              <button
+                type="button"
+                onClick={() => setLanguage("pt")}
+                className={
+                  language === "pt"
+                    ? "text-[#149EAF]"
+                    : "text-slate-400 hover:text-slate-600"
+                }
+              >
+                PT
+              </button>
+            </div>
+
+          </div>
 
         </div>
       </header>
@@ -497,42 +530,6 @@ export default function Header() {
                   )}
                 </div>
 
-              </div>
-
-              {/* LANGUAGE */}
-              <div className="mt-8 border-t border-slate-100 pt-6">
-
-                <p className="px-3 pb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
-                  {pt ? "Idioma" : "Language"}
-                </p>
-
-                <div className="grid grid-cols-2 gap-2 px-3">
-
-                  <button
-                    type="button"
-                    onClick={() => setLanguage("en")}
-                    className={`rounded-xl px-3 py-3 text-sm font-bold transition ${
-                      language === "en"
-                        ? "bg-[#149EAF] text-white"
-                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                    }`}
-                  >
-                    🇬🇧 English
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setLanguage("pt")}
-                    className={`rounded-xl px-3 py-3 text-sm font-bold transition ${
-                      language === "pt"
-                        ? "bg-[#149EAF] text-white"
-                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                    }`}
-                  >
-                    🇵🇹 Português
-                  </button>
-
-                </div>
               </div>
 
             </nav>
