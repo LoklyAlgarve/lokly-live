@@ -18,7 +18,8 @@ type CategoryIconName =
   | "sport"
   | "festival"
   | "exhibitions"
-  | "workshop";
+  | "workshop"
+  | "charity";
 
 type Category = {
   label: string;
@@ -38,6 +39,7 @@ const mainCategories: Category[] = [
   { label: "Festivals", filter: "Festival", icon: "festival", color: "#EC4899" },
   { label: "Exhibitions", filter: "Exhibitions", icon: "exhibitions", color: "#9333EA" },
   { label: "Workshops", filter: "Workshop", icon: "workshop", color: "#A16207" },
+  { label: "Charity", filter: "Charity", icon: "charity", color: "#EF4444" },
 ];
 
 function CategoryIcon({ name }: { name: CategoryIconName }) {
@@ -152,6 +154,15 @@ function CategoryIcon({ name }: { name: CategoryIconName }) {
           <path d="m3 21 4-1 10-10" />
           <path d="M4 4h6" />
           <path d="M4 7h4" />
+        </svg>
+      );
+
+    case "charity":
+      return (
+        <svg {...common}>
+          <path d="M12 20s-7-4.4-7-10.2C5 6.8 7.1 5 9.4 5c1.4 0 2.5.7 3.1 1.8C13.1 5.7 14.2 5 15.6 5 17.9 5 20 6.8 20 9.8 20 15.6 12 20 12 20Z" />
+          <path d="M12 9v5" />
+          <path d="M9.5 11.5h5" />
         </svg>
       );
 

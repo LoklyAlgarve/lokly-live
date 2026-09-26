@@ -467,6 +467,10 @@ export default function SearchPage() {
                         All categories
                       </option>
 
+                      <option value="Charity">
+                        Charity
+                      </option>
+
                       {categories.map(
                         (category) => (
                           <option
