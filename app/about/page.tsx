@@ -39,7 +39,7 @@ export default function AboutPage() {
               <div className="flex h-14 w-14 shrink-0 items-center justify-center sm:h-16 sm:w-16">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-11 w-11 sm:h-12 sm:w-12"
+                  className="h-8 w-8 sm:h-9 sm:w-9"
                   fill="none"
                   viewBox="0 0 64 64"
                   stroke="#149EAF"
@@ -47,13 +47,10 @@ export default function AboutPage() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <path d="M22 43c-7-3-11-9-11-17 0-11 9-19 20-19s20 8 20 19c0 8-4 14-11 17" />
-                  <path d="M25 47h14" />
-                  <path d="M27 52h10" />
-                  <path d="M16 10l-4-4" />
-                  <path d="M48 10l4-4" />
-                  <path d="M9 24H3" />
-                  <path d="M61 24h-6" />
+                  <path d="M32 49s-13-11-13-23a13 13 0 1 1 26 0c0 12-13 23-13 23Z" />
+                  <circle cx="32" cy="26" r="4" />
+                  <path d="M50 11v8" />
+                  <path d="M46 15h8" />
                 </svg>
               </div>
 
