@@ -12,6 +12,7 @@ type Event = {
   title: string;
   location: string;
   category: string;
+  concelho: string;
   latitude: number;
   longitude: number;
 };
@@ -287,10 +288,9 @@ export default function MapPage() {
   const visibleEvents =
     selectedArea === "All Areas"
       ? categoryFilteredEvents
-      : categoryFilteredEvents.filter((event) =>
-          event.location
-            .toLowerCase()
-            .includes(selectedArea.toLowerCase())
+      : categoryFilteredEvents.filter(
+          (event) =>
+            event.concelho === selectedArea
         );
 
   return (

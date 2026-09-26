@@ -80,10 +80,22 @@ function isThisWeekend(date: Date, today: Date) {
   );
 }
 
+/*
+ * Normalise search text so that accents/diacritics
+ * do not affect matching.
+ *
+ * Examples:
+ * Loulé -> loule
+ * Loule -> loule
+ * São Brás -> sao bras
+ * Sao Bras -> sao bras
+ */
 function normalise(value: unknown) {
   return String(value ?? "")
     .trim()
-    .toLowerCase();
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 }
 
 export default function SearchPage() {
@@ -161,10 +173,10 @@ export default function SearchPage() {
     ).sort();
   }, [events]);
 
-  const query = params.query.trim().toLowerCase();
-  const category = params.category.trim().toLowerCase();
-  const location = params.location.trim().toLowerCase();
-  const filter = params.filter.trim().toLowerCase();
+  const query = normalise(params.query);
+  const category = normalise(params.category);
+  const location = normalise(params.location);
+  const filter = normalise(params.filter);
 
   const today = new Date();
 
