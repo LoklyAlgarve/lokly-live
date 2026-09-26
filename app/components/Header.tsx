@@ -433,6 +433,21 @@ export default function Header() {
                   </span>
                 </Link>
 
+                {/* CHARITY */}
+                <Link
+                  href="/charity"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center rounded-2xl px-3 py-3.5 text-slate-700 transition hover:bg-slate-50"
+                >
+                  <span className="flex w-8 shrink-0 items-center justify-start text-[#149EAF]">
+                    ♡
+                  </span>
+
+                  <span className="font-semibold">
+                    {pt ? "Caridade" : "Charity"}
+                  </span>
+                </Link>
+
                 {/* TELL A FRIEND */}
                 <Link
                   href="/tell-a-friend"

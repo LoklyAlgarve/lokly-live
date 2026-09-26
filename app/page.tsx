@@ -200,7 +200,12 @@ export default function HomePage() {
             .trim()
             .toLowerCase() === selectedCategory.toLowerCase()
       )
-    : events;
+    : events.filter(
+        (event) =>
+          String(event.category ?? "")
+            .trim()
+            .toLowerCase() !== "charity"
+      );
 
   return (
     <main className="min-h-screen bg-white pb-24 overscroll-y-auto">
