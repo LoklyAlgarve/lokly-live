@@ -39,7 +39,7 @@ export default function AboutPage() {
               <div className="flex h-14 w-14 shrink-0 items-center justify-center sm:h-16 sm:w-16">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8 sm:h-9 sm:w-9"
+                  className="h-10 w-10 sm:h-11 sm:w-11"
                   fill="none"
                   viewBox="0 0 64 64"
                   stroke="#149EAF"
@@ -47,16 +47,16 @@ export default function AboutPage() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <path d="M32 49s-13-11-13-23a13 13 0 1 1 26 0c0 12-13 23-13 23Z" />
+                  <path d="M32 50s-13-11-13-24a13 13 0 1 1 26 0c0 13-13 24-13 24Z" />
                   <circle cx="32" cy="26" r="4" />
-                  <path d="M50 11v8" />
-                  <path d="M46 15h8" />
+                  <path d="M50 10v8" />
+                  <path d="M46 14h8" />
                 </svg>
               </div>
 
               <div className="border-l-2 border-[#b9e3e8] pl-5 sm:pl-7">
                 <p className="text-xl font-black leading-tight text-slate-900 sm:text-2xl">
-                  {t("“If only I’d known about that, I would have gone.”")}
+                  {t("“So many great events and we only find out afterwards!”")}
                 </p>
 
                 <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
@@ -86,7 +86,7 @@ export default function AboutPage() {
           </p>
 
           {/* BUSINESSES & ORGANISERS */}
-          <div className="mt-5 border-t border-slate-100 pt-5 sm:mt-6 sm:pt-6">
+          <div className="mt-4">
 
             <p className="text-base leading-relaxed text-slate-600 sm:text-lg">
               {t(
@@ -272,7 +272,7 @@ export default function AboutPage() {
         <div className="mt-12 overflow-hidden rounded-3xl bg-white shadow-sm">
           <div className="grid items-center md:grid-cols-[280px_1fr]">
 
-            <div className="h-72 md:h-full">
+            <div className="h-48 md:h-full">
               <img
                 src="/images/ailsa-lokly.jpg"
                 alt={t("Ailsa, founder of Lokly")}
