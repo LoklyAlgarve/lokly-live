@@ -17,7 +17,7 @@ export default async function ProfilePage() {
 
   const fullName =
     [firstName, lastName].filter(Boolean).join(" ") ||
-    "Guest User";
+    "Not signed in";
 
   const isSignedIn = !!user;
 
