@@ -528,21 +528,15 @@ export default function Header() {
                   </button>
 
                   {/* BUSINESS SUBSECTION */}
-                  {businessOpen && (
-                    <div className="ml-11 border-l border-slate-200 pl-3">
-                      <Link
-                        href="/add-event"
-                        onClick={() => setMenuOpen(false)}
-                        className="flex items-center rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-[#149EAF]"
-                      >
-                        <span className="mr-3 text-[#149EAF]">
-                          +
-                        </span>
-
-                        {pt ? "Adicionar um evento" : "Add your event"}
-                      </Link>
-                    </div>
-                  )}
+{businessOpen && (
+  <div className="ml-11 border-l border-slate-200 pl-3">
+    <p className="px-3 py-3 text-sm font-medium text-slate-400">
+      {pt
+        ? "Adicionar eventos em breve"
+        : "Event submissions coming soon"}
+    </p>
+  </div>
+)}
                 </div>
 
               </div>
