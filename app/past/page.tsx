@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import BottomNavigation from "../components/BottomNavigation";
 import EventCard from "../components/EventCard";
 import { useEffect, useState } from "react";
-import { getEvents } from "../data/events";
+import { getEvents, isPastEvent } from "../data/events";
 import { createClient } from "../../utils/supabase/client";
 import { useLanguage } from "../LanguageContext";
 
@@ -66,7 +66,7 @@ export default function PastEventsPage() {
         return;
       }
 
-      const allEvents = await getEvents();
+      const allEvents = await getEvents(true);
 
       const savedPastEvents = allEvents.filter(
         (event) =>
@@ -80,38 +80,6 @@ export default function PastEventsPage() {
 
     loadEvents();
   }, []);
-
-  function isPastEvent(event: any) {
-    const endDate = String(event.endDate || "").trim();
-
-    if (!endDate) {
-      return false;
-    }
-
-    const match = endDate.match(
-      /^(\d{4})-(\d{1,2})-(\d{1,2})/
-    );
-
-    if (!match) {
-      return false;
-    }
-
-    const year = Number(match[1]);
-    const month = Number(match[2]);
-    const day = Number(match[3]);
-
-    const end = new Date(
-      year,
-      month - 1,
-      day,
-      23,
-      59,
-      59,
-      999
-    );
-
-    return end < new Date();
-  }
 
   function openFeedback(
     eventId: number,
