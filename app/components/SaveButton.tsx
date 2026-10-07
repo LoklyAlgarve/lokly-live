@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
 import { createClient } from "../../utils/supabase/client";
 import { useLanguage } from "../LanguageContext";
 
@@ -208,14 +209,40 @@ export default function SaveButton({
               </div>
 
               <h2 className="mt-5 text-2xl font-black text-slate-900">
-                {t("Save your favourite events")}
+                {t("Stay in the loop with Lokly")}
               </h2>
 
               <p className="mt-3 text-sm leading-6 text-slate-500">
-                {t(
-                  "You need an account to save events to your 'Saved Events'."
-                )}
+                {t("Create a free account to:")}
               </p>
+
+              <div className="mt-5 space-y-4 text-left">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#149EAF]/10">
+                    <span className="text-2xl text-[#149EAF]">
+                      ♥
+                    </span>
+                  </div>
+
+                  <p className="text-base font-semibold text-slate-800">
+                    {t("Save your favourite events")}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#149EAF]/10">
+                    <span className="text-xl text-[#149EAF]">
+                      ✉
+                    </span>
+                  </div>
+
+                  <p className="text-base font-semibold text-slate-800">
+                    {t(
+                      "Get updates about new events"
+                    )}
+                  </p>
+                </div>
+              </div>
 
               <div className="mt-6 grid gap-3">
                 <button
@@ -232,14 +259,6 @@ export default function SaveButton({
                   className="flex min-h-12 items-center justify-center rounded-2xl border-2 border-[#149EAF] bg-white px-4 font-bold text-[#149EAF] transition hover:bg-[#149EAF]/10"
                 >
                   {t("Create Account")}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={closeSignInPopup}
-                  className="mt-1 text-sm font-semibold text-slate-400 transition hover:text-slate-600"
-                >
-                  {t("Maybe later")}
                 </button>
               </div>
             </div>
@@ -373,14 +392,40 @@ export default function SaveButton({
             </div>
 
             <h2 className="mt-5 text-2xl font-black text-slate-900">
-              {t("Save your favourite events")}
+              {t("Stay in the loop with Lokly")}
             </h2>
 
             <p className="mt-3 text-sm leading-6 text-slate-500">
-              {t(
-                "You need an account to save events to your 'Saved Events'."
-              )}
+              {t("Create a free account to:")}
             </p>
+
+            <div className="mt-5 space-y-4 text-left">
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#149EAF]/10">
+                  <span className="text-2xl text-[#149EAF]">
+                    ♥
+                  </span>
+                </div>
+
+                <p className="text-base font-semibold text-slate-800">
+                  {t("Save your favourite events")}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#149EAF]/10">
+                  <span className="text-xl text-[#149EAF]">
+                    ✉
+                  </span>
+                </div>
+
+                <p className="text-base font-semibold text-slate-800">
+                  {t(
+                    "Get updates about new events"
+                  )}
+                </p>
+              </div>
+            </div>
 
             <div className="mt-6 grid gap-3">
               <button
@@ -397,14 +442,6 @@ export default function SaveButton({
                 className="flex min-h-12 items-center justify-center rounded-2xl border-2 border-[#149EAF] bg-white px-4 font-bold text-[#149EAF] transition hover:bg-[#149EAF]/10"
               >
                 {t("Create Account")}
-              </button>
-
-              <button
-                type="button"
-                onClick={closeSignInPopup}
-                className="mt-1 text-sm font-semibold text-slate-400 transition hover:text-slate-600"
-              >
-                {t("Maybe later")}
               </button>
             </div>
           </div>
