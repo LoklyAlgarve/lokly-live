@@ -104,21 +104,27 @@ function isToday(date: string) {
   );
 }
 
+
+
 function getImageUrl(image: string) {
-  if (!image) {
+  const imagePath = image?.trim();
+
+  if (!imagePath) {
     return "/images/lokly-logo.png";
   }
 
   if (
-    image.startsWith("http://") ||
-    image.startsWith("https://") ||
-    image.startsWith("/")
+    imagePath.startsWith("http://") ||
+    imagePath.startsWith("https://")
   ) {
-    return image;
+    return imagePath;
   }
 
-  return `/${image}`;
+  return imagePath.startsWith("/")
+    ? imagePath
+    : "/" + imagePath;
 }
+
 
 export default function EventCard({
   id,
