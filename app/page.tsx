@@ -39,7 +39,6 @@ const mainCategories: Category[] = [
   { label: "Festivals", filter: "Festival", icon: "festival", color: "#EC4899" },
   { label: "Exhibitions", filter: "Exhibitions", icon: "exhibitions", color: "#9333EA" },
   { label: "Workshops", filter: "Workshop", icon: "workshop", color: "#A16207" },
-  { label: "Charity", filter: "Charity", icon: "charity", color: "#EF4444" },
 ];
 
 function CategoryIcon({ name }: { name: CategoryIconName }) {
@@ -194,18 +193,13 @@ export default function HomePage() {
   }, []);
 
   const filteredEvents = selectedCategory
-    ? events.filter(
-        (event) =>
-          String(event.category ?? "")
-            .trim()
-            .toLowerCase() === selectedCategory.toLowerCase()
-      )
-    : events.filter(
-        (event) =>
-          String(event.category ?? "")
-            .trim()
-            .toLowerCase() !== "charity"
-      );
+  ? events.filter(
+      (event) =>
+        String(event.category ?? "")
+          .trim()
+          .toLowerCase() === selectedCategory.toLowerCase()
+    )
+  : events;
 
   return (
     <main className="min-h-screen bg-white pb-24 overscroll-y-auto">
