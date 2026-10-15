@@ -392,11 +392,11 @@ export default function SaveButton({
             </div>
 
             <h2 className="mt-5 text-2xl font-black text-slate-900">
-              {t("Stay in the loop with Lokly")}
+              {t("Why set up an account with Lokly?")}
             </h2>
 
             <p className="mt-3 text-sm leading-6 text-slate-500">
-              {t("Create a free account to:")}
+              {t("A free account helps us keep event attendance numbers meaningful by reducing duplicate responses and supporting our local businesses. Plus you can:")}
             </p>
 
             <div className="mt-5 space-y-4 text-left">
