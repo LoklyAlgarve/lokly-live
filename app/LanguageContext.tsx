@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -74,6 +75,24 @@ const translations: Record<string, string> = {
   "Remove from saved events": "Remover dos eventos guardados",
   "Saving...": "A guardar...",
   "Save your favourite events": "Guarde os seus eventos favoritos",
+  "Why set up an account with Lokly?":
+    "Porquê criar uma conta no Lokly?",
+  "A free account helps us keep event attendance numbers meaningful by reducing duplicate responses and supporting our local businesses.":
+    "Uma conta gratuita ajuda-nos a manter os números de participação nos eventos fiáveis, reduzindo respostas duplicadas e apoiando os nossos negócios locais.",
+  "A free account helps us keep event attendance numbers meaningful by reducing duplicate responses and supporting our local businesses. Plus you can:":
+    "Uma conta gratuita ajuda-nos a manter os números de participação nos eventos fiáveis, reduzindo respostas duplicadas e apoiando os nossos negócios locais. Além disso, pode:",
+  "Save favourite events and let us know if you're going or maybe attending.":
+    "Guarde os seus eventos favoritos e diga-nos se está a pensar ir ou talvez participar.",
+  "Receive occasional emails about other local events.":
+    "Receba ocasionalmente emails sobre outros eventos locais.",
+  "Plus you can:":
+    "Além disso, pode:",
+  "Get updates about new events":
+    "Receba atualizações sobre novos eventos",
+  "Stay in the loop with Lokly":
+    "Mantenha-se a par das novidades do Lokly",
+  "Create a free account to:":
+    "Crie uma conta gratuita para:",
   "You need an account to save events to your \"Saved Events\".":
     "Precisa de uma conta para guardar eventos nos \"Eventos guardados\".",
   "Support local": "Apoie a comunidade local",
@@ -84,6 +103,18 @@ const translations: Record<string, string> = {
     "Pode alterar a sua resposta mais tarde.",
   "Not now": "Agora não",
 
+    // Navigation
+
+  // Activities banner
+  "Discover activities & things to do in the Algarve":
+    "Descubra atividades e coisas para fazer no Algarve",
+  "Classes, boat trips, experiences and more":
+    "Aulas, passeios de barco, experiências e muito mais",
+  "Explore now":
+    "Explore agora",
+
+  "Home": "Início",
+  
   // Common
   "Loading...": "A carregar...",
   "Back": "Voltar",
