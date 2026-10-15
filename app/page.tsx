@@ -307,7 +307,7 @@ export default function HomePage() {
               {t("Activities & things to do")}
             </span>
             <span className="mt-0.5 block text-xs leading-snug text-slate-600 sm:text-sm">
-              {t("Classes, boat trips, experiences and more")}
+              {t("Classes, boat trips & experiences")}
             </span>
           </span>
 
