@@ -365,6 +365,7 @@ export default function WhatToDoDetailPage({
   const whenText = getWhenText(item);
 
   async function handleShare() {
+    if (!item) return;
     const message = `I found this on Lokly and thought you might like it!
 
 ${item.title}
