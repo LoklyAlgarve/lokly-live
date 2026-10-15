@@ -55,7 +55,7 @@ export default function WhatToDoPage() {
             aria-label="Lokly"
           >
             <img
-              src="/images/lokly_yellow.png"
+              src="/images/Lokly_yellow.png"
               alt="Lokly"
               className="h-[58px] w-[120px] object-contain sm:h-[72px] sm:w-[145px]"
             />
