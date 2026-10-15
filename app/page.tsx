@@ -1,6 +1,8 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import EventCard from "./components/EventCard";
@@ -19,6 +21,7 @@ type CategoryIconName =
   | "festival"
   | "exhibitions"
   | "workshop"
+  | "animals"
   | "charity";
 
 type Category = {
@@ -36,6 +39,7 @@ const mainCategories: Category[] = [
   { label: "Family", filter: "Family", icon: "family", color: "#A855F7" },
   { label: "Markets & Shopping", filter: "Markets & Shopping", icon: "markets", color: "#F97316" },
   { label: "Sport", filter: "Sport", icon: "sport", color: "#3B82F6" },
+  { label: "Animals & Pets", filter: "Animals & Pets", icon: "animals", color: "#14B8A6" },
   { label: "Festivals", filter: "Festival", icon: "festival", color: "#EC4899" },
   { label: "Exhibitions", filter: "Exhibitions", icon: "exhibitions", color: "#9333EA" },
   { label: "Workshops", filter: "Workshop", icon: "workshop", color: "#A16207" },
@@ -112,6 +116,17 @@ function CategoryIcon({ name }: { name: CategoryIconName }) {
           <path d="M21.5 20c0-2.5-1-4-3-4" />
         </svg>
       );
+
+      case "animals":
+  return (
+    <svg {...common}>
+      <path d="M12 20c-4 0-7-2.5-7-6 0-2.5 2-4 4-4 1.5 0 2.5 1 3 2 0.5-1 1.5-2 3-2 2 0 4 1.5 4 4 0 3.5-3 6-7 6Z" />
+      <circle cx="5" cy="6" r="1.5" />
+      <circle cx="9" cy="4.5" r="1.5" />
+      <circle cx="15" cy="4.5" r="1.5" />
+      <circle cx="19" cy="6" r="1.5" />
+    </svg>
+  );
 
     case "sport":
       return (
@@ -193,27 +208,24 @@ export default function HomePage() {
   }, []);
 
   const filteredEvents = selectedCategory
-  ? events.filter(
-      (event) =>
-        String(event.category ?? "")
-          .trim()
-          .toLowerCase() === selectedCategory.toLowerCase()
-    )
-  : events;
+    ? events.filter(
+        (event) =>
+          String(event.category ?? "")
+            .trim()
+            .toLowerCase() === selectedCategory.toLowerCase()
+      )
+    : events;
 
   return (
     <main className="min-h-screen bg-white pb-24 overscroll-y-auto">
       <Header />
 
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-
         {/* CATEGORIES */}
         <div className="mt-3 overflow-hidden sm:mt-4">
           <div
             className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide"
-            style={{
-              WebkitOverflowScrolling: "touch",
-            }}
+            style={{ WebkitOverflowScrolling: "touch" }}
           >
             {mainCategories.map((category) => {
               const active =
@@ -225,9 +237,7 @@ export default function HomePage() {
                   key={category.label}
                   type="button"
                   onClick={() =>
-                    setSelectedCategory(
-                      active ? "" : category.filter
-                    )
+                    setSelectedCategory(active ? "" : category.filter)
                   }
                   className="flex w-[68px] shrink-0 flex-col items-center gap-1.5 text-center"
                 >
@@ -237,9 +247,7 @@ export default function HomePage() {
                         ? "translate-y-1 scale-95 shadow-inner ring-4 ring-[#149EAF]/20"
                         : "shadow-md"
                     }`}
-                    style={{
-                      backgroundColor: category.color,
-                    }}
+                    style={{ backgroundColor: category.color }}
                   >
                     <span className="h-6 w-6 text-white">
                       <CategoryIcon name={category.icon} />
@@ -266,9 +274,60 @@ export default function HomePage() {
           <SearchBar />
         </div>
 
+        {/* WHAT TO DO — signpost banner */}
+        <Link
+          href="/whattodo"
+          aria-label={t("Discover activities & things to do in the Algarve")}
+          className="group mt-3 flex min-h-[76px] items-center gap-3 overflow-hidden rounded-2xl border border-[#E8D8A8] bg-[#FFFBF0] px-3 py-2.5 shadow-sm transition hover:border-[#F4B942] hover:shadow-md sm:mt-4 sm:gap-4 sm:px-5"
+        >
+          {/* Small illustrated signpost */}
+          <span
+            aria-hidden="true"
+            className="flex h-[54px] w-[62px] shrink-0 items-center justify-center sm:h-[58px] sm:w-[72px]"
+          >
+            <svg
+              viewBox="0 0 80 64"
+              className="h-full w-full"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse cx="39" cy="58" rx="25" ry="3" fill="#102F56" opacity="0.10" />
+              <path d="M37 57V14" stroke="#8B5E3C" strokeWidth="5" strokeLinecap="round" />
+              <path d="M35 17H7L13 8H42V17H35Z" fill="#149EAF" stroke="#102F56" strokeWidth="1.5" strokeLinejoin="round" />
+              <path d="M42 30H72L66 21H36V30H42Z" fill="#F4B942" stroke="#102F56" strokeWidth="1.5" strokeLinejoin="round" />
+              <path d="M36 43H12L18 34H42V43H36Z" fill="#FFFFFF" stroke="#102F56" strokeWidth="1.5" strokeLinejoin="round" />
+              <path d="M18 12H31M46 25H60M22 38H32" stroke="#FFFFFF" strokeWidth="1.8" strokeLinecap="round" />
+              <circle cx="57" cy="8" r="4" fill="#F4B942" />
+              <path d="M57 1V3M57 13V15M50 8H52M62 8H64" stroke="#F4B942" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+          </span>
+
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-extrabold leading-snug text-[#102F56] sm:text-base">
+              {t("Discover activities & things to do in the Algarve")}
+            </span>
+            <span className="mt-0.5 block text-xs leading-snug text-slate-600 sm:text-sm">
+              {t("Classes, boat trips, experiences and more")}
+            </span>
+          </span>
+
+          <span className="hidden shrink-0 items-center rounded-full bg-[#F4B942] px-4 py-2 text-xs font-extrabold text-[#102F56] sm:inline-flex">
+            {t("Explore now")}{" "}
+            <span className="ml-1" aria-hidden="true">
+              →
+            </span>
+          </span>
+
+          <span
+            aria-hidden="true"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F4B942] text-lg font-bold text-[#102F56] sm:hidden"
+          >
+            →
+          </span>
+        </Link>
+
         {/* EVENTS */}
         <section className="mt-5 sm:mt-7">
-
           <div className="mb-2.5 sm:mb-4">
             <h2 className="text-xl font-black tracking-tight text-[#102F56] sm:text-2xl">
               {selectedCategory
@@ -282,9 +341,7 @@ export default function HomePage() {
 
             <p className="mt-0.5 text-xs text-slate-500 sm:mt-1 sm:text-sm">
               {filteredEvents.length}{" "}
-              {filteredEvents.length === 1
-                ? t("event")
-                : t("events")}
+              {filteredEvents.length === 1 ? t("event") : t("events")}
             </p>
           </div>
 
