@@ -113,8 +113,6 @@ const translations: Record<string, string> = {
   "Explore now":
     "Explore agora",
 
-  "Home": "Início",
-
   // Common
   "Loading...": "A carregar...",
   "Back": "Voltar",
@@ -183,7 +181,7 @@ const translations: Record<string, string> = {
   "Discover places, experiences and local favourites around the Algarve.":
     "Descubra lugares, experiências e locais favoritos no Algarve.",
   "View details": "Ver detalhes",
-  
+
   // Categories
   "Music": "Música",
   "Festival": "Festival",
