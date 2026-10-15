@@ -278,8 +278,7 @@ export default function HomePage() {
         <Link
           href="/whattodo"
           aria-label={t("Activities & things to do")}
-          className="group mt-3 flex min-h-[76px] items-center gap-3 overflow-hidden rounded-2xl border border-[#E8D8A8] bg-[#FFFBF0] px-3 py-2.5 shadow-sm transition hover:border-[#F4B942] hover:shadow-md sm:mt-4 sm:gap-4 sm:px-5"
-        >
+className="group mt-3 flex min-h-[68px] items-center gap-3 overflow-hidden rounded-2xl border border-[#E8D8A8] bg-[#FFFBF0] px-3 py-1.5 shadow-sm transition hover:border-[#F4B942] hover:shadow-md sm:mt-4 sm:gap-4 sm:px-5"        >
           {/* Small illustrated signpost */}
           <span
             aria-hidden="true"
