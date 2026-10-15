@@ -277,7 +277,7 @@ export default function HomePage() {
         {/* WHAT TO DO — signpost banner */}
         <Link
           href="/whattodo"
-          aria-label={t("Discover activities & things to do in the Algarve")}
+          aria-label={t("Activities & things to do")}
           className="group mt-3 flex min-h-[76px] items-center gap-3 overflow-hidden rounded-2xl border border-[#E8D8A8] bg-[#FFFBF0] px-3 py-2.5 shadow-sm transition hover:border-[#F4B942] hover:shadow-md sm:mt-4 sm:gap-4 sm:px-5"
         >
           {/* Small illustrated signpost */}
@@ -304,7 +304,7 @@ export default function HomePage() {
 
           <span className="min-w-0 flex-1">
             <span className="block text-sm font-extrabold leading-snug text-[#102F56] sm:text-base">
-              {t("Discover activities & things to do in the Algarve")}
+              {t("Activities & things to do")}
             </span>
             <span className="mt-0.5 block text-xs leading-snug text-slate-600 sm:text-sm">
               {t("Classes, boat trips, experiences and more")}
