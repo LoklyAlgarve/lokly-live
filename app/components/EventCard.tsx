@@ -202,27 +202,27 @@ https://www.lokly.live`;
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:rounded-3xl">
 
-      {/* IMAGE */}
-      <div className="relative shrink-0">
-        <img
-          src={getImageUrl(image)}
-          alt={title}
-          className="h-32 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-60"
-        />
+{/* IMAGE */}
+<div className="relative h-32 shrink-0 overflow-hidden bg-slate-100 sm:h-60">
+  <img
+    src={getImageUrl(image)}
+    alt={title}
+    className="h-full w-full object-contain transition duration-500"
+  />
 
-        {isToday(date) && (
-          <div className="absolute left-2 top-2 rounded-full bg-white px-2 py-1 text-[9px] font-bold text-[#149EAF] shadow sm:left-4 sm:top-4 sm:px-3 sm:text-xs">
-            {t("TODAY")}
-          </div>
-        )}
+  {isToday(date) && (
+    <div className="absolute left-2 top-2 rounded-full bg-white px-2 py-1 text-[9px] font-bold text-[#149EAF] shadow sm:left-4 sm:top-4 sm:px-3 sm:text-xs">
+      {t("TODAY")}
+    </div>
+  )}
 
-        <SaveButton
-          eventId={id}
-          onSavedChange={(saved) =>
-            onSavedChange?.(id, saved)
-          }
-        />
-      </div>
+  <SaveButton
+    eventId={id}
+    onSavedChange={(saved) =>
+      onSavedChange?.(id, saved)
+    }
+  />
+</div>
 
       {/* CONTENT */}
       <div className="flex flex-1 flex-col p-3 sm:p-6">
