@@ -104,14 +104,15 @@ const translations: Record<string, string> = {
   "Not now": "Agora não",
 
     // Navigation
-
+ 
   // Activities banner
-  "Discover activities & things to do in the Algarve":
-    "Descubra atividades e coisas para fazer no Algarve",
-  "Classes, boat trips, experiences and more":
-    "Aulas, passeios de barco, experiências e muito mais",
+  "Activities & things to do":
+    "Atividades e coisas para fazer",
+  "Classes, boat trips & experiences":
+    "Aulas, passeios de barco e experiências",
   "Explore now":
     "Explore agora",
+
 
   // Common
   "Loading...": "A carregar...",
