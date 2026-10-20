@@ -125,9 +125,7 @@ export default function WhatToDoPage() {
       {/* Things to Do Categories */}
       <section className="mx-auto max-w-6xl px-3 pt-6">
         <div
-  className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide"
-  style={{ WebkitOverflowScrolling: "touch" }}
->
+  className="flex w-[76px] shrink-0 flex-col items-center gap-2 rounded-xl px-1 py-1 text-center transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0CA9B7]"
 
           {categories.map((category) => {
             const isSelected = selectedCategory === category.name;
