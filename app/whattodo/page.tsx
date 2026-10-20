@@ -64,23 +64,29 @@ export default function WhatToDoPage() {
           "Outdoors & Nature": ["Outdoors & Adventure", "Outdoors & Nature"],
           "Sport & Adventure": ["Sport & Adventure", "Outdoors & Adventure"],
           "Music & Dance": ["Music & Dance", "Music"],
-          "Food Experiences": ["Food Experiences", "Food & Drink"],
+          "Food & Drink": ["Food Experiences", "Food & Drink"],
           "Family & Kids": ["Family & Kids", "Family"],
           "Tours & Experiences": ["Tours & Experiences", "Outdoors & Adventure"],
         };
 
-        return (categoryAliases[selectedCategory] || [selectedCategory])
-          .includes(item.category);
+        const itemCategories = item.category
+          .split(";")
+          .map((category) => category.trim());
+
+        const matchingCategories =
+          categoryAliases[selectedCategory] || [selectedCategory];
+
+        return itemCategories.some((category) =>
+          matchingCategories.includes(category)
+        );
       })
     : items;
 
   return (
     <main className="min-h-screen bg-white text-[#172554]">
-
       {/* Header */}
       <header className="border-b border-gray-100 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-
           <Link
             href="/"
             className="flex items-center"
@@ -99,14 +105,12 @@ export default function WhatToDoPage() {
           >
             ← {t("Back to Events")}
           </Link>
-
         </div>
       </header>
 
       {/* Hero */}
       <section className="bg-[#172554] px-4 py-8 text-white">
         <div className="mx-auto max-w-6xl">
-
           <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#F4B942]">
             {t("Discover more")}
           </p>
@@ -118,15 +122,15 @@ export default function WhatToDoPage() {
           <p className="mt-2 max-w-xl text-sm text-white/75">
             {t("Discover places, experiences and local favourites around the Algarve.")}
           </p>
-
         </div>
       </section>
 
       {/* Things to Do Categories */}
       <section className="mx-auto max-w-6xl px-3 pt-6">
         <div
-  className="flex w-[76px] shrink-0 flex-col items-center gap-2 rounded-xl px-1 py-1 text-center transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0CA9B7]"
-
+          className="flex gap-4 overflow-x-auto px-1 pb-3 scrollbar-hide"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
           {categories.map((category) => {
             const isSelected = selectedCategory === category.name;
 
@@ -135,10 +139,12 @@ export default function WhatToDoPage() {
                 key={category.name}
                 type="button"
                 onClick={() =>
-                  setSelectedCategory(isSelected ? null : category.name)
+                  setSelectedCategory(
+                    isSelected ? null : category.name
+                  )
                 }
                 aria-pressed={isSelected}
-                className="flex min-w-0 flex-col items-center gap-2 rounded-xl px-1 py-1 transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0CA9B7]"
+                className="flex w-[76px] shrink-0 flex-col items-center gap-2 rounded-xl px-1 py-1 text-center transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0CA9B7]"
               >
                 <span
                   className={`flex h-11 w-11 items-center justify-center rounded-full text-2xl font-bold text-white shadow-md transition sm:h-12 sm:w-12 ${
@@ -155,7 +161,6 @@ export default function WhatToDoPage() {
               </button>
             );
           })}
-
         </div>
 
         {selectedCategory && (
@@ -163,6 +168,7 @@ export default function WhatToDoPage() {
             <p className="text-sm text-[#172554]">
               {t(selectedCategory)}
             </p>
+
             <button
               type="button"
               onClick={() => setSelectedCategory(null)}
@@ -176,7 +182,6 @@ export default function WhatToDoPage() {
 
       {/* Cards */}
       <section className="mx-auto max-w-6xl px-3 py-6">
-
         {loading ? (
           <p className="py-10 text-center text-sm text-gray-500">
             {t("Loading...")}
@@ -189,17 +194,14 @@ export default function WhatToDoPage() {
           </p>
         ) : (
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
-
             {filteredItems.map((item) => (
               <Link
                 key={item.id}
                 href={`/whattodo/${item.id}`}
                 className="group block overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
               >
-
                 {/* Image */}
                 <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
-
                   {item.image ? (
                     <img
                       src={`/${item.image}`}
@@ -213,16 +215,14 @@ export default function WhatToDoPage() {
                       </span>
                     </div>
                   )}
-
                 </div>
 
                 {/* Summary */}
                 <div className="p-3">
-
                   {/* Category */}
                   {item.category && (
                     <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-[#C69A22]">
-                      {t(item.category)}
+                      {t(item.category.split(";")[0].trim())}
                     </p>
                   )}
 
@@ -242,15 +242,11 @@ export default function WhatToDoPage() {
                   <div className="mt-3 text-xs font-bold text-[#C69A22]">
                     {t("View details")} →
                   </div>
-
                 </div>
-
               </Link>
             ))}
-
           </div>
         )}
-
       </section>
     </main>
   );
