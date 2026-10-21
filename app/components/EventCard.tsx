@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -158,19 +159,14 @@ export default function EventCard({
     const eventUrl =
       `https://www.lokly.live/events/${id}`;
 
-    const message = `I found this event on Lokly and thought you might like it!
-
-${title}
+    // UPDATED: Share only the event details and direct event link.
+   const message = `I thought you might like this event!
 
 Date: ${formatEventDate(date)}
 Location: ${location}
 
-↗ View the event on Lokly:
-${eventUrl}
-
-Don't have Lokly yet?
-Discover what's happening near you:
-https://www.lokly.live`;
+View the event:
+${eventUrl}`;
 
     if (
       typeof navigator !== "undefined" &&

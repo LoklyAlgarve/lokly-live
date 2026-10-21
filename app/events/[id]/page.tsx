@@ -611,38 +611,32 @@ export default function EventPage({
   function handleShowOriginal() {
     setShowTranslation(false);
   }
+async function handleShare() {
+  if (!event) {
+    return;
+  }
 
-  async function handleShare() {
-    if (!event) {
-      return;
-    }
+  const eventUrl =
+    `https://www.lokly.live/events/${event.id}`;
 
-    const eventUrl =
-      `https://www.lokly.live/events/${event.id}`;
-
-    const message = `I found this event on Lokly and thought you might like it!
-
-${event.title}
+      const message = `I thought you might like this event!
 
 Date: ${event.date}${event.time ? ` • ${event.time}` : ""}
 Location: ${event.location}
 
-↗ View the event on Lokly:
-${eventUrl}
-
-Don't have Lokly yet?
-Discover what's happening near you:
-https://www.lokly.live`;
+View the event:
+${eventUrl}`;
 
     if (
       typeof navigator !== "undefined" &&
       navigator.share
     ) {
       try {
-        await navigator.share({
-          title: event.title,
-          text: message,
-        });
+await navigator.share({
+  title: event.title,
+  text: message,
+});
+      
       } catch {
         // User cancelled the share menu
       }
