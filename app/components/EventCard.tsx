@@ -160,7 +160,8 @@ export default function EventCard({
       `https://www.lokly.live/events/${id}`;
 
     // UPDATED: Share only the event details and direct event link.
-   const message = `I thought you might like this event!
+
+    const message = `I found this event on Lokly and thought you might like it!
 
 Date: ${formatEventDate(date)}
 Location: ${location}
