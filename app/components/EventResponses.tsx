@@ -146,28 +146,25 @@ export default function EventResponses({
 
   return (
     <section
-      className="mt-3 rounded-xl bg-[#EFFAFA] px-3 py-2 sm:px-4"
+      className="mt-3 rounded-xl bg-[#EFFAFA] px-2.5 py-2 sm:px-4 sm:py-3"
       aria-label={prompt}
     >
-      <div className="grid grid-cols-2 items-center gap-3">
-        <div className="flex items-center justify-center gap-4 border-r border-[#D5EEEE] pr-3">
+      <div className="grid grid-cols-[1.1fr_0.9fr] items-center gap-2 sm:gap-4">
+        <div className="grid grid-cols-2 items-center gap-1 border-r border-[#D5EEEE] pr-2 sm:gap-2 sm:pr-3">
           <button
             type="button"
             onClick={() => submitResponse("yes")}
             disabled={saving}
             aria-pressed={selectedStatus === "yes"}
-            className={`flex items-center gap-2 rounded-lg px-2 py-2 transition disabled:opacity-60 ${
+            className={`flex min-w-0 items-center justify-center rounded-lg px-1 py-2 transition disabled:opacity-60 sm:px-2 ${
               selectedStatus === "yes" ? "bg-[#DDF4F5]" : "hover:bg-white/70"
             }`}
           >
-            <span className="text-sm font-bold text-[#149EAF]" aria-hidden="true">
-              ✓
-            </span>
-            <span className="text-left">
-              <span className="block text-xs font-semibold text-slate-700">
+            <span className="min-w-0 text-left">
+              <span className="block break-words text-xs font-semibold leading-tight text-slate-700">
                 {goingLabel}
               </span>
-              <span className="block text-sm font-bold text-[#149EAF]">
+              <span className="mt-0.5 block text-sm font-bold text-[#149EAF]">
                 {goingCount}
               </span>
             </span>
@@ -178,39 +175,39 @@ export default function EventResponses({
             onClick={() => submitResponse("maybe")}
             disabled={saving}
             aria-pressed={selectedStatus === "maybe"}
-            className={`flex items-center gap-2 rounded-lg px-2 py-2 transition disabled:opacity-60 ${
+            className={`flex min-w-0 items-center justify-center rounded-lg px-1 py-2 transition disabled:opacity-60 sm:px-2 ${
               selectedStatus === "maybe" ? "bg-[#DDF4F5]" : "hover:bg-white/70"
             }`}
           >
-            <span className="text-sm text-slate-500" aria-hidden="true">
-              ?
-            </span>
-            <span className="text-left">
-              <span className="block text-xs font-semibold text-slate-700">
+            <span className="min-w-0 text-left">
+              <span className="block break-words text-xs font-semibold leading-tight text-slate-700">
                 {maybeLabel}
               </span>
-              <span className="block text-sm font-bold text-slate-600">
+              <span className="mt-0.5 block text-sm font-bold text-slate-600">
                 {maybeCount}
               </span>
             </span>
           </button>
         </div>
 
-        <div className="py-1">
-          <p className="text-sm font-bold leading-tight text-slate-800">
+        <div className="min-w-0 py-0.5">
+          <p className="text-xs font-bold leading-snug text-slate-800 sm:text-sm">
             {prompt}
           </p>
-          <p className="mt-1 text-xs leading-snug text-slate-600">
+          <p className="mt-1 text-[11px] leading-snug text-slate-600 sm:text-xs">
             {helperText}
           </p>
-          <p className="mt-1 text-[10px] leading-snug text-slate-500">
+          <p className="mt-1 text-[9px] leading-snug text-slate-500 sm:text-[10px]">
             One response per visitor · You can change your answer.
           </p>
         </div>
       </div>
 
       {message && (
-        <p role="status" className="mt-1 text-center text-xs text-slate-600">
+        <p
+          role="status"
+          className="mt-1 text-center text-[10px] leading-snug text-slate-600"
+        >
           {message}
         </p>
       )}
