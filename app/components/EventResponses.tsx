@@ -146,27 +146,25 @@ export default function EventResponses({
 
   return (
     <section
-      className="mt-3 rounded-xl bg-[#EFFAFA] px-2.5 py-2 sm:px-4 sm:py-3"
+      className="mt-3 rounded-xl bg-[#EFFAFA] px-2 py-2 sm:px-4 sm:py-3"
       aria-label={prompt}
     >
-      <div className="grid grid-cols-[1.1fr_0.9fr] items-center gap-2 sm:gap-4">
-        <div className="grid grid-cols-2 items-center gap-1 border-r border-[#D5EEEE] pr-2 sm:gap-2 sm:pr-3">
+      <div className="grid grid-cols-[0.95fr_1.35fr] items-center gap-2 sm:grid-cols-[1fr_1.2fr] sm:gap-4">
+        <div className="grid grid-cols-2 items-center gap-0.5 border-r border-[#D5EEEE] pr-1 sm:gap-2 sm:pr-3">
           <button
             type="button"
             onClick={() => submitResponse("yes")}
             disabled={saving}
             aria-pressed={selectedStatus === "yes"}
-            className={`flex min-w-0 items-center justify-center rounded-lg px-1 py-2 transition disabled:opacity-60 sm:px-2 ${
+            className={`flex min-w-0 flex-col items-center justify-center rounded-lg px-0.5 py-2 text-center transition disabled:opacity-60 sm:px-2 ${
               selectedStatus === "yes" ? "bg-[#DDF4F5]" : "hover:bg-white/70"
             }`}
           >
-            <span className="min-w-0 text-left">
-              <span className="block break-words text-xs font-semibold leading-tight text-slate-700">
-                {goingLabel}
-              </span>
-              <span className="mt-0.5 block text-sm font-bold text-[#149EAF]">
-                {goingCount}
-              </span>
+            <span className="block w-full text-center text-xs font-semibold leading-tight text-slate-700">
+              {goingLabel}
+            </span>
+            <span className="mt-1 block w-full text-center text-sm font-bold leading-tight text-[#149EAF]">
+              {goingCount}
             </span>
           </button>
 
@@ -175,26 +173,24 @@ export default function EventResponses({
             onClick={() => submitResponse("maybe")}
             disabled={saving}
             aria-pressed={selectedStatus === "maybe"}
-            className={`flex min-w-0 items-center justify-center rounded-lg px-1 py-2 transition disabled:opacity-60 sm:px-2 ${
+            className={`flex min-w-0 flex-col items-center justify-center rounded-lg px-0.5 py-2 text-center transition disabled:opacity-60 sm:px-2 ${
               selectedStatus === "maybe" ? "bg-[#DDF4F5]" : "hover:bg-white/70"
             }`}
           >
-            <span className="min-w-0 text-left">
-              <span className="block break-words text-xs font-semibold leading-tight text-slate-700">
-                {maybeLabel}
-              </span>
-              <span className="mt-0.5 block text-sm font-bold text-slate-600">
-                {maybeCount}
-              </span>
+            <span className="block w-full text-center text-xs font-semibold leading-tight text-slate-700">
+              {maybeLabel}
+            </span>
+            <span className="mt-1 block w-full text-center text-sm font-bold leading-tight text-slate-600">
+              {maybeCount}
             </span>
           </button>
         </div>
 
         <div className="min-w-0 py-0.5">
-          <p className="text-xs font-bold leading-snug text-slate-800 sm:text-sm">
+          <p className="whitespace-nowrap text-[11px] font-bold leading-tight text-slate-800 sm:text-sm">
             {prompt}
           </p>
-          <p className="mt-1 text-[11px] leading-snug text-slate-600 sm:text-xs">
+          <p className="mt-1 text-[10px] leading-snug text-slate-600 sm:text-xs">
             {helperText}
           </p>
           <p className="mt-1 text-[9px] leading-snug text-slate-500 sm:text-[10px]">
