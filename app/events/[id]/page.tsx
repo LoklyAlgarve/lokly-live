@@ -5,6 +5,7 @@ import { use, useEffect, useState } from "react";
 import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
 import SaveButton from "../../components/SaveButton";
+import EventResponses from "../../components/EventResponses";
 import { getEvents } from "../../data/events";
 import { createClient } from "../../../utils/supabase/client";
 import { useLanguage } from "../../LanguageContext";
@@ -681,96 +682,6 @@ await navigator.share({
     }
   }, [id]);
 
-  useEffect(() => {
-    async function loadGoingCounts() {
-      const supabase =
-        createClient();
-
-      const { data, error } =
-        await supabase
-          .from("saved_events")
-          .select("going_status")
-          .eq(
-            "event_id",
-            Number(id)
-          );
-
-      if (error) {
-        console.error(
-          "Lokly: Could not load going counts",
-          error
-        );
-
-        return;
-      }
-
-      const rows = data || [];
-
-      setGoingCount(
-        rows.filter(
-          (row) =>
-            row.going_status ===
-            "yes"
-        ).length
-      );
-
-      setMaybeCount(
-        rows.filter(
-          (row) =>
-            row.going_status ===
-            "maybe"
-        ).length
-      );
-    }
-
-    loadGoingCounts();
-  }, [id]);
-
-  function handleGoingStatus(
-    status: "yes" | "maybe" | null
-  ) {
-    if (status === "yes") {
-      setGoingCount(
-        (current) =>
-          current + 1
-      );
-
-      if (maybeCount > 0) {
-        setMaybeCount(
-          (current) =>
-            current - 1
-        );
-      }
-    }
-
-    if (status === "maybe") {
-      setMaybeCount(
-        (current) =>
-          current + 1
-      );
-
-      if (goingCount > 0) {
-        setGoingCount(
-          (current) =>
-            current - 1
-        );
-      }
-    }
-
-    if (status === null) {
-      if (goingCount > 0) {
-        setGoingCount(
-          (current) =>
-            current - 1
-        );
-      } else if (maybeCount > 0) {
-        setMaybeCount(
-          (current) =>
-            current - 1
-        );
-      }
-    }
-  }
 
   if (loading) {
     return (
@@ -1303,48 +1214,37 @@ await navigator.share({
                 </section>
               )}
 
-              {/* GOING / MAYBE */}
-              <div className="flex items-center justify-center gap-5 border-t border-slate-100 pt-4">
-                <div className="text-center">
-                  <p className="text-xl font-black text-[#149EAF]">
-                    {goingCount}
-                  </p>
-
-                  <p className="text-[11px] font-bold text-slate-500">
-                    {detailText(
-                      "Going",
-                      "Vou"
-                    )}
-                  </p>
-                </div>
-
-                <div className="h-7 w-px bg-slate-200" />
-
-                <div className="text-center">
-                  <p className="text-xl font-black text-slate-500">
-                    {maybeCount}
-                  </p>
-
-                  <p className="text-[11px] font-bold text-slate-500">
-                    {detailText(
-                      "Maybe",
-                      "Talvez"
-                    )}
-                  </p>
-                </div>
-              </div>
+           {/* GOING / MAYBE */}
+<EventResponses
+  eventId={event.id}
+  goingLabel={detailText("Going", "Vou")}
+  maybeLabel={detailText("Maybe", "Talvez")}
+  prompt={detailText(
+    "Are you planning to go?",
+    "Está a pensar ir?"
+  )}
+  helperText={detailText(
+    "Let us know your plans. No account needed.",
+    "Indique os seus planos. Não precisa de conta."
+  )}
+  successText={detailText(
+    "Your response has been counted.",
+    "A sua resposta foi contabilizada."
+  )}
+  errorText={detailText(
+    "Could not save your response. Please try again.",
+    "Não foi possível guardar a resposta. Tente novamente."
+  )}
+/>
 
               {/* BUTTONS */}
               <div className="border-t border-slate-100 pt-6">
                 <div className="flex flex-col gap-3 sm:flex-row">
 
-                  <SaveButton
-                    eventId={event.id}
-                    large
-                    onGoingStatusChange={
-                      handleGoingStatus
-                    }
-                  />
+                <SaveButton
+  eventId={event.id}
+  large
+/>
 
                   <a
                     href={directionsUrl}
