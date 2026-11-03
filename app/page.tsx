@@ -23,7 +23,7 @@ type CategoryIconName =
   | "workshop"
   | "christmas"
   | "animals"
-  | "Charity";
+  | "charity";
 
 type Category = {
   label: string;
