@@ -10,6 +10,7 @@ export type Event = {
   endDate: string;
   time: string;
   category: string;
+  secondaryCategory?: string;
   price: string;
   image: string;
   featured: boolean;
@@ -21,7 +22,7 @@ export type Event = {
   petFriendly: string;
 };
 
-const CACHE_KEY = "lokly-events-v8";
+const CACHE_KEY = "lokly-events-v9";
 const CACHE_TIME = 5 * 60 * 1000;
 
 function formatEventDate(startDate: string, endDate?: string) {
@@ -198,6 +199,7 @@ export async function getEvents(
           "",
         time: item.time || "",
         category: item.category || "",
+        secondaryCategory: item.secondary_category || "",
         price: item.price || "Free",
         image:
           item.image ||

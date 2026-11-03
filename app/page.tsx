@@ -21,8 +21,9 @@ type CategoryIconName =
   | "festival"
   | "exhibitions"
   | "workshop"
+  | "christmas"
   | "animals"
-  | "charity";
+  | "Charity";
 
 type Category = {
   label: string;
@@ -43,6 +44,8 @@ const mainCategories: Category[] = [
   { label: "Festivals", filter: "Festival", icon: "festival", color: "#EC4899" },
   { label: "Exhibitions", filter: "Exhibitions", icon: "exhibitions", color: "#9333EA" },
   { label: "Workshops", filter: "Workshop", icon: "workshop", color: "#A16207" },
+  { label: "Charity", filter: "Charity", icon: "charity", color: "#E11D48" },
+    { label: "Christmas", filter: "Christmas", icon: "christmas", color: "#166534" },
 ];
 
 function CategoryIcon({ name }: { name: CategoryIconName }) {
@@ -174,9 +177,16 @@ function CategoryIcon({ name }: { name: CategoryIconName }) {
     case "charity":
       return (
         <svg {...common}>
-          <path d="M12 20s-7-4.4-7-10.2C5 6.8 7.1 5 9.4 5c1.4 0 2.5.7 3.1 1.8C13.1 5.7 14.2 5 15.6 5 17.9 5 20 6.8 20 9.8 20 15.6 12 20 12 20Z" />
-          <path d="M12 9v5" />
-          <path d="M9.5 11.5h5" />
+          <path d="M12 10c-1.8-2-5-2-5 1 0 2.5 5 5.5 5 5.5s5-3 5-5.5c0-3-3.2-3-5-1Z" />
+          <path d="M3 17.5 7 15l3 1h4l4-2a1.8 1.8 0 0 1 2 3l-5 3H9l-6-2.5Z" />
+        </svg>
+      );
+          case "christmas":
+      return (
+        <svg {...common}>
+          <path d="M12 2 7 9h3l-4 6h5v5h2v-5h5l-4-6h3L12 2Z" />
+          <path d="M9 22h6" />
+          <path d="M12 2v-1" />
         </svg>
       );
 
@@ -207,14 +217,15 @@ export default function HomePage() {
     loadEvents();
   }, []);
 
-  const filteredEvents = selectedCategory
-    ? events.filter(
-        (event) =>
-          String(event.category ?? "")
-            .trim()
-            .toLowerCase() === selectedCategory.toLowerCase()
+ const filteredEvents = selectedCategory
+  ? events.filter((event) =>
+      [event.category, event.secondaryCategory].some(
+        (category) =>
+          String(category ?? "").trim().toLowerCase() ===
+          selectedCategory.toLowerCase()
       )
-    : events;
+    )
+  : events;
 
   return (
     <main className="min-h-screen bg-white pb-24 overscroll-y-auto">
@@ -372,6 +383,7 @@ className="group mt-3 flex min-h-[68px] items-center gap-3 overflow-hidden round
                   location={event.location ?? "Algarve"}
                   date={event.date ?? ""}
                   category={event.category ?? ""}
+                  secondaryCategory={event.secondaryCategory ?? ""}
                   image={event.image ?? ""}
                   latitude={Number(event.latitude ?? 0)}
                   longitude={Number(event.longitude ?? 0)}

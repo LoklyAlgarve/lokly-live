@@ -13,6 +13,7 @@ type EventCardProps = {
   location: string;
   date: string;
   category: string;
+  secondaryCategory?: string;
   image: string;
   latitude: number;
   longitude: number;
@@ -133,6 +134,7 @@ export default function EventCard({
   location,
   date,
   category,
+  secondaryCategory,
   image,
   latitude,
   longitude,
@@ -228,11 +230,19 @@ ${eventUrl}`;
         <div className="mb-2.5 flex min-h-[22px] items-center justify-between gap-2 sm:mb-4 sm:min-h-[28px]">
 
           <div className="min-w-0">
-            {category && (
-              <span className="inline-block max-w-full truncate rounded-full bg-[#149EAF]/10 px-2 py-1 text-[9px] font-bold uppercase text-[#149EAF] sm:px-3 sm:text-xs">
-                {t(category)}
-              </span>
-            )}
+<div className="flex flex-wrap gap-1">
+  {category && (
+    <span className="inline-block rounded-full bg-[#149EAF]/10 px-2 py-1 text-[9px] font-bold uppercase text-[#149EAF] sm:px-3 sm:text-xs">
+      {t(category)}
+    </span>
+  )}
+
+  {secondaryCategory && (
+    <span className="inline-block rounded-full bg-[#149EAF]/10 px-2 py-1 text-[9px] font-bold uppercase text-[#149EAF] sm:px-3 sm:text-xs">
+      {t(secondaryCategory)}
+    </span>
+  )}
+</div>
           </div>
 
           <button

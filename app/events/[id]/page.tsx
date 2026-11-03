@@ -17,6 +17,7 @@ type Event = {
   date: string;
   time: string;
   category: string;
+  secondaryCategory?: string;
   price: string;
   image: string;
   featured: boolean;
@@ -785,14 +786,20 @@ await navigator.share({
     Workshops: "Workshops",
   };
 
-  const displayedCategory =
-    showTranslation
-      ? eventLanguage === "English"
-        ? translatedCategoryMap[
-            event.category
-          ] || event.category
-        : event.category
-      : t(event.category);
+const getDisplayedCategory = (category?: string) => {
+  if (!category) return "";
+
+  return showTranslation
+    ? eventLanguage === "English"
+      ? translatedCategoryMap[category] || category
+      : category
+    : t(category);
+};
+
+const displayedCategories = [
+  getDisplayedCategory(event.category),
+  getDisplayedCategory(event.secondaryCategory),
+].filter(Boolean);
 
   const displayedPrice =
     showTranslation
@@ -902,9 +909,19 @@ await navigator.share({
               <div className="relative">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
-                    <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#149EAF]">
-                      {displayedCategory}
-                    </p>
+ <div className="flex flex-wrap items-center gap-2">
+  {displayedCategories.map((category, index) => (
+    <span
+      key={index}
+      className="text-sm font-bold uppercase tracking-[0.16em] text-[#149EAF]"
+    >
+      {index > 0 && (
+        <span className="mx-2 text-gray-400">|</span>
+      )}
+      {category}
+    </span>
+  ))}
+</div>              
 
                     <h1 className="mt-2 text-3xl font-black leading-tight text-slate-900 sm:text-4xl">
                       {displayedTitle}
