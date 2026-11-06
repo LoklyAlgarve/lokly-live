@@ -729,9 +729,11 @@ await navigator.share({
     );
   }
 
- 
-const directionsUrl =
-  `https://www.google.com/maps/dir/?api=1&destination=${event.latitude},${event.longitude}`;
+  const directionsUrl =
+    `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+      event.location
+    )}`;
+
   const wheelchairFriendly =
     getFriendlyValue(
       event.wheelchairFriendly
@@ -907,19 +909,16 @@ const displayedCategories = [
               <div className="relative">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
- <div className="flex flex-wrap items-center gap-2">
+   <div className="flex flex-wrap gap-x-3 gap-y-1">
   {displayedCategories.map((category, index) => (
     <span
       key={index}
       className="text-sm font-bold uppercase tracking-[0.16em] text-[#149EAF]"
     >
-      {index > 0 && (
-        <span className="mx-2 text-gray-400">|</span>
-      )}
       {category}
     </span>
   ))}
-</div>              
+</div>                 
 
                     <h1 className="mt-2 text-3xl font-black leading-tight text-slate-900 sm:text-4xl">
                       {displayedTitle}
