@@ -729,11 +729,9 @@ await navigator.share({
     );
   }
 
-  const directionsUrl =
-    `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-      event.location
-    )}`;
-
+ 
+const directionsUrl =
+  `https://www.google.com/maps/dir/?api=1&destination=${event.latitude},${event.longitude}`;
   const wheelchairFriendly =
     getFriendlyValue(
       event.wheelchairFriendly
