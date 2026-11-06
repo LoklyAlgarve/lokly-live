@@ -71,7 +71,7 @@ export default function Header() {
           {/* Logo - TRUE CENTRE */}
           <div className="absolute left-1/2 flex -translate-x-1/2 flex-col items-center justify-center">
             <img
-              src="/images/loklyxmas.png"
+              src="/images/Loklyxmas.png"
               alt="Lokly"
               className="h-[58px] w-[120px] object-contain sm:h-[72px] sm:w-[145px]"
             />
@@ -160,7 +160,7 @@ export default function Header() {
 
               <div>
                 <img
-                  src="/images/loklyxmas.png"
+                  src="/images/Loklyxmas.png"
                   alt="Lokly"
                   style={{ width: "125px", height: "auto" }}
                 />
