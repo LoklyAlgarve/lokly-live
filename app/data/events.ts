@@ -22,7 +22,7 @@ export type Event = {
   petFriendly: string;
 };
 
-const CACHE_KEY = "lokly-events-v9";
+const CACHE_KEY = "lokly-events-v10";
 const CACHE_TIME = 5 * 60 * 1000;
 
 function formatEventDate(startDate: string, endDate?: string) {
