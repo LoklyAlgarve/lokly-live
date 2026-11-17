@@ -33,21 +33,19 @@ const EventMap = dynamic(
 
 const categories = [
   "All Categories",
+  "Christmas",
   "Music",
-  "Festival",
-  "Market",
   "Food & Drink",
-  "Sport",
-  "Family",
   "Arts & Culture",
-  "Nightlife",
-  "Comedy",
-  "Theatre",
+  "Wellbeing",
+  "Family",
+  "Markets & Shopping",
+  "Sport",
+  "Animals & Pets",
+  "Festivals",
   "Exhibitions",
-  "Workshop",
+  "Workshops",
   "Charity",
-  "Community",
-  "Retreat",
 ];
 
 const areas = [

@@ -33,7 +33,8 @@ type Category = {
 };
 
 const mainCategories: Category[] = [
-  { label: "Music", filter: "Music", icon: "music", color: "#E53935" },
+    { label: "Christmas", filter: "Christmas", icon: "christmas", color: "#166534" },
+    { label: "Music", filter: "Music", icon: "music", color: "#E53935" },
   { label: "Food & Drink", filter: "Food & Drink", icon: "food", color: "#F59E0B" },
   { label: "Arts & Culture", filter: "Arts & Culture", icon: "arts", color: "#8B5CF6" },
   { label: "Wellbeing", filter: "Wellbeing", icon: "wellbeing", color: "#22C55E" },
@@ -45,7 +46,6 @@ const mainCategories: Category[] = [
   { label: "Exhibitions", filter: "Exhibitions", icon: "exhibitions", color: "#9333EA" },
   { label: "Workshops", filter: "Workshop", icon: "workshop", color: "#A16207" },
   { label: "Charity", filter: "Charity", icon: "charity", color: "#E11D48" },
-    { label: "Christmas", filter: "Christmas", icon: "christmas", color: "#166534" },
 ];
 
 function CategoryIcon({ name }: { name: CategoryIconName }) {
