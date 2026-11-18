@@ -528,15 +528,27 @@ export default function Header() {
                   </button>
 
                   {/* BUSINESS SUBSECTION */}
+
 {businessOpen && (
   <div className="ml-11 border-l border-slate-200 pl-3">
-    <p className="px-3 py-3 text-sm font-medium text-slate-400">
+    <p className="px-3 pt-3 text-sm font-medium text-slate-400">
       {pt
-        ? "Adicionar eventos em breve"
-        : "Event submissions coming soon"}
+        ? "O formulário para envio de eventos estará disponível em breve."
+        : "Our event submission form is coming soon."}
+    </p>
+
+    <p className="px-3 pb-3 text-sm text-slate-500">
+      {pt ? "Entretanto, envie-nos um email para" : "In the meantime, email us at"}{" "}
+      <a
+        href="mailto:hello@lokly.live"
+        className="font-semibold text-[#149EAF] hover:underline"
+      >
+        hello@lokly.live
+      </a>
     </p>
   </div>
 )}
+
                 </div>
 
               </div>
