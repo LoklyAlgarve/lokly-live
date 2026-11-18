@@ -5,7 +5,7 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://lokly.live";
+  const baseUrl = "https://www.lokly.live";
   const lastModified = new Date();
 
   const pages: MetadataRoute.Sitemap = [

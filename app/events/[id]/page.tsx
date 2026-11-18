@@ -52,12 +52,12 @@ export async function generateMetadata({
       data.description ||
       `Discover ${data.title} in ${data.location || "the Algarve"} on Lokly.`,
     alternates: {
-      canonical: `https://lokly.live/events/${id}`,
+      canonical: `https://www.lokly.live/events/${id}`,
     },
     openGraph: {
       title: `${data.title} | Lokly`,
       description: data.description || "",
-      url: `https://lokly.live/events/${id}`,
+      url: `https://www.lokly.live/events/${id}`,
       type: "website",
     },
   };
@@ -92,7 +92,7 @@ export default async function EventPage({ params }: PageProps) {
   }
 
   const eventImage = data?.image
-    ? new URL(data.image, "https://lokly.live").toString()
+    ? new URL(data.image, "https://www.lokly.live").toString()
     : undefined;
 
   const structuredEvent = data
