@@ -4,4 +4,4 @@ Allow: /
 User-agent: OAI-SearchBot
 Allow: /
 
-Sitemap: https://lokly.live/sitemap.xml
+Sitemap: https://www.lokly.live/sitemap.xml
