@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -15,7 +16,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Lokly – Discover Local Events in the Algarve",
-   description: "Discover what's happening in the Algarve with Lokly. Find local events, markets, live music, festivals and family activities.",
+  description:
+    "Discover what's happening in the Algarve with Lokly. Find local events, markets, live music, festivals and family activities.",
+
+  verification: {
+    google: "9om8lsihdSBC6zJNc35PCNG6GmUC0ugsWYA0ew5TKsk",
+  },
 
   icons: {
     icon: "/icons/lokly-512.png",
