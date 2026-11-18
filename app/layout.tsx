@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Lokly",
-  description: "Discover events across the Algarve",
+  title: "Lokly – Discover Local Events in the Algarve",
+   description: "Discover what's happening in the Algarve with Lokly. Find local events, markets, live music, festivals and family activities.",
 
   icons: {
     icon: "/icons/lokly-512.png",
