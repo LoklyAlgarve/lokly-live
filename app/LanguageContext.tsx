@@ -184,6 +184,7 @@ const translations: Record<string, string> = {
   "View details": "Ver detalhes",
 
   // Categories
+  "Christmas": "Natal",
   "Music": "Música",
   "Festival": "Festival",
   "Festivals": "Festivais",
