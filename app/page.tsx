@@ -22,7 +22,7 @@ type CategoryIconName =
   | "exhibitions"
   | "workshop"
   | "christmas"
-  "new year"
+  | "party-popper"
   | "animals"
   | "charity";
 
