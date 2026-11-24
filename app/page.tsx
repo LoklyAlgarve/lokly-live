@@ -22,6 +22,7 @@ type CategoryIconName =
   | "exhibitions"
   | "workshop"
   | "christmas"
+  "new year"
   | "animals"
   | "charity";
 
@@ -34,6 +35,7 @@ type Category = {
 
 const mainCategories: Category[] = [
     { label: "Christmas", filter: "Christmas", icon: "christmas", color: "#166534" },
+    { label: "New Year", filter: "New Year", icon: "party-popper", color: "#D4A017" },
     { label: "Music", filter: "Music", icon: "music", color: "#E53935" },
   { label: "Food & Drink", filter: "Food & Drink", icon: "food", color: "#F59E0B" },
   { label: "Arts & Culture", filter: "Arts & Culture", icon: "arts", color: "#8B5CF6" },
