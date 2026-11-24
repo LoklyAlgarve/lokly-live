@@ -192,6 +192,15 @@ function CategoryIcon({ name }: { name: CategoryIconName }) {
         </svg>
       );
 
+      case "party-popper":
+  return (
+    <svg {...common}>
+      <path d="M4 20L14 10M14 10L20 4M14 10L19 15M14 10L9 5" />
+      <path d="M5 3V6M3 5H6M19 17V20M17 19H20" />
+      <circle cx="14" cy="10" r="2" />
+    </svg>
+  );
+
     default:
       return null;
   }
