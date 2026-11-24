@@ -1,3 +1,4 @@
+
 "use client";
 
 import dynamic from "next/dynamic";
@@ -12,6 +13,7 @@ type Event = {
   title: string;
   location: string;
   category: string;
+secondaryCategory?: string;
   concelho: string;
   latitude: number;
   longitude: number;
@@ -34,6 +36,7 @@ const EventMap = dynamic(
 const categories = [
   "All Categories",
   "Christmas",
+  "New Year",
   "Music",
   "Food & Drink",
   "Arts & Culture",
@@ -280,7 +283,8 @@ export default function MapPage() {
       ? nearEvents
       : nearEvents.filter(
           (event) =>
-            event.category === selectedCategory
+            event.category === selectedCategory ||
+            event.secondaryCategory === selectedCategory
         );
 
   const visibleEvents =

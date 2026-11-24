@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -17,6 +18,8 @@ type Event = {
   title: string;
   location: string;
   category: string;
+  secondaryCategory?: string;
+  secondary_category?: string;
   latitude: number;
   longitude: number;
 };
@@ -45,6 +48,8 @@ const categoryColours: Record<string, string> = {
   Charity: "#ef4444",
   Community: "#65a30d",
   Retreat: "#6366f1",
+  "New Year": "#D4A017",
+  Christmas: "#B91C1C",
 };
 
 const categorySymbols: Record<string, string> = {
@@ -63,6 +68,8 @@ const categorySymbols: Record<string, string> = {
   Charity: "♡",
   Community: "●",
   Retreat: "◇",
+  "New Year": "✦",
+  Christmas: "❄",
 };
 
 function createCategoryIcon(
@@ -239,6 +246,12 @@ export default function EventMap({
             )
           : null;
 
+        const markerCategory =
+          event.secondaryCategory === "New Year" ||
+          event.secondary_category === "New Year"
+            ? "New Year"
+            : event.category;
+
         return (
           <Marker
             key={event.id}
@@ -247,7 +260,7 @@ export default function EventMap({
               event.longitude,
             ]}
             icon={createCategoryIcon(
-              event.category
+              markerCategory
             )}
           >
             <Popup>
@@ -261,13 +274,15 @@ export default function EventMap({
                     style={{
                       backgroundColor:
                         categoryColours[
-                          event.category
+                          markerCategory
                         ] || "#64748b",
                     }}
                   />
 
                   <span className="text-xs font-bold text-slate-500">
                     {event.category}
+                    {markerCategory === "New Year" &&
+                      " · New Year"}
                   </span>
 
                 </div>
