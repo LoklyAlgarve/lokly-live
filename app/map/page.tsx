@@ -13,7 +13,7 @@ type Event = {
   title: string;
   location: string;
   category: string;
-secondaryCategory?: string;
+  secondaryCategory?: string;
   concelho: string;
   latitude: number;
   longitude: number;
@@ -124,6 +124,14 @@ export default function MapPage() {
   }, []);
 
   function findNearMe() {
+    // If Near Me is already active, switch it off.
+    if (userLocation) {
+      setUserLocation(null);
+      setLocationMessage("");
+      setRadius(10);
+      return;
+    }
+
     if (!navigator.geolocation) {
       setLocationMessage(
         t(
@@ -324,6 +332,7 @@ export default function MapPage() {
             type="button"
             onClick={findNearMe}
             disabled={locating}
+            aria-pressed={!!userLocation}
             className="flex h-10 w-fit items-center justify-center gap-2 rounded-full bg-[#149EAF] px-5 text-[13px] font-bold text-white shadow-sm transition hover:bg-[#117F8E] active:scale-[0.98] disabled:cursor-wait disabled:opacity-70 sm:h-12 sm:rounded-2xl sm:px-6 sm:text-base"
           >
 
@@ -351,7 +360,9 @@ export default function MapPage() {
             <span>
               {locating
                 ? t("Finding you...")
-                : t("Near Me")}
+                : userLocation
+                  ? t("Show All Events")
+                  : t("Near Me")}
             </span>
 
           </button>
